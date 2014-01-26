@@ -1,0 +1,397 @@
+// Created by Kronos
+// August 19, 2012
+// WoonRO NPC Warper
+// ================== ++ =====================
+
+prontera.gat,155,174,4	script	NPC Warper	756,{
+OnInit:
+if ($@waitingroomexists == 0){
+	waitingroom "English in Prontera please.",0;
+	set $@waitingroomexists, 1;
+	goto L_continuenpc;
+} else{
+     goto L_continuenpc; 
+}
+
+L_continuenpc:
+mes "[^FF8000NPC Warper^000000]";
+mes "Hello there, If you are having trouble locating NPC's";
+mes "I can take you to directly to any one you need.";
+next;
+mes "[^FF8000NPC Warper^000000]";
+mes " Choose a category!";
+menu "Event and Quest Zone",L_EQ,"NPC Zone",L_NZ,"WoonRO Features",L_Wfeat,"7 Hells",L_Wstory,"RO Features",L_Rfeat,"Weapon Dealers",L_WD,"Armor Dealers",L_Armor;
+
+L_EQ:
+warp "new_5-2.gat",100,105;
+close;
+
+L_NZ:
+warp "job3_rune02.gat",39,40;
+close;
+
+L_Wfeat:
+next;
+mes "[^FF8000NPC Warper^000000]";
+mes "Please choose an option!";
+menu "Identifier",L_ID,"Stylist",L_Sty,"WOE Warper/Info",L_Woe,"Job Master",L_Wjob,"Reset Girl",L_Wres,"Universal Rental NPC",L_Wrent,"Package Claiming",L_Wpack;
+
+	L_ID:
+	warp "prontera.gat",151,193;
+	close;
+
+	L_Sty:
+	warp "prontera.gat",144,198;
+	close;
+		
+	L_Woe:
+	warp "prontera.gat",155,195;
+	close;
+	
+	L_Wjob:
+	warp "prontera.gat",147,194;
+	close;
+	
+	L_Wres:
+	warp "prontera.gat",164,194;
+	close;
+	
+	L_Wrent:
+	warp "prontera.gat",166,197;
+	close;
+	
+	L_Wpack:
+	warp "prontera.gat",145,189;
+	close;
+
+L_Wstory:
+next;
+mes "[^FF8000NPC Warper^000000]";
+mes "Please selecet an option!";
+menu "Prologue 1",L_Pro1,"Prologue 2",L_Pro2;
+
+	L_Pro1:
+	warp "brasilis.gat",131,60;
+	close;
+
+	L_Pro2:
+	warp "morocc.gat",191,230;
+	close;
+L_Rfeat:
+next;
+mes "[^FF8000NPC Warper^000000]";
+mes "Please selecet an option!";
+menu "Refiner",L_Rref,"Repairman",L_Rrep,"Card Remover",L_Rcard,"Level 4 weapon quests",L_l4w,"Slot NPC Prontera",L_Rslotprt,"Slot NPC Payon",L_Rslotpay,"Hidden Enchanter",L_Rhide,"Endless Tower",L_RET,"Sealed Shrine",L_RSH,"Nighoggur's Nest",L_RNN,"Gym Pass NPC / Enriched Refiner",L_Gym;
+
+	L_l4w:
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet an option!";
+	menu "Bazo",bazo,"Hibilaithan",hibi,"Tabezthan",tabez;
+		bazo:
+		warp "umbala.gat",117,285;
+		close;
+		
+		hibi:
+		warp "umbala.gat",163,257;
+		close;
+		
+		tabez:
+		warp "umbala.gat",156,77;
+		close;
+
+	L_Rref:
+	warp "prt_in.gat",59,60;
+	close;
+	
+	L_Rrep:
+	warp "prt_in.gat",61,54;
+	close;
+	
+	L_Rcard:
+	warp "prt_in.gat",28,70;
+	close;
+	
+	L_Rslotprt:
+	warp "prt_in.gat",31,70;
+	close;
+	
+	L_Rslotpay:
+	warp "payon.gat",233,198;
+	close;
+	
+	L_Rhide:
+	warp "prontera.gat",163,60;
+	close;
+		
+	L_RET:
+	warp "e_tower.gat",74,112;
+	close;
+
+	L_RSH:
+	warp "monk_test.gat",305,146;
+	close;
+
+	L_RNN:
+	warp "nyd_dun02.gat",94,194;
+	close;
+
+	L_Gym:
+	warp "payon.gat",169,138;
+	close;
+	
+L_WD:
+next;
+mes "[^FF8000NPC Warper^000000]";
+mes "Please selecet an option!";
+menu "Daggers",L_Dag,"Swords",L_Sword,"Spears",L_Spears,"Axes",L_Ax,"Maces",L_Mace,"Wands",L_Wand,"Bows",L_Bow,"Knuckles",L_Knu,"Instruments/Whips",L_Whip,"Katars",L_Kat,"Guns",L_Gun;
+
+	L_Dag:
+	next;
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet a town!";
+	menu "Alberta",L_Alb,"Aldebaren",L_Alde,"Brasilis",L_Bra,"Einbech",L_Ein,"Geffen",L_Gef,"Hugel",L_Hug,"Izlude",L_Iz,"Next",L_n;
+					
+		L_n:
+		menu "Lighthalzen",L_lhz,"Lutie",L_lut,"Morocc",L_Mor,"Payon",L_Pay,"Prontera",L_Prt,"Rachel",L_Ra,"Veins",L_Ve,"Yuno",L_Yu;
+	
+			L_Alb:
+			warp "alberta_in.gat",185,22;
+			close;
+						
+			L_Alde:
+			warp "aldeba_in.gat",27,55;
+			close;
+						
+			L_Bra:
+			warp "brasilis.gat",243,243;
+			close;
+							
+			L_Ein:
+			warp "ein_in01.gat",109,23;
+			close;
+							
+			L_Gef:
+			warp "geffen_in.gat",30,174;
+			close;
+							
+			L_Hug:
+			warp "hu_in01.gat",93,390;
+			close;
+							
+			L_Iz:
+			warp "izlude_in.gat",59,127;
+			close;
+							
+			L_lhz:
+			warp "lhz_in02.gat",275,99;
+			close;
+							
+			L_lut:
+			warp "xmas_in.gat",173,98;
+			close;
+							
+			L_Mor:
+			warp "morocc_in.gat",139,67;
+			close;
+							
+			L_Pay:
+			warp "payon_in01.gat",14,119;
+			close;
+							
+			L_Prt:
+			warp "prt_in.gat",169,130;
+			close;
+							
+			L_Ra:
+			warp "ra_in01.gat",173,383;
+			close;
+						
+			L_Ve:
+			warp "ve_in.gat",385,245;
+			close;
+							
+			L_Yu:
+			warp "yuno_in01.gat",103,32;
+			close;
+		
+	L_Sword:
+	next;
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet a town!";
+	menu "Gonryun",L_Gon,"Alberta",L_Alb,"Amatsu",L_Ama,"Ayothaya",L_Ayo,"Einbech",L_Ein,"Izlude",L_Iz,"Next",L_n2;
+					
+		L_n2:
+		menu "Lighthalzen",L_lhz,"Louyang",L_Lou,"Moscovia",L_Mosk,"Payon",L_Pay,"Prontera",L_Prt,"Rachel",L_Ra,"Veins",L_Ve;
+			
+			L_Gon:
+			warp "gonryun.gat",171,101;
+			close;
+							
+			L_Ama:
+			warp "ama_in01.gat",100,28;
+			close;
+							
+			L_Ayo:
+			warp "ayo_in01.gat",85,192;
+			close;
+							
+			L_Lou:
+			warp "lou_in02.gat",128,180;
+			close;
+							
+			L_Mosk:
+			warp "mosk_in.gat",27,180;
+			close;
+							
+	L_Spears:
+	next;
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet a town!";
+	menu "Comodo",L_Comodo,"Einbech",L_Ein,"Prontera",L_Prt;
+					
+		L_Comodo:
+		warp "cmd_fild07.gat",247,98;
+		close;
+					
+	L_Ax:	
+	next;
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet a town!";
+	menu "Alberta",L_Alb,"Einbech",L_Ein,"Niflheim",L_Nif,"Izlude",L_Iz,"Prontera",L_Prt;
+					
+		L_Nif:
+		warp "nif_in.gat",35,93;
+		close;
+						
+	L_Mace:
+	next;
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet a town!";
+	menu "Einbech",L_Ein,"Morocc Ruins",L_MocR,"Umbala",L_Um,"Prontera Church",L_PrtC;
+					
+		L_MocR:
+		warp "moc_ruins.gat",124,135;
+		close;
+						
+		L_Um:
+		warp "um_in",159,125;
+		close;
+						
+		L_PrtC:
+		warp "prt_church.gat",107,124;
+		close;
+						
+	L_Wand:
+	next;
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet a town!";
+	menu "Lighthalzen",L_lhz,"Alberta",L_Alb,"Geffen",L_Gef,"Izlude",L_Iz,"Morocc",L_Mor,"Payon",L_Pay,"Prontera",L_Prt,"Rachel",L_Ra,"Veins",L_Ve,"Yuno",L_Yu;
+		
+	L_Bow:
+	next;
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet a town!";
+	menu "Alberta",L_Alb,"Geffen",L_Gef,"Hugel",L_Hug,"Izlude",L_Iz,"Morocc",L_Mor,"Payon",L_Pay,"Prontera",L_Prt,"Yuno",L_Yu;
+		
+	L_Knu:
+	next;
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet a town!";
+	menu "Einbech",L_Ein,"Prontera",L_Prt2,"Umbala",L_Um;
+					
+		L_Prt2:
+		warp "prt_monk.gat",133,263;
+		close;
+		
+	L_Whip:
+	next;
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet a town!";
+	menu "Comodo",L_ComW;
+					
+		L_ComW:
+		warp "cmd_in01.gat",123,168;
+		close;
+					
+	L_Kat:
+	next;
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet a town!";
+	menu "Morocc",L_Mor,"Einbech",L_Ein;
+					
+	L_Gun:
+	next;
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet a town!";
+	menu "Alberta",L_Alb2,"Izlude",L_Iz2,"Einbroch",L_Guns;
+					
+		L_Alb2:
+		warp "alberta_in.gat",180,20;
+		close;
+						
+		L_Iz2:
+		warp "izlude_in.gat",120,64;
+		close;
+
+		L_Guns:
+		warp "que_ng.gat",177,91;
+		close;
+		
+L_Armor:
+next;
+mes "[^FF8000NPC Warper^000000]";
+mes "Please selecet a town!";
+menu "Alberta",A_Alb,"Gonryun",A_Gon,"Amatsu",A_Amu,"Ayothya",A_Ayo,"Geffen",A_Gef,"Hugel",A_Hug,"Louyang",A_Lou,"Morocc",A_Moc,"Moscovia",A_Mosk,"Niflhiem",A_Nif,"Payon",A_Pay,"Prontera",A_Prt,"Yuno",A_Yu;
+				
+	A_Alb:
+	warp "alberta_in.gat",180,13;
+	close;
+						
+	A_Gon:
+	warp "gonryun.gat",173,80;
+	close;
+						
+	A_Amu:
+	warp "ama_in01.gat",89,25;
+	close;
+						
+	A_Ayo:
+	warp "ayo_in01.gat",90,158;
+	close;
+						
+	A_Gef:
+	warp "geffen_in.gat",25,174;
+	close;
+						
+	A_Hug:
+	warp "hu_in01.gat",94,310;
+	close;
+						
+	A_Lou:
+	warp "lou_in02.gat",121,179;
+	close;
+						
+	A_Moc:
+	warp "morocc_in.gat",139,60;
+	close;
+						
+	A_Mosk:
+	warp "mosk_in.gat",79,177;
+	close;
+						
+	A_Nif:
+	warp "nif_in.gat",33,85;
+	close;
+						
+	A_Pay:
+	warp "payon_in01.gat",7,116;
+	close;
+						 
+	A_Prt:
+	warp "prt_in.gat",169,132;
+	close;
+						
+	A_Yu:
+	warp "yuno_in01.gat",112,23;
+	close;
+}

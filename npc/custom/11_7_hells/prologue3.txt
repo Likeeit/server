@@ -1,0 +1,221 @@
+// Script:		  Pologue 3
+// Author:        Sovane/Nihad
+// Scripter:      Sovane
+// Storyline      Nihad
+// Script Function:
+//	
+
+// (Raum) xmas (x,x) NPC: 957
+
+
+xmas,250,167,4	script	Raum#4	957,{
+
+	if (pro3 > 1) goto pro3_end;
+	if (pro3 == 1) goto pro3_items;
+	if (dnCount == 1) goto pro3_strt;
+	
+	mes "^FF3355He appears too busy to talk with you^000000";
+	close;
+	
+	pro3_strt:
+	mes "[Raum]";
+	mes "What are you looking at?";
+	mes " ";
+	mes "^FF3355This thing quickly charges at you. You quickly evade and prepare yourself for another charge.^000000";
+	next;
+	mes "^FF3355You feel a strange force tug on your ankle taking you off guard, it charges and takes you to the ground.^000000";
+	next;
+	mes "^FF3355He firmly places a foot on your chest standing on top of you.^000000";
+	next;
+	mes "[Raum]";
+	mes "Your life is mine, you will do as I say!";
+	next;
+	
+	switch(select("Do as it says.:Resist.")) {
+	
+	case 1:
+	mes "[Raum]";
+	mes "I am preparing for something big, really big. You will asist me!";
+	next;
+	mes "^FF3355You hear him mumble to himself^000000";
+	mes "....Seven....Seven..";
+	next;
+		switch(select("Seven...?:Leave")) {
+		
+		case 1:
+		mes "[Raum]";
+		mes "Shut up, you ask no questions, you do as you are told.";
+		mes "Now get me the following tools";
+		next;
+		mes "^FF33557 Bradium Stonehammer^000000";
+		mes "^FF33557 Gemstone^000000";
+		mes "^FF33557 Shining Stone^000000";
+		mes "^FF33557 Rune Of Darkness^000000";
+		mes "^FF33557 Will Of Darkness^000000";
+		next;
+		mes "[Raum]";
+		mes "And the other 2 items... now be gone";
+		set pro3,1;
+		close;
+		
+		pro3_items:
+		
+		if ((countitem(1385) > 4) && (countitem(7300) > 6) && (countitem(640) > 6) && (countitem(7511) > 6) && (countitem(7340) > 6) && (countitem(5754) > 0) && (countitem(5332) > 0)) {
+	mes "[Raum]";
+	mes "Yes, yes. Very good!";
+		delitem 1385,5;
+		delitem 7300,7;
+		delitem 640,7;
+		delitem 7511,7;
+		delitem 7340,7;
+		delitem 5754,1;
+		delitem 5332,1;
+	next;
+	mes "[Raum]";
+	mes "Now, let's get to the important part...";
+	next;
+		warp "moscovia",248,189;
+		set pro3,2;
+		close;
+		end;
+	}
+	else	{
+	
+	mes "[Raum]";
+	mes "You have yet to get me the materials.";
+	next;
+	mes "[Raum]";
+	mes "I need:";
+	mes countitem(1385) + "/5 ^FF3355Bradium Stone Hammer^000000";
+	mes countitem(7300) + "/7 ^FF3355Gemstone^000000";
+	mes countitem(640) + "/7 ^FF3355Shining Stone^000000";
+	mes countitem(7511) + "/7 ^FF3355Rune Of Darkness^000000";
+	mes countitem(7340) + "/7 ^FF3355Will Of Darkness^000000";
+	mes countitem(5754) + "/1 ^FF3355Blazing Soul ^000000";
+	mes countitem(5332) + "/1 ^FF3355Loki Mask^000000";
+	
+	}
+	case 2:
+	close2;
+	end;
+		
+		}
+	case 2:
+	mes "[Raum]";
+	mes "Resistance is futile!";
+	next;
+	percentheal -100,0;
+	close2;
+	end;
+	
+	}
+	
+	pro3_end:
+	end;
+
+}
+///////////////////////////////////////////////////////////////////////////////
+
+moscovia,249,190,4	script	Raum	957,{
+
+	if (pro3 == 4) goto pro3_done;
+	if (pro3 == 3) goto pro3_items2;
+	if (pro3 == 2) goto pro3_touch;
+
+	end;
+
+	pro3_touch:
+	mes "[Raum]";
+	mes "We must do what we can.";
+	next;
+	mes "^FF3355You see Raum place the materials in an unusual shape^000000";
+	next;
+	mes "^FF3355|¯¯¯¯¯¯/   /^000000";
+	mes "^FF3355|   (o)   /   /^000000";
+	mes "^FF3355          /   /^000000";
+	mes "^FF3355        /   /^000000";
+	mes "^FF3355   --------------^000000";
+	mes "^FF3355      /   /^000000";
+	mes "^FF3355    /   /________^000000";
+	next;
+	mes "[Raum]";
+	mes "I need more power! COME HERE!!";
+	mes " ";
+	mes "^FF3355You feel as if something has grabbed you by the throat, you start getting weaker^000000";
+	percentheal -50,0;
+	next;
+	mes "[Raum]";
+	mes "YOU PATHETIC WEAKLING, IS THIS ALL YOU ARE WORTH?!";
+	next;
+	mes "[Raum]";
+	mes "this won't do... this won't do...THIS WON'T DO!!";
+	next;
+	mes "[Raum]";
+	mes "You human! I need more power, bring me the souls of your people, I need 77 of them";
+	mes "BE GONE!";
+	set pro3,3;
+	close;
+	
+	pro3_items2:
+	
+	if ((countitem(7420) > 76)) {
+	mes "[Raum]";
+	mes "Yes! Give me those!";
+		delitem 7420,77;
+	next;
+	mes "[Raum]";
+	mes "It's working!! I'ts working!!";
+	mes " ";
+	mes "^FF3355Kaboooom, Krash!!^000000";
+	next;
+		warp "moscovia",242,141;
+		percentheal -99,0;
+		set pro3,4;
+		close;
+		end;
+	}
+	else	{
+	
+	mes "[Raum]";
+	mes "You fool! I need more skulls!";
+	next;
+	mes countitem(7420) + "/77 ^FF3355Skulls^000000";
+	close;
+	
+	pro3_done:
+	end;
+}
+
+}
+/////////////////////////////////////////////////////////////////////////
+moscovia,242,141,4	script	    	111,3,3,{
+OnTouch:
+
+	if (pro3 == 4) goto lable;
+	end;
+		
+	lable:
+	mes "["+strcharinfo(0)+"]";
+	mes "I'm alive... what happened?";
+	mes "I should run back to the gate.";
+	set pro3,5;
+	close;
+}
+
+moscovia,248,193,4	script	Gate	111,{
+
+	if (pro3 == 5) goto finished;
+	end;
+	
+	finished:
+	mes "^FF3355You see the gate has collapsed and the area around it is completely destroyed, Raum appears to be dead...^000000";
+	next;
+	mes "["+strcharinfo(0)+"]";
+	mes "Why do weird things keep happening to me...";
+	getitem 5332,1;
+	getitem 5754,1;
+	getitem 5475,1;
+	set pro3,6;
+	set WroQ,3;
+	close;
+}

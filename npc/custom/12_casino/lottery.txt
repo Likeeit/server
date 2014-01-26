@@ -1,0 +1,199 @@
+cmd_in02,208,100,5	script	Lottery	62,{
+	set .@name$, "[Lottery]";
+	
+	mes .@name$;
+	mes "Hello, welcome to the WoonRO lottery.";
+	mes "Here you will be able to enter in one of four different lotteries for a chance to win a huge prize!";
+	next;
+	mes .@name$;
+	mes "You can enter yourself into the lottery at any time. Once 100 people have entered into a particular lottery, the winner will be drawn and announced.";
+	next;
+	mes .@name$;
+	mes "Also, there will be regular announcements that broadcast how many people have entered into a particular lottery so that you may know how far we are from drawing a winner.";
+	next;
+	mes .@name$;
+	mes "If you are the winner, you will receive your prize via the mailing service.";
+	mes "Prizes are as follows:";
+	mes "Zeny Lottery - 95,000,000 Zeny";
+	mes "Zeny Card Lottery - 95 Zeny Cards";
+	mes "Silver Coin Lottery - 95 Silver Coins";
+	mes "Gold Coin Lottery - 95 Gold Coins";
+	next;
+	mes .@name$;
+	mes "Now, could I interest you in participating in any one of the lotteries today?";
+	next;
+	switch(select("Enter Zeny lottery:Enter Zeny Card lottery:Enter Silver Coin lottery:Enter Gold Coin lottery:Not interested")) {
+
+	case 1:
+	set .@type, 1;
+	set .@type$, "Zeny";
+	set .@type2$, "Zeny";
+	set .@price, 1000000;
+	break;
+
+	case 2:
+	set .@type, 2;
+	set .@type$, "Zeny Card";
+	set .@type2$, "ZenyCard";
+	set .@price, 1;
+	set .@unit, 0;
+	break;
+
+	case 3:
+	set .@type, 3;
+	set .@type$, "Silver Coin";
+	set .@type2$, "SilverCoin";
+	set .@price, 1;
+	set .@unit, 1;
+	break;
+
+	case 4:
+	set .@type, 4;
+	set .@type$, "Gold Coin";
+	set .@type2$, "GoldCoin";
+	set .@price, 1;
+	set .@unit, 2;
+	break;
+
+	case 5:
+	mes .@name$;
+	mes "Thank you for your interest.";
+	mes "Please come back if you change your mind!";
+	close;
+	break;
+
+	default:
+	close;
+	break;
+	}
+	mes .@name$;
+	mes "Alright, the fee for entering the "+.@type$+" lottery is "+.@price+" "+.@type$+".";
+	mes "Do you still wish to enter?";
+	if (select("Yes:No") == 2) close;
+	next;
+	mes .@name$;
+	if (.@type == 1) {
+		if (Zeny < 1000000) {
+			mes "You don't have enough Zeny to pay for the entry fee.";
+			mes "Please come back when you have 1 million Zeny.";
+			close;
+		}
+	}
+	else {
+		if (countitem(.item_ids[.@unit]) < .@price) {
+			mes "You don't have enough "+.@type$+"s to pay for the entry fee.";
+			mes "Please come back when you have "+.@price+" "+.@type$+"s.";
+			close;
+		}
+	}
+	for (set .@i, 0; .@i < 128; set .@i, .@i + 1) {
+		if (getelementofarray(getd("$"+.@type2$+"Lottery"), .@i) == getcharid(0)) {
+			mes "You're already participating in this lottery round. You may only participate once in each lottery round.";
+			close;
+		}
+	}
+	if (getarraysize(getd("$"+.@type2$+"Lottery")) >= 100) {
+		mes "I'm sorry, it seems that the this round's lottery has suddenly become full.";
+		mes "Please wait until the next round begins to enter the lottery.";
+		close;
+	}
+	if (.@type == 1) set Zeny, Zeny - .@price;
+	else delitem .item_ids[.@unit], .@price;
+	setd "$"+.@type2$+"Lottery["+getarraysize(getd("$"+.@type2$+"Lottery"))+"]", getcharid(0);
+	delwaitingroom strnpcinfo(0);
+	waitingroom "Z:"+(100-getarraysize(getd("$"+"ZenyLottery")))+"|ZC:"+(100-getarraysize(getd("$"+"ZenyCardLottery")))+"|SC:"+(100-getarraysize(getd("$"+"SilverCoinLottery")))+"|GC:"+(100-getarraysize(getd("$"+"GoldCoinLottery")))+" more", 0;
+	if (getarraysize(getd("$"+.@type2$+"Lottery")) >= 100) {
+		donpcevent strnpcinfo(0)+"::On"+.@type2$+"Lottery";
+	}
+	else if (getarraysize(getd("$"+.@type2$+"Lottery")) == 75) {
+		announce "WoonRO Lottery: 75 people have entered the "+.@type2$+" Lottery! Winner will be drawn @ 100 entrants!", bc_all;
+	}
+	else if (getarraysize(getd("$"+.@type2$+"Lottery")) == 50) {
+		announce "WoonRO Lottery: 50 people have entered the "+.@type2$+" Lottery! Winner will be drawn @ 100 entrants!", bc_all;
+	}
+	else if (getarraysize(getd("$"+.@type2$+"Lottery")) == 25) {
+		announce "WoonRO Lottery: 25 people have entered the "+.@type2$+" Lottery! Winner will be drawn @ 100 entrants!", bc_all;
+	}
+	mes "You have successfully been entered into this round of the "+.@type$+" lottery.";
+	mes "Good luck!";
+	close;
+
+	OnZenyLottery:
+	function GetCharName;
+	announce "WoonRO Lottery: 100 people have entered the Zeny Lottery! The winner will be drawn randomly in approximately 1 minute.", bc_all;
+	sleep 60000;
+	set .@rand, rand(100);
+	set .@winner_name$, GetCharName($ZenyLottery[.@rand]);
+	while (.@winner_name$ == "") {
+		set .@rand, rand(100);
+		set .@winner_name$, GetCharName($ZenyLottery[.@rand]);
+	}
+	announce "WoonRO Lottery: The winner of the Zeny Lottery is "+.@winner_name$+"! Congratulations, you have won the 95,000,000 Zeny jackpot!", bc_all;
+	sendmail($ZenyLottery[.@rand], "WoonRO Lottery", "Lottery Winner!", "Congratulations, you have won the Zeny Lottery! Here is your prize.", 95000000, 0, 0);
+	deletearray $ZenyLottery[0], 100;
+	delwaitingroom strnpcinfo(0);
+	waitingroom "Z:"+(100-getarraysize(getd("$"+"ZenyLottery")))+"|ZC:"+(100-getarraysize(getd("$"+"ZenyCardLottery")))+"|SC:"+(100-getarraysize(getd("$"+"SilverCoinLottery")))+"|GC:"+(100-getarraysize(getd("$"+"GoldCoinLottery")))+" more", 0;
+	end;
+
+	OnZenyCardLottery:
+	function GetCharName;
+	announce "WoonRO Lottery: 100 people have entered the Zeny Card Lottery! The winner will be drawn randomly in approximately 1 minute.", bc_all;
+	sleep 60000;
+	set .@rand, rand(100);
+	set .@winner_name$, GetCharName($ZenyCardLottery[.@rand]);
+	while (.@winner_name$ == "") {
+		set .@rand, rand(100);
+		set .@winner_name$, GetCharName($ZenyCardLottery[.@rand]);
+	}
+	announce "WoonRO Lottery: The winner of the Zeny Card Lottery is "+.@winner_name$+"! Congratulations, you have won the 95 Zeny Card jackpot!", bc_all;
+	sendmail($ZenyCardLottery[.@rand], "WoonRO Lottery", "Lottery Winner!", "Congratulations, you have won the Zeny Card Lottery! Here is your prize.", 0, .item_ids[0], 95);
+	deletearray $ZenyCardLottery[0], 100;
+	delwaitingroom strnpcinfo(0);
+	waitingroom "Z:"+(100-getarraysize(getd("$"+"ZenyLottery")))+"|ZC:"+(100-getarraysize(getd("$"+"ZenyCardLottery")))+"|SC:"+(100-getarraysize(getd("$"+"SilverCoinLottery")))+"|GC:"+(100-getarraysize(getd("$"+"GoldCoinLottery")))+" more", 0;
+	end;
+
+	OnSilverCoinLottery:
+	function GetCharName;
+	announce "WoonRO Lottery: 100 people have entered the Silver Coin Lottery! The winner will be drawn randomly in approximately 1 minute.", bc_all;
+	sleep 60000;
+	set .@rand, rand(100);
+	set .@winner_name$, GetCharName($SilverCoinLottery[.@rand]);
+	while (.@winner_name$ == "") {
+		set .@rand, rand(100);
+		set .@winner_name$, GetCharName($SilverCoinLottery[.@rand]);
+	}
+	announce "WoonRO Lottery: The winner of the Silver Coin Lottery is "+.@winner_name$+"! Congratulations, you have won the 95 Silver Coin jackpot!", bc_all;
+	sendmail($SilverCoinLottery[.@rand], "WoonRO Lottery", "Lottery Winner!", "Congratulations, you have won the Silver Coin Lottery! Here is your prize.", 0, .item_ids[1], 95);
+	deletearray $SilverCoinLottery[0], 100;
+	delwaitingroom strnpcinfo(0);
+	waitingroom "Z:"+(100-getarraysize(getd("$"+"ZenyLottery")))+"|ZC:"+(100-getarraysize(getd("$"+"ZenyCardLottery")))+"|SC:"+(100-getarraysize(getd("$"+"SilverCoinLottery")))+"|GC:"+(100-getarraysize(getd("$"+"GoldCoinLottery")))+" more", 0;
+	end;
+
+	OnGoldCoinLottery:
+	function GetCharName;
+	announce "WoonRO Lottery: 100 people have entered the Goin Coin Lottery! The winner will be drawn randomly in approximately 1 minute.", bc_all;
+	sleep 60000;
+	set .@rand, rand(100);
+	set .@winner_name$, GetCharName($GoldCoinLottery[.@rand]);
+	while (.@winner_name$ == "") {
+		set .@rand, rand(100);
+		set .@winner_name$, GetCharName($GoldCoinLottery[.@rand]);
+	}
+	announce "WoonRO Lottery: The winner of the Goin Coin Lottery is "+.@winner_name$+"! Congratulations, you have won the 95 Goin Coin jackpot!", bc_all;
+	sendmail($GoldCoinLottery[.@rand], "WoonRO Lottery", "Lottery Winner!", "Congratulations, you have won the Gold Coin Lottery! Here is your prize.", 0, .item_ids[2], 95);
+	deletearray $GoldCoinLottery[0], 100;
+	delwaitingroom strnpcinfo(0);
+	waitingroom "Z:"+(100-getarraysize(getd("$"+"ZenyLottery")))+"|ZC:"+(100-getarraysize(getd("$"+"ZenyCardLottery")))+"|SC:"+(100-getarraysize(getd("$"+"SilverCoinLottery")))+"|GC:"+(100-getarraysize(getd("$"+"GoldCoinLottery")))+" more", 0;
+	end;
+	 
+
+	OnInit:
+	setarray .item_ids[0], 7227, 675, 671; // Item IDs for zeny card, silver coin and gold coin (in this order)
+	waitingroom "Z:"+(100-getarraysize(getd("$"+"ZenyLottery")))+"|ZC:"+(100-getarraysize(getd("$"+"ZenyCardLottery")))+"|SC:"+(100-getarraysize(getd("$"+"SilverCoinLottery")))+"|GC:"+(100-getarraysize(getd("$"+"GoldCoinLottery")))+" more", 0;
+	end;
+
+	function GetCharName {
+		query_sql("SELECT `name` FROM `char` WHERE `char_id`="+getarg(0), .@results$);
+		return .@results$[0];
+	}
+}

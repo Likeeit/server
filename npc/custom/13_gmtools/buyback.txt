@@ -1,0 +1,17 @@
+que_moon,96,26,5	script	Buyback NPC	54,{
+
+	vending_reset;
+	set .@results, query_sql("SELECT `nameid`, `amount` `refine`, `attribute`, `card0`, `card1`, `card2`, `card3` FROM `sell_log` WHERE `char_id`="+getcharid(0)+" AND `amount` > 0 ORDER BY `id` DESC LIMIT 12", .@nameid, .@amount, .@refine, .@attribute, .@card0, .@card1, .@card2, .@card3);
+	for (set .@i, 0; .@i < 12; set .@i, .@i + 1) {
+		if (.@nameid[.@i] && getiteminfo(.@nameid[.@i], 0) != -1) {
+			vending_add .@nameid[.@i], .@amount[.@i], getiteminfo(.@nameid[.@i], 0), .@refine[.@i], .@attribute[.@i], .@card0[.@i], .@card1[.@i], .@card2[.@i], .@card3[.@i];
+		}
+	}
+	if (.@results < 1) {
+		mes "[Buyback NPC]";
+		mes "My records indicate that you have no items available for buyback!";
+		close;
+	}
+	vending_open;
+	end;	
+}

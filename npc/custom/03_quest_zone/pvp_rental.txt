@@ -1,0 +1,142 @@
+new_5-2,107,112,5	script	Private PvP Rooms	67,{
+	if (gettimetick(2) > #pvprentaltime)
+		set #pvprentaltime, 0;
+	set .@name$, "[Private PvP Rental]";
+	mes .@name$;
+	mes "Hello, how may I help you today?";
+	menu "Enter private PvP room", L_Enter, "Rent private PvP room", L_Rent, "Nothing", L_Exit;
+	
+	L_Enter:
+	next;
+	mes .@name$;
+	mes "Please enter the PvP room password.";
+	input(.@pass,1,9999);
+	if (getarraysize($@pvprooms)) {
+		for (set .@i, 0; .@i < getarraysize($@pvprooms); set .@i, .@i+1) {
+			if (.@pass == $@pvprooms[.@i])
+				break;
+			else if (.@i >= (getarraysize($@pvprooms)-1)) {
+				next;
+				mes .@name$;
+				mes "I'm sorry, the password you have entered does not belong to any currently rented PvP room";
+				close;
+			}
+			else
+				continue;
+		}
+		warp .map_prefix$+(.@i+1),0,0;
+	}
+	else {
+		next;
+		mes .@name$;
+		mes "I'm sorry, the password you have entered does not belong to any currently rented PvP room";		
+	}
+	close;
+	
+	L_Rent:
+	next;
+	mes .@name$;
+	mes "It costs "+.cost+" Zeny to rent a PvP room for an hour.";
+	mes "Do you still wish to rent a PvP room?";
+	if (select("Yes:No") == 2)
+		close;
+	L_SetPass:
+	next;
+	mes .@name$;
+	if (getarraysize($@pvprooms) >= .room_max) {
+		mes "According to my records, all our PvP rooms are booked.";
+		mes "Please try again at a later time.";
+		close;
+	}
+	if (#pvprentaltime) {
+		mes "You already have a room in rental.";
+		mes "You are only allowed to rent one PvP room at a time.";
+		close;
+	}
+	if (Zeny < .cost) {
+		mes "You do not have enough Zeny.";
+		close;
+	}
+	mes "Please set a password for your private PvP room";
+	mes "[Any number between 1-9999]";
+	set .@result, input(.@pass, 1, 9999);
+	if (.@result)
+		close;
+	for (set .@i, 0; .@i < getarraysize($@pvprooms); set .@i, .@i+1) {
+		if (.@pass == $@pvprooms[.@i]) {
+			mes "This password has already been taken.";
+			mes "Please select another.";
+			goto L_SetPass;
+		}
+		else if (.@i >= (getarraysize($@pvprooms)-1)) {
+			mes "Password accepted.";
+			break;
+		}
+		else
+			continue;
+	}
+	for (set .@i, 0; .@i < .room_max; set .@i, .@i + 1) {
+		if (!$@pvprooms[.@i]) {
+			set $@pvprooms[.@i], .@pass;
+			set $@pvprooms_time[.@i], gettimetick(2)+3600;
+			break;
+		}
+		else
+			continue;
+	}
+	set Zeny, Zeny - .cost;
+	set #pvprentaltime, gettimetick(2) + 3600;
+	next;
+	mes .@name$;
+	mes "Private PvP room has been rented successfully.";
+	mes "Your private password is: ^FF0000"+.@pass+"^000000";
+	mes "Players who wish to enter your PvP room will need to enter this password.";
+	next;
+	mes .@name$;
+	mes "The room will expire in 1 hour from now.";
+	mes "Have fun!";
+	close;
+	
+	L_Exit:
+	next;
+	mes .@name$;
+	mes "Farewell.";
+	close;
+	
+	OnInit:
+	// Start Config
+	set .cost, 100000; // cost
+	set .map_prefix$, "pvp_y_1-"; //room prefix, all pvp rooms are numbered.
+	set .room_max, 5; // max no. of pvp rooms for rent
+	// End Config
+	
+	// Start timer for room expiry checks.
+	initnpctimer;
+	end;
+	
+	// Check every minute for rooms that are expired.
+	OnTimer60000:
+	for (set .@i, 0; .@i < getarraysize($@pvprooms); set .@i, .@i + 1) {
+		if ($@pvprooms[.@i]) {
+			if ($@pvprooms_time[.@i] < gettimetick(2)) {
+				set $@pvprooms[.@i], 0;
+				set $@pvprooms_time[.@i], 0;
+				mapwarp .map_prefix$+.@i, "prontera", 150, 150;
+			}
+			else if ($@pvprooms_time[.@i] < (gettimetick(2)+300) && $@pvprooms_time[.@i] > (gettimetick(2)+240)) {
+				mapannounce .map_prefix$+.@i, "This room is about to expire in 5 minutes.", bc_yellow;
+			}
+			else
+				continue;
+		}
+	}
+	setnpctimer 0;
+	startnpctimer;
+	end;
+}
+
+pvp_y_1-1	mapflag	allow_bg_items
+pvp_y_1-2	mapflag	allow_bg_items
+pvp_y_1-3	mapflag	allow_bg_items
+pvp_y_1-4	mapflag	allow_bg_items
+pvp_y_1-5	mapflag	allow_bg_items

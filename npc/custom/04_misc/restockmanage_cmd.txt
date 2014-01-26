@@ -1,0 +1,9 @@
+-	script	RestockCMD	-1,{
+	OnInit:
+	bindatcmd ("restockmanage", strnpcinfo(0)+"::OnRestock");
+	end;
+
+	OnRestock:
+	callfunc "F_KafRestock";
+	end;
+}

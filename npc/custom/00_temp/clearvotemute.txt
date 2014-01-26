@@ -1,0 +1,21 @@
+-	script	ClearVoteMute	-1,{
+	OnInit:
+	initnpctimer;
+	end;
+
+	OnTimer5000:
+	for (set .@i, 0; .@i < 128; set .@i, .@i + 1) {
+		if (gettimetick(2) > $votemute_time[.@i]+(3600*24)) {
+			set $votemute_ip$[.@i], "";
+			set $votemute_time[.@i], 0;
+		}
+		if (gettimetick(2) > $@votemute_times[.@i]+(300)) {
+			set $@votemute_names$[.@i], "";
+			set $@votemute_counts[.@i], 0;
+			set $@votemute_times[.@i], 0;
+		}
+	}
+	setnpctimer 0;
+	startnpctimer;
+	end;
+}

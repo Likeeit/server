@@ -1,0 +1,219 @@
+// Script:		  NoName(One)
+// Author:        Sovane/Niel
+// Scripter:      Sovane
+
+// Script Function:
+//	
+
+// (Little Boy) brasilia 131 63 NPC: 102
+// (Ralf) brasailia 348 231 NPC: 102
+// (Rake) brasailia 131 64 NPC: 102
+// (Lucifer) brasailia 131 64 NPC: 102
+// (???) brasailia 131 64 NPC: 102
+
+brasilis,131,63,4	script	Little Boy#pro1	706,{
+
+	if (bCount == 3) goto B_Talk3;
+	if (bCount == 2) goto B_talk2;
+	if (bCount == 1) goto B_Talk;
+	mes "[Little Boy]";
+	mes "Hey!";
+	mes "Are you an adventurer from Rune Midgard?";
+	next;
+		switch(select("No sorry, never heard of the place:Yeah, what's up?")) {
+		
+			case 1:
+				mes "[Little Boy]";
+				mes "Oh, well sorry to waste your time";
+				close;
+
+			case 2:
+				mes "[Little Boy]";
+				mes "Well...";
+				mes "You see, I've had this necklace since I was born.";
+				next;
+				mes "^FF3355The boy pulls a necklace out from under his shirt.^000000";
+				mes "^FF3355It looks like it's made of precious metals, and has an unusual symbol on it.^000000";
+				next;
+				mes "[Little Boy]";
+				mes "I'm not really sure how I got this or why I have it. Could you ask around? No one wants to even listen to me cause I'm just a kid!";
+				next;
+				goto schoice;
+		}
+	end;
+	
+schoice:
+	switch(select("Yeah. Sure:No, sorry I'm a little busy")) {
+					
+		case 1:
+			mes "[Little Boy]";
+			mes "Oh Thank you so much! I'm sure people around here will know what it is.";
+			set bCount, 1;
+		close;
+						
+		case 2:
+			mes "[Little Boy]";
+			mes "Oh, I understand. If you get some time, I could really use your help.";
+			close;
+				
+		}
+	end;
+
+B_Talk:
+	mes "[Little Boy]";
+	mes "Please can you find out what this necklace is!";
+	close;
+
+B_Talk2:
+
+		mes "[Little Boy]";
+		mes "Hey did you get any information?";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "Yes I did";
+		mes " ";
+		mes "^FF3355You tell the boy what you have found out.^000000";
+		next;
+		mes "["+strcharinfo(0)+"]";
+		mes "I know it's not much, but that's what I got";
+		next;
+		mes "[Little Boy]";
+		mes "Thank you for your help!";
+		mes "Here take this as my thanks!";
+		getitem 5332,1;
+		set bCount, bCount+1;
+		next;
+		mes "^FF3355You hear whispers from the mask, begging you to put it on. You can't resist and do so. You fall into a sleep^000000";
+		next;
+		warp "prt_church",28,170;
+		end;
+		
+B_Talk3:
+
+	mes "[Little Boy]";
+	mes "Thanks again for your help!";
+	close;
+	end;	
+}
+//=============================================================================
+		
+brasilis,346,233,2	script	Rolf#pro1	904,{
+		
+		if (roCount == 2) goto R_Talk3;
+		if (roCount == 1) goto R_Talk2;
+		if (bCount == 1) goto R_Talk;
+		
+		mes "[Rolf]";
+		mes "Such a nice day today, isn't it?";
+		close;
+		end;
+	
+R_Talk:
+		mes "[Rolf]";
+		mes "Hello there stranger!";
+		mes "What brings you to these parts?";
+		next;
+		switch(select("Show the necklace:Cancel")) {
+			
+			case 1:
+			mes "^FF3355You pull the necklace from the bag and show him. You see him begin to give you a wierd look but it quickly fades.^000000";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Do you know what this is?";
+			next;
+			mes "[Rolf]";
+			mes "It looks familiar, but I cant say for sure.";
+			next;
+			mes "["+strcharinfo(0)+"]";
+			mes "Please! I really need to know";
+			next;
+			mes "[Rolf]";
+			mes "Fine, but it's gonna cost you. Bring me these items.";
+			next;
+			mes "^FF33553x Hand of God^000000";
+			mes "^FF33553x Cursed Seal^000000";
+			mes "^FF335510x Bloody Rune^000000";
+			mes "^FF33552,000,000 Zenny^000000";
+			set roCount, 1;
+			close;
+			end;
+			
+			case 2:
+			close;
+			end;
+			}
+			
+R_Talk2:
+			if ((countitem(7563) > 9) && (countitem(7442) > 2) && (countitem(1009) > 2) && Zeny>1999999) {
+	mes "[Rolf]";
+	mes "Oh thank you so much!";
+		delitem 7563,10;
+		delitem 7442,3;
+		delitem 1009,3;
+		set zeny,zeny-2000000;
+	next;
+	mes "[Rolf]";
+	mes "That necklace you have there once belong to the hero of this nation..How you got it beats me.";
+	next;
+		mes "[Rolf]";
+		mes "There was a big war here not too long ago. The entire royal family was killed.";
+		next;
+		mes "[Rolf]";
+		mes "But thats enough. We really shouldn't talk about it..You should leave now";
+		set bCount, bCount+1;
+		set roCount, roCount+1;
+		close;
+		end;
+	}
+	else	{
+	mes "[Rolf]";
+	mes "Your missing some things!";
+	mes countitem(7563) + "/10 ^FF3355Bloody Rune^000000";
+	mes countitem(7442) + "/3 ^FF3355Cursed Seal^000000";
+	mes countitem(1009) + "/3 ^FF3355Hand of God^000000";
+	mes zeny + " /2,000,000 ^FF3355Zeny^000000";
+		close;
+		end;
+		}
+		
+R_Talk3:
+	mes "[Rolf]";
+	mes "Hey there stranger...";
+	close;	
+}
+
+
+//===================================================================================
+
+
+prt_church,154,25,4	script	???#pro1	795,{
+}
+
+prt_church,31,175,4	script	Rake#pro1	419,{
+}
+
+prt_church,24,175,4	script	Sliss#pro1	734,{
+}
+
+prt_church,28,177,4	script	Lucifer#pro1	990,{
+}
+
+prt_church,28,170,4	script	#pro1	111,3,3,{
+OnTouch:
+
+	mes "[Lucifer]";
+	mes "Errrrrrr...";
+	mes "He's still alive?";
+	mes "What the hell!";
+	next;
+	mes "[Lucifer]";
+	mes "I want him gone!";
+	mes "Or you all will be gone!";
+	next;
+	mes "[???]";
+	mes "Boss..Forgive us";
+	mes "We will fix our mistake.";
+	next;
+	warp "prontera",56,263;
+	close;
+}

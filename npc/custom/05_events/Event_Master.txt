@@ -1,0 +1,1081 @@
+//===== eAthena Script =======================================
+//= 3 in 1 Event Randomizer Script
+//===== By: ==================================================
+//= (Revised/Modified NvZ,Disguise,Maze by Luke)(Concept: Sanasol,Euph,Disguise)
+//===== Current Version: =====================================
+//= v1.0
+//===== Description: =========================================
+//= Included events >Novice Vs. Zombie Event + Maze + Disguise (Randomizer)
+//============================================================
+
+//FOR SETTING THE PRIZES JUST SEARCH "getitem" and just change the id and amount..
+
+
+//Announcement of the event
+-	script	RandomAnnounce	-1,{
+
+OnMinute45:
+set .@rEvent, rand(1,3);
+
+if(.@rEvent==1){
+	announce2 "It's time for Novice vs. Zombie!",9;
+	sleep 5000;
+   	if(callfunc("F_nvzEvent"))
+	{
+  		initnpctimer;
+		end;
+	}
+
+	//Can't be read by functions it should be inside the NPC
+	OnTimer5000:
+	if (getmapusers("quiz_02") <= 1)
+	{
+	killmonsterall "quiz_02";
+	mapannounce "quiz_02","The Novice vs Zombie event has ended.",0;
+	disablenpc "Prize";
+	disablenpc "WarpBack";
+	set .nvzState, 0;
+	stopnpctimer;
+	end;
+	}
+	else
+	{
+	mapannounce "quiz_02",getmapusers("quiz_02") +" are still surviving in the event.",0,A020F0;
+	initnpctimer;
+	end;
+	}
+	initnpctimer;
+	end;
+
+	OnPCDieEvent:
+	if (.nvzState == 0)
+		end;
+	getmapxy .@mapnvz$,.@xnvz,.@ynvz,0;
+	getmapusers("quiz_02");
+
+	if ( .@mapnvz$ == "quiz_02" ){
+	dispbottom "Your brain has been eaten by the zombie...";
+	sleep2 1000;
+	warp "prontera",156,223;
+	}
+	if ( getmapusers("quiz_02") > 1) {
+	mapannounce "quiz_02","Reviving your lost comrade for more Zombies...",0,A020F0;
+	monster "quiz_02",338,83,"Zombie",1015,1;
+	monster "quiz_02",349,84,"Walker",1036,1;
+	monster "quiz_02",353,77,"Zombie",1015,1;
+	monster "quiz_02",314,65,"Walker",1036,1;
+	}
+	else {
+	killmonsterall "quiz_02";
+	mapannounce "quiz_02","Congratulations, you have survived. Please talk to the npc 'Prize'.",0;
+	sleep2 1000;
+	enablenpc "Prize";
+	stopnpctimer;
+	set .nvzState, 0;
+	end;
+	}
+	end;
+}
+else if(.@rEvent==2)
+{
+	  announce2 "It's time for Maze Event!",14;
+	  sleep 5000;
+	
+        announce2 "Maze: A maze event will begin in 2 minutes in the quest zone.",14,0x99FFCC;
+        sleep2 90000;
+        announce2 "Maze: Enter the Warp in the quest zone to join the Maze event.",14,0x99FFCC;
+
+        // Clear up the map.
+        areawarp "force_1-3",104,18,189,10,"prontera",159,116;
+
+        // Load NPCs + hide the Maze guy
+	   set $mazeinit, 1;
+        enablenpc "mazeevent";
+        enablenpc "Maze#asdf";
+        hideonnpc "Maze#asdf";
+   
+	   sleep 60000;
+        mapannounce "prontera","Maze: Last 30 seconds.",0,0x99FFCC;
+        sleep2 15000;
+        mapannounce "prontera","Maze: If you want to join please enter the Warp Portal.",0,0x99FFCC;       
+	   sleep 15000;
+        mapannounce "prontera","Maze: Last 10 seconds.",0,0x99FFCC;
+	   sleep 10000;	
+        mapannounce "prontera","Maze: Time's up.",0,0x99FFCC;
+        disablenpc "mazeevent";
+        donpcevent "Maze#asdf::OnEnable";
+        stopnpctimer;
+        end;
+}
+else
+{
+	announce2 "It's time for Disguise Event",16;
+	sleep 5000;
+	callfunc "F_disguiseEvent",0,1;
+	end;
+}
+
+}
+
+//==== GO BACK WARP ====//
+quiz_02,337,76,5	script	WarpBack	72,{
+warp "prontera",144,186;
+end;
+
+
+}
+
+
+//================== NOVICE VS. ZOMBIE ======================//
+function	script	F_nvzEvent	{
+
+set .@npcname$,"[^0000FFUndead^000000]";
+
+announce2 "The Novice vs Zombie Event will begin in 2 Minutes",9;
+killmonsterall "quiz_02";
+sleep 3000;
+announce2 "Novice vs. Zombie Event NPC has been spawned in the quest zone.",9;
+disablenpc "Prize";
+enablenpc "Novice vs Zombie";
+set getvariableofnpc(.can_enter, "Novice vs Zombie"), 1;
+sleep 3000;
+announce2 "The Novice vs. Zombie Event will begin in 1 minute!",9;
+sleep 60000;
+announce2 "Last 30 seconds before the Novice vs. Zombie Event starts!",9;
+sleep 30000;
+announce2 "The Novice vs. Zombie Event NPC is now closed!",9;
+set getvariableofnpc(.can_enter, "Novice vs Zombie"), 0;
+disablenpc "Novice vs Zombie";
+sleep 5000;
+
+if(getmapusers("quiz_02") < 2)
+{
+	mapannounce "quiz_02","NvZ Event : Not enough players.  Cancelling this round.",0,0x99FFCC;
+     enablenpc "WarpBack";
+	killmonsterall "quiz_02";
+        end;
+}
+else
+{
+mapannounce "quiz_02","Welcome to your death, you doomed Novices.",0,0xcd7eff;
+sleep 3000;
+mapannounce "quiz_02","Muhahahahaha",0,0xcd7eff;
+sleep 3000;
+mapannounce "quiz_02","In a few seconds Zombies will be spawning. Good luck.",0,0xcd7eff;
+sleep 3000;
+mapannounce "quiz_02","Oh, when one of you dies. More Zombies will spawn. Muhahahahaha.",0,0xcd7eff;
+sleep 3000;
+mapannounce "quiz_02","Your doom comes in: 3",0,0xcd7eff;
+sleep 1000;
+mapannounce "quiz_02","2",0,0xcd7eff;
+sleep 1000;
+mapannounce "quiz_02","1",0,0xcd7eff;
+sleep 1000;
+mapannounce "quiz_02","Muhahahahaha",0,0xcd7eff;
+set getvariableofnpc(.nvzState, "RandomAnnounce"), 1;
+monster "quiz_02",338,83,"Zombie",1015,2;
+sleep 1000;
+monster "quiz_02",349,84,"Zombie-2",1015,2;
+sleep 1000;
+monster "quiz_02",353,77,"Zombie-3",1015,2;
+sleep 1000;
+monster "quiz_02",314,65,"Zombie-4",1015,2;
+sleep 1000;
+monster "quiz_02",316,82,"Zombie-4",1015,2;
+initnpctimer;
+end;
+}
+
+}
+
+
+//================ PRIZE NPC ==================//
+quiz_02,336,74,3	script	Prize	72,{
+announce2 "Congrats to " + strcharinfo (0) + " for winning the event!",9;
+getitem 671,1; 
+warp "prontera",156,223;
+disablenpc "Novice vs Zombie";
+disablenpc "Prize";
+end;
+}
+
+
+
+//======= Quest Zone NPC ==============//
+new_5-2,100,96,3	script	Novice vs Zombie	1015,{
+	
+if (BaseLevel > 1) goto NO;
+if (class > 0) goto NO;	
+if ((class == 0) && (BaseLevel == 1)) goto YES;
+
+YES:
+mes .@npname$;
+mes "Would you like to join the Novice Vs. Zombie Event?";
+mes "Please make sure your storage is not full, all your items will be stored upon entering.";
+mes "Unstored items will be deleted from your inventory. You've been warned.";
+next;
+switch(select("Yeah.","No thanks.")) {
+
+case 1:
+// Check for equipment that would give an advantage.
+	if ( 	countitem(1363) ||
+		countitem(1372) ||
+		countitem(1373) ||
+		countitem(2410) ||
+		countitem(2515) ||
+		countitem(4131) ||
+		countitem(4210) ||
+		countitem(5150) ||
+		countitem(5203) ||
+		countitem(5273) ||
+		countitem(5274) ||
+		countitem(610) ||
+		countitem(5275) ||
+//Shoes
+		countitem(2416) ||
+		countitem(2414) ||
+		countitem(2401) ||
+		countitem(2402) ||
+		countitem(2408) ||
+//Garment
+		countitem(2501) ||
+		countitem(2502) ||
+		countitem(2510) ||
+		countitem(2522) ||
+		countitem(2523) ||
+//Weapons
+		countitem(13005) ||
+		countitem(1599) ||
+		countitem(1303) ||
+		countitem(1301) ||
+		countitem(1302) ||
+		countitem(1109) ||
+		countitem(1107) ||
+		countitem(1108) ||
+		countitem(13036) ||
+		countitem(1543) ||
+		countitem(13411) ||
+		countitem(1245) ||
+		countitem(1246) ||
+		countitem(1503) ||
+		countitem(1501) ||
+		countitem(1502) ||
+		countitem(1206) ||
+		countitem(1204) ||
+		countitem(1205) ||
+		countitem(1215) ||
+		countitem(1213) ||
+		countitem(1214) ||
+		countitem(1212) ||
+		countitem(1210) ||
+		countitem(1211) ||
+		countitem(13001) ||
+		countitem(13030) ||
+		countitem(1106) ||
+		countitem(1104) ||
+		countitem(1105) ||
+		countitem(1249) ||
+		countitem(13002) ||
+		countitem(13019) ||
+		countitem(13416) ||
+		countitem(13042) ||
+		countitem(1546) ||
+		countitem(13417) ||
+		countitem(1308) ||
+		countitem(1621) ||
+		countitem(1622) ||
+		countitem(13000) ||
+		countitem(1247) ||
+		countitem(1203) ||
+		countitem(1201) ||
+		countitem(1202) ||
+		countitem(1506) ||
+		countitem(1504) ||
+		countitem(1505) ||
+		countitem(1209) ||
+		countitem(1207) ||
+		countitem(1208) ||
+		countitem(13040) ||
+		countitem(13415) ||
+		countitem(1545) ||
+		countitem(13041) ||
+		countitem(1243) ||
+		countitem(1639) ||
+		countitem(1248) ||
+		countitem(1304) ||
+		countitem(1312) ||
+		countitem(1309) ||
+		countitem(1124) ||
+		countitem(1112) ||
+		countitem(1110) ||
+		countitem(1111) ||
+		countitem(1603) ||
+		countitem(1601) ||
+		countitem(1602) ||
+		countitem(1113) ||
+		countitem(1114) ||
+		countitem(1115) ||
+		countitem(1507) ||
+		countitem(1508) ||
+		countitem(1509) ||
+		countitem(1148) ||
+		countitem(1218) ||
+		countitem(1216) ||
+		countitem(1217) ||
+		countitem(1103) ||
+		countitem(1101) ||
+		countitem(1102) ||
+		countitem(1313) ||
+		countitem(1146) ||
+		countitem(1147) ||
+		countitem(13037) ||
+		countitem(1542) ||
+		countitem(13410) ||
+		countitem(1606) ||
+		countitem(1604) ||
+		countitem(1605) ||
+//Shield
+		countitem(2101) ||
+		countitem(2102) ||
+		countitem(2112) ||
+		countitem(2113) ||
+//Armors
+		countitem(2305) ||
+		countitem(2306) ||
+		countitem(2314) ||
+		countitem(2315) ||
+		countitem(2309) ||
+		countitem(2310) ||
+		countitem(2301) ||
+		countitem(2302) ||
+		countitem(2399) ||
+		countitem(2320) ||
+		countitem(2396) ||
+		countitem(2303) ||
+		countitem(2304) ||
+		countitem(2307) ||
+		countitem(2308) ||
+		countitem(2393) ||
+		countitem(2340) ||
+		countitem(2312) ||
+		countitem(2313) ||
+		countitem(2339) ||
+		countitem(2371) ||
+		countitem(2325) ||
+		countitem(2326) ||
+		countitem(2323) ||
+		countitem(2324) ||
+		countitem(2321) ||
+		countitem(2322) ||
+		countitem(2332) ||
+		countitem(2333) ||
+		countitem(2352) ||
+		countitem(2357) ||
+		countitem(2338) ||
+		countitem(2328) ||
+		countitem(2329) ) {
+			mes "[^FF0000NvZ Check-Up^000000]";
+			mes "Please store any equipment that increases your movement speed or reviving items.";
+			close;
+			end;
+	}
+
+	// Check for any consumable items that would give an advantage.
+	if ( countitem(662) ||
+		countitem(12016) ||
+		countitem(12028) ||
+		countitem(12262) ) {
+			mes "[^FF0000NvZ Check-Up^000000]";
+			mes "Please store any consumables that increases your movement speed.";
+			close;
+			end;
+	}
+
+
+
+
+mes .@npcname$;
+mes "The Underworld will rise very soon.";
+next;
+if (!.can_enter) close;
+atcommand "@storeall";
+atcommand "@itemreset";
+sc_start SC_STRIPWEAPON,600000,5;
+sc_start SC_STRIPSHIELD,600000,5;
+sc_start SC_STRIPARMOR,600000,5;
+sc_start SC_STRIPHELM,600000,5;
+sc_end SC_ALL;
+percentheal 100,100;
+warp "quiz_02",334,72;
+end;
+break;
+
+case 2:
+mes .@npcname$;
+mes "Come back when you wish to join.";
+close;
+break;
+
+	
+NO:
+mes .@npcname$;
+mes "Oh no! You're not qualified to join the event";
+mes "You should be";
+mes "- Base Level  : 1";
+mes "- Job Level   : 1";
+mes "- Job / Class : NOVICE";
+next;
+mes .@npcname$;
+mes "If you don't leave, I'll eat your brain! Rawrrr!";
+close;		
+}
+OnInit:
+disablenpc "Novice vs Zombie";
+disablenpc "Prize";
+disablenpc "WarpBack";
+end;
+
+}	
+//================== END NOVICE VS. ZOMBIE ======================//
+
+
+
+//================== MAZE EVENT ======================//
+new_5-2,102,97,0	script	mazeevent	45,2,2,{
+
+
+	if ( $mazeinit == 0 ) {
+		disablenpc "mazeevent";
+		end;
+	}
+
+	// Check for equipment that would give an advantage.
+	if ( 	countitem(1363) ||
+		countitem(1372) ||
+		countitem(1373) ||
+		countitem(2410) ||
+		countitem(2515) ||
+		countitem(4131) ||
+		countitem(4210) ||
+		countitem(5150) ||
+		countitem(5203) ||
+		countitem(5273) ||
+		countitem(5274) ||
+		countitem(5275) ) {
+			mes "[^FF0000Maze^000000]";
+			mes "Please store any equipment that increases your movement speed.";
+			close;
+			end;
+	}
+
+	// Check for any consumable items that would give an advantage.
+	if ( countitem(662) ||
+		countitem(12016) ||
+		countitem(12028) ||
+		countitem(12262) ) {
+			mes "[^FF0000Maze^000000]";
+			mes "Please store any consumables that increases your movement speed.";
+			close;
+			end;
+	}
+
+	// Remove Peco / Cart
+	atcommand "@option 0 0 0";
+
+
+	// Remove Any Speed Buffs
+	sc_end SC_SPEEDUP0;
+	sc_end SC_SPEEDUP1;
+	sc_end SC_INCREASEAGI;
+	sc_end SC_WINDWALK;
+	sc_end SC_CARTBOOST;
+	sc_end SC_CLOAKING;
+	sc_end SC_BERSERK;
+	sc_end SC_RUN;
+	sc_end SC_AVOID;
+	sc_end SC_FUSION;
+
+	// Grant 5 Minute Walking Speed Increase
+	sc_start SC_INCREASEAGI,600000,1;
+	
+	// Warp to Event
+	warp "force_1-3", 19, 189;
+	
+
+}
+
+
+-	script	MazeAnnouncer	-1,{
+
+OnInit:
+        // Unload NPCs except this one at server start.
+     	 disablenpc "mazeevent";
+    	 disablenpc "mz_portal#1";
+    	 disablenpc "mz_portal#2";
+     	 disablenpc "mz_portal#3";
+    	 disablenpc "mz_portal#4";
+    	 disablenpc "mz_portal#5";
+    	 disablenpc "mz_portal#6";
+	disablenpc "mz_portal#7";
+        disablenpc "mz_portal#8";
+        disablenpc "mz_portal#9";
+        disablenpc "mz_portal#10";
+        disablenpc "mz_portal#11";
+        disablenpc "mz_portal#12";
+        disablenpc "mz_portal#13";
+        disablenpc "mz_portal#14";
+        disablenpc "mz_portal#15";
+        disablenpc "mz_portal#16";
+        disablenpc "mz_portal#17";
+        disablenpc "mz_portal#18";
+        disablenpc "mz_portal#19";
+        disablenpc "mz_portal#20";
+        disablenpc "mz_portal#21";
+        disablenpc "mz_portal#22";
+        disablenpc "mz_portal#23";
+        disablenpc "mz_portal#24";
+        disablenpc "Maze#asdf";
+
+}
+
+force_1-3,100,187,4	script	Maze#asdf	702,{
+	set $@prize, rand(5000,10000);
+	mes "[Maze Manager]";
+	mes "Here is your prize:^336699";
+getitem 671, 1; 
+goto L_EndIt;
+
+L_EndIt:
+		next;
+        warp "prontera",155,175;
+        // Hide the NPC
+        disablenpc "Maze#asdf";
+        end;
+
+OnEnable:
+        if(getmapusers("force_1-3")<2) goto L_NotEnough;
+        mapannounce "force_1-3","Maze: We are about to start the maze... here's how to play.",0,0x99FFCC;
+        sleep2 4000;
+        mapannounce "force_1-3","Maze: Everybody must keep running through portals.",0,0x99FFCC;
+        sleep2 4000;
+        mapannounce "force_1-3","Maze: Each portal will warp you to a random room.",0,0x99FFCC;
+        sleep2 4000;
+        mapannounce "force_1-3","Maze: With some luck, somebody will find the finish!",0,0x99FFCC;
+        sleep2 4000;
+        mapannounce "force_1-3","Maze: And then, they will win the event.",0,0x99FFCC;
+        sleep2 4000;
+        mapannounce "force_1-3","Maze: Is everybody ready?! We're going to start!",0,0x99FFCC;
+        sleep2 4000;
+        mapannounce "force_1-3","Maze: 3....",0,0x99FFCC;
+        sleep2 2000;
+        mapannounce "force_1-3","Maze: 2...",0,0x99FFCC;
+        sleep2 2000;
+        mapannounce "force_1-3","Maze: 1..",0,0x99FFCC;
+        sleep2 2000;
+        mapannounce "force_1-3","Maze: GO!",0,0x99FFCC;
+	enablenpc "mz_portal#1";
+	enablenpc "mz_portal#2";
+	enablenpc "mz_portal#3";
+	enablenpc "mz_portal#4";
+	enablenpc "mz_portal#5";
+	enablenpc "mz_portal#6";
+	enablenpc "mz_portal#7";
+	enablenpc "mz_portal#8";
+	enablenpc "mz_portal#9";
+	enablenpc "mz_portal#10";
+	enablenpc "mz_portal#11";
+	enablenpc "mz_portal#12";
+	enablenpc "mz_portal#13";
+	enablenpc "mz_portal#14";
+	enablenpc "mz_portal#15";
+	enablenpc "mz_portal#16";
+	enablenpc "mz_portal#17";
+	enablenpc "mz_portal#18";
+	enablenpc "mz_portal#19";
+	enablenpc "mz_portal#20";
+	enablenpc "mz_portal#21";
+	enablenpc "mz_portal#22";
+	enablenpc "mz_portal#23";
+	enablenpc "mz_portal#24";
+        end;
+
+L_NotEnough:
+	mapannounce "force_1-3","Maze: Not enough players. Cancelling this round.",0,0x99FFCC;
+	areawarp "force_1-3",10,189,189,10,"prontera",156,184;
+		disablenpc "mz_portal#1";
+		disablenpc "mz_portal#2";
+		disablenpc "mz_portal#3";
+		disablenpc "mz_portal#4";
+		disablenpc "mz_portal#5";
+		disablenpc "mz_portal#6";
+		disablenpc "mz_portal#7";
+		disablenpc "mz_portal#8";
+		disablenpc "mz_portal#9";
+		disablenpc "mz_portal#10";
+		disablenpc "mz_portal#11";
+		disablenpc "mz_portal#12";
+		disablenpc "mz_portal#13";
+		disablenpc "mz_portal#14";
+		disablenpc "mz_portal#15";
+		disablenpc "mz_portal#16";
+		disablenpc "mz_portal#17";
+		disablenpc "mz_portal#18";
+		disablenpc "mz_portal#19";
+		disablenpc "mz_portal#20";
+		disablenpc "mz_portal#21";
+		disablenpc "mz_portal#22";
+		disablenpc "mz_portal#23";
+		disablenpc "mz_portal#24";
+	end;
+
+}
+
+-	script	mazer	-1,{
+OnWhisperGlobal:
+	if (getgmlevel()==99) {
+		announce2 "Maze: A maze event will begin in 2 minutes in the quest zone.",14,0x99FFCC;
+        sleep2 90000;
+        announce2 "Maze: Enter the Warp in the quest zone to join the Maze event.",14,0x99FFCC;
+
+        // Clear up the map.
+        areawarp "force_1-3",104,18,189,10,"prontera",159,116;
+
+        // Load NPCs + hide the Maze guy
+	set $mazeinit, 1;
+        enablenpc "mazeevent";
+        enablenpc "Maze#asdf";
+        hideonnpc "Maze#asdf";
+        initnpctimer;
+        end;
+
+OnTimer30000:
+        mapannounce "prontera","Maze: Last 30 seconds.",0,0x99FFCC;
+        sleep2 5000;
+        mapannounce "prontera","Maze: If you want to join please enter the Warp Portal.",0,0x99FFCC;
+        end;
+
+OnTimer50000:
+        mapannounce "prontera","Maze: Last 10 seconds.",0,0x99FFCC;
+        end;
+
+OnTimer60000:
+        mapannounce "prontera","Maze: Time's up.",0,0x99FFCC;
+        end;
+
+OnTimer61000:
+        disablenpc "mazeevent";
+        donpcevent "Maze#asdf::OnEnable";
+        stopnpctimer;
+        end;
+	} else {
+	dispbottom "You are not authorised for this function.";
+	}
+}
+
+-	script	mz_portal::maze_portal	-1,{
+	OnTouch:
+	set @chance, rand(20,30);
+	set .@win_chance, (getmapusers("force_1-3")*@chance);
+	if ( rand(1,.@win_chance) == .@win_chance ) {
+		warp "force_1-3",100,184;
+		announce2 "Maze: "+strcharinfo(0)+" has solved the maze event!  Next round is in 1 hour.",14,0x99FFCC;
+		disablenpc "mz_portal#1";
+		disablenpc "mz_portal#2";
+		disablenpc "mz_portal#3";
+		disablenpc "mz_portal#4";
+		disablenpc "mz_portal#5";
+		disablenpc "mz_portal#6";
+		disablenpc "mz_portal#7";
+		disablenpc "mz_portal#8";
+		disablenpc "mz_portal#9";
+		disablenpc "mz_portal#10";
+		disablenpc "mz_portal#11";
+		disablenpc "mz_portal#12";
+		disablenpc "mz_portal#13";
+		disablenpc "mz_portal#14";
+		disablenpc "mz_portal#15";
+		disablenpc "mz_portal#16";
+		disablenpc "mz_portal#17";
+		disablenpc "mz_portal#18";
+		disablenpc "mz_portal#19";
+		disablenpc "mz_portal#20";
+		disablenpc "mz_portal#21";
+		disablenpc "mz_portal#22";
+		disablenpc "mz_portal#23";
+		disablenpc "mz_portal#24";
+		sleep 5000;
+                areawarp "force_1-3",10,189,29,170,"prontera",155,175;
+                areawarp "force_1-3",170,189,189,170,"prontera",155,175;
+                areawarp "force_1-3",10,147,189,11,"prontera",155,175;
+		mapannounce "force_1-3","Maze: Congratulations!  Talk to me for a prize.",0,0x99FFCC;
+		hideoffnpc "Maze#asdf";
+		end;
+	}
+	set .@this_entry, rand(1,15);
+	switch (.@this_entry) {
+		case 1:
+			warp "force_1-3",19,189;
+			end;
+		case 2:
+			warp "force_1-3",170,179;
+			end;
+		case 3:
+			warp "force_1-3",19,147;
+			end;
+		case 4:
+			warp "force_1-3",59,128;
+			end;
+		case 5:
+			warp "force_1-3",90,138;
+			end;
+		case 6:
+			warp "force_1-3",179,128;
+			end;
+		case 7:
+			warp "force_1-3",109,100;
+			end;
+		case 8:
+			warp "force_1-3",140,50;
+			end;
+		case 9:
+			warp "force_1-3",170,99;
+			end;
+		case 10:
+			warp "force_1-3",19,50;
+			end;
+		case 11:
+			warp "force_1-3",100,10;
+			end;
+		case 12:
+			warp "force_1-3",170,60;
+			end;
+		case 13:
+			warp "force_1-3",20,29;
+			end;
+		case 14:
+			warp "force_1-3",60,29;
+			end;
+		case 15:
+			warp "force_1-3",130,20;
+			end;
+	}
+}
+
+force_1-3,29,179,0	duplicate(maze_portal)	mz_portal#1	45,2,2
+force_1-3,180,170,0	duplicate(maze_portal)	mz_portal#2	45,2,2
+force_1-3,29,99,0	duplicate(maze_portal)	mz_portal#3	45,2,2
+force_1-3,69,138,0	duplicate(maze_portal)	mz_portal#4	45,2,2
+force_1-3,109,137,0	duplicate(maze_portal)	mz_portal#5	45,2,2
+force_1-3,140,147,0	duplicate(maze_portal)	mz_portal#6	45,2,2
+force_1-3,60,90,0	duplicate(maze_portal)	mz_portal#7	45,2,2
+force_1-3,130,100,0	duplicate(maze_portal)	mz_portal#8	45,2,2
+force_1-3,180,90,0	duplicate(maze_portal)	mz_portal#9	45,2,2
+force_1-3,69,59,0	duplicate(maze_portal)	mz_portal#10	45,2,2
+force_1-3,90,59,0	duplicate(maze_portal)	mz_portal#11	45,2,2
+force_1-3,179,50,0	duplicate(maze_portal)	mz_portal#12	45,2,2
+force_1-3,20,10,0	duplicate(maze_portal)	mz_portal#13	45,2,2
+force_1-3,69,19,0	duplicate(maze_portal)	mz_portal#14	45,2,2
+force_1-3,179,29,0	duplicate(maze_portal)	mz_portal#15	45,2,2
+force_1-3,139,109,0	duplicate(maze_portal)	mz_portal#16	45,2,2
+force_1-3,10,99,0	duplicate(maze_portal)	mz_portal#17	45,2,2
+force_1-3,130,137,0	duplicate(maze_portal)	mz_portal#18	45,2,2
+force_1-3,59,69,0	duplicate(maze_portal)	mz_portal#19	45,2,2
+force_1-3,109,59,0	duplicate(maze_portal)	mz_portal#20	45,2,2
+force_1-3,60,109,0	duplicate(maze_portal)	mz_portal#21	45,2,2
+force_1-3,100,147,0	duplicate(maze_portal)	mz_portal#22	45,2,2
+force_1-3,100,128,0	duplicate(maze_portal)	mz_portal#23	45,2,2
+force_1-3,180,109,0	duplicate(maze_portal)	mz_portal#24	45,2,2
+
+force_1-3	mapflag	nobranch
+force_1-3	mapflag	nomemo
+force_1-3	mapflag	nopenalty
+force_1-3	mapflag	nosave	SavePoint
+force_1-3	mapflag	noskill
+force_1-3	mapflag	noteleport
+force_1-3	mapflag	nowarpto
+force_1-3	mapflag	restricted	3
+force_1-3	mapflag	nostorage
+//================== END MAZE EVENT ======================//
+
+
+
+
+//================== DISGUISE EVENT ======================//
+function	script	F_disguiseEvent	{
+	if ($guessactive) end;
+	set $guessactive, 1;
+	announce2 "A disguise event is starting soon.",16;
+	set $guessbegin, 0;
+	sleep 3000;
+	if (!$guessactive) end;
+	announce2 "If you want to join, come to the quest zone",16;
+	 
+	enablenpc "Disguise NPC";
+	sleep 3000;
+	announce2 "Number of Rounds: "+$guessrounds,16;
+	sleep 2000;
+	announce2 "Prize: "+ getitemname($guessprize) + " x " + $guessprizecount,16;
+	sleep 2000;
+	if (!$guessactive) {  disablenpc "Disguise NPC"; end;}
+	announce2 "The Disguise event will start in just a minute",16;  
+	sleep 60000;
+	if (!$guessactive) {  disablenpc "Disguise NPC"; end;}
+	announce2 "Okay, Let's get this started",16;
+	 
+	set $DisguiseRound, 0;
+	sleep 5000;
+	if (!$guessactive) {disablenpc "Disguise NPC"; end;}
+
+	donpcevent "Disguise NPC::OnStart";
+	end;
+}
+
+
+
+
+//====== DISGUISE NPC HANDLER =====//
+que_moon,97,32,5	script	Disguise CP	968,{
+
+if (getgmlevel()<81)
+{
+	mes "^3399FF[Disguise CP]^000000";	
+	mes "Sorry, you are not a GM!";
+	close;
+}
+
+mes "^3399FF[Disguise CP]^000000";	
+mes "Hello there "+ strcharinfo(0);
+mes "What do you want to do?";
+switch(select("Set number of rounds[^E50000"+$guessrounds+"^000000]:Set prize^E50000 ["+getitemname($guessprize)+"]^000000 ^E50000 ["+ $guessprizecount + "]^000000:Nothing"))
+{
+	case 1:
+	{
+		next; mes "^3399FF[Disguise CP]^000000";
+		mes "Please type in the new number."; 
+		input $guessrounds; 
+		if ($guessrounds > 30) set $guessrounds, 30;
+		else if ($guessrounds < 1) set $guessrounds, 1;
+		close;
+	}
+	
+	case 2:
+	{
+		next; mes "^3399FF[Disguise CP]^000000";
+		mes "Please type in the new prize id."; 
+		input .@guessprizeid; 
+		if (getitemname(.@guessprizeid) == "null" || getitemname(.@guessprizeid) == "") {next; mes "^3399FF[Disguise CP]^000000"; mes "Error"; mes "This item does not exist in the database..."; close;}
+		set $guessprize, .@guessprizeid;
+		next; mes "^3399FF[Disguise CP]^000000";
+		mes "Please type in the amount."; 
+		input .@guessprizeamount;
+		if (!.@guessprizeamount) set .@guessprizeamount,1 ;
+		set $guessprizecount,.@guessprizeamount; 
+		next; mes "^3399FF[Disguise CP]^000000";
+		mes "Prize has been set to ^E50000 "+ getitemname($guessprize)+ "^000000 and the amount to ^E50000 " +$guessprizecount+"^000000";
+		close;
+	}
+	
+					
+	case 3:
+	{
+		next; mes "^3399FF[Disguise CP]^000000";
+		mes "Good bye"; 
+		close;
+	}
+
+}
+
+
+}
+
+
+//====== DISGUISER ========//
+new_5-2,101,98,4	script	Disguise NPC	794,{
+
+if (!$guessbegin)
+{
+	mes "^3399FF[Disguise NPC]^000000";
+	mes "The event is going to start soon!";
+	close;
+}
+end;
+
+OnStart:
+	set $guessbegin, 1;
+	set .DisguiseWon, 0;
+	// amount of rounds
+	set $guessrounds, 10;
+	// reward item
+	set $guessprize, 675;
+	// reward amount
+	set $guessprizecount, 2;
+	if (!$DisguiseRound)
+	{
+		npctalk "Alright. Let's get it over with ~.~ ";
+		sleep 2000;
+		npctalk "Just shout my name, don't bother for capitals.";
+		sleep 2000;
+		npctalk "Now get ready.";
+		sleep 2000;
+	}
+	else if ($DisguiseRound < $guessrounds-1)
+	{
+		npctalk "Get ready for the next round.";
+		setnpctimer 0;
+		sleep 8000;
+	}
+	else
+	{	
+		npctalk "Last round now!";
+		sleep 2000;
+		npctalk "Get ready.";
+		sleep 6000;
+	}
+
+	do
+	{
+		set .@guessrepeat, 0;
+		set $monster, 1000 + rand(1,950);
+		for (set .@k, 0; .@k <getarraysize($Forbidden); set .@k, .@k+1)
+		{
+			if ($monster == $Forbidden[.@k]) 
+			{
+				set .@guessrepeat, 1;
+				break;
+			}
+		}
+	}
+	while (.@guessrepeat);
+	setnpctimer 0;
+	initnpctimer;
+	setnpcdisplay "Disguise NPC",$monster;
+	set $MonsterName$, strmobinfo(1,$monster);
+	defpattern 1, "([^:]+):.*"+$MonsterName$+".*", "winround";
+	activatepset 1;
+	npctalk "What's my name?";
+	sleep 3000;
+	npcwalkto 102,103;
+	sleep 2000;
+	npcwalkto 102,99;
+	end;
+	
+	OnTimer10000:
+		if (!.DisguiseWon)
+		{ 
+			npctalk "Come on. What monster am I?";
+			sleep 3000;
+			npcwalkto 102,103;
+			sleep 2000;
+			npcwalkto 102,99;
+			if (!$guessactive)  {  disablenpc "Disguise NPC"; end;}
+		}
+		end;
+
+
+	OnTimer25000:
+		if (!.DisguiseWon) 
+		{
+			npctalk "Nobody knows that monster?";
+			sleep 3000;
+			npcwalkto 102,103;
+			sleep 2000;
+			npcwalkto 102,99;
+		}
+		end;
+
+	OnTimer35000:
+		if (!.DisguiseWon) 
+		{
+			npctalk "You get 10 more seconds to guess my name.";
+			sleep 3000;
+			npcwalkto 102,103;
+			sleep 2000;
+			npcwalkto 102,99;
+		}
+		end;
+
+	OnTimer45000:
+		if (!.DisguiseWon)
+		{ 
+			npctalk "Round is over.";
+			if (!$guessactive)  {  disablenpc "Disguise NPC"; end;}
+			set $DisguiseRound, $DisguiseRound + 1;
+			sleep 3000;
+			deletepset 1;
+			npctalk $MonsterName$ + " would have been the correct answer.";
+			sleep 5000;
+			if ($DisguiseRound >= $guessrounds)
+			{
+				set $DisguiseRound, 0;
+				sleep 1000;
+				npctalk "Event is over now!";
+				sleep 2000;
+				npctalk "See ya guys";
+				sleep 2000;
+				emotion 12;
+				sleep 1000;
+				set $guessactive, 0;
+				mapwarp "poring_c01.gat","que_qsch05.gat",252,341;
+				setnpcdisplay "Disguise NPC",794;
+				disablenpc "Disguise NPC";
+				end;
+			}
+			goto OnStart;
+		}
+		end;
+
+	winround:
+		setnpctimer 0;
+		deletepset 1;
+		set .DisguiseWon, 1;
+		set $DisguiseRound, $DisguiseRound + 1;
+		npctalk " " + strcharinfo(0) + " got my right name!";
+		sleep2 1000;
+		npctalk $MonsterName$ + " is the correct answer.";
+		sleep2 1000;
+		npctalk "Take this as a reward.";
+		getitem $guessprize, $guessprizecount;
+		if (!$guessactive)  {  disablenpc "Disguise NPC"; end;}
+		if ($DisguiseRound >= $guessrounds)
+			{
+				set $DisguiseRound, 0;
+				set $guessactive, 0;
+				sleep 100;
+				npctalk "Event is over now!";
+				sleep 2000;
+				npctalk "See ya guys";
+				sleep 2000;
+				emotion 12;
+				sleep 1000;
+				mapwarp "poring_c01.gat","que_qsch05.gat",252,341;
+				setnpcdisplay "Disguise NPC",794;
+				disablenpc "Disguise NPC";
+				end;
+			}
+		sleep 3000;
+		goto OnStart;
+		end;
+
+OnInit:
+	disablenpc "Disguise NPC";
+	set $guessactive, 0;
+	setarray $Forbidden[0],1003,1006,1017,1021,1022,1027,1043,1136,1137,1168,1171,1172,1173,1181,1210,1217,1218,1223,1284,1324,1325,1326,1327,1328,1329,1330,1331,1332,1333,1334,1335,1336,1337,1338,1339,1340,1341,1342,1343,1344,1345,1346,1347,1348,1349,1350,1351,1352,1353,1354,1355,1356,1357,1358,1359,1360,1361,1362,1363,1407,1411,1414,1496,1501,1900;
+	
+
+}
+
+
+
+//================== END DISGUISE ========================//
+quiz_02	mapflag	nobranch
+quiz_02	mapflag	noreturn
+quiz_02	mapflag	nomemo
+quiz_02	mapflag	nopenalty
+quiz_02	mapflag	nosave	SavePoint
+quiz_02	mapflag	noskill
+quiz_02	mapflag	noteleport
+quiz_02	mapflag	nowarpto
+quiz_02	mapflag	restricted	3
+quiz_02	mapflag	restricted	2
+quiz_02	mapflag	nostorage
+quiz_02	mapflag	nocommand	50

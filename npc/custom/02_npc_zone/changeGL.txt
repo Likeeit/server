@@ -1,0 +1,104 @@
+//This NPC allows you to change the Guild Leader for 5 GCs [Melli}
+job3_rune02,44,48,4	script	Change Guild Leader	868,{
+
+if(getcharid(2)==0) goto NoGuild;
+if (agitcheck()) {
+	mes "[Change Guild Leader]";
+	mes "This feature cannot be used during WoE.";
+	close;
+}
+if(strcharinfo(0)==getguildmaster(getcharid(2))) goto GuildMaster;
+mes "[Change Guild Leader]";
+mes "Sorry, I can only help Guild Leaders.";
+close;
+
+
+GuildMaster:
+
+mes "[Change Guild Leader]";
+mes "Hello "+strcharinfo(0)+". I can change the";
+mes "leader of your guild for a fee of 2 Gold Coins.";
+mes "Do you want to use this service?";
+next;
+switch(select("Yes, please","No, thank you")) {
+
+	case 1:
+	mes "[Change Guild Leader]";
+	mes "Who do you want the new Guild Leader to be?";
+	mes "Please note that the character has to be logged in and ofcourse be in your guild.";
+	next;
+	input @gmchange$;
+	if(getcharid(0)==getcharid(0,@gmchange$)) goto L_self;
+	if(isloggedin(getcharid(3,@gmchange$),getcharid(0,@gmchange$))==0) goto NotOnline;
+	if(countitem(671)<2) goto NoGC;	
+	if(getcharid(2,@gmchange$)==getcharid(2)) goto FinalDecision;
+	mes "[Change Guild Leader]";
+	mes "That character is not in your guild.";
+	close;
+
+	case 2:
+	mes "[Change Guild Leader]";
+	mes "Come back if you change your decision.";
+	close;
+	}
+
+FinalDecision:
+
+	mes "[Change Guild Leader]";
+	mes "You meet all the requirements. Let's recall this.";
+	next;
+	mes "[Change Guild Leader]";
+	mes "You want to make ^FF0000"+@gmchange$+"^000000 the new leader of ^FF0000"+getguildname(getcharid(2))+"";
+	next;
+	mes "[Change Guild Leader]";
+	mes "Is that correct?";
+	next;
+	switch(select("Yes","No")) {
+	
+	case 1:
+	if(getcharid(2)==0) goto Error;
+	if(getcharid(0)==getcharid(0,@gmchange$)) goto Error;
+	if(isloggedin(getcharid(3,@gmchange$),getcharid(0,@gmchange$))==0) goto Error;
+	if(countitem(671)<2) goto Error;
+	atcommand strcharinfo(0)+":@changegm "+@gmchange$;
+	delitem 671,2;
+	mes "[Change Guild Leader]";
+	mes "Guild Leader changed. Come back anytime.";
+	close;
+	
+
+	case 2:
+	mes "[Change Guild Leader]";
+	mes "Come back if you change your decision.";
+	close;
+	}
+
+L_self:
+
+	mes "[Change Guild Leader]";
+	mes "You are already the Guild Leader.";
+	close;
+
+NotOnline:
+
+	mes "[Change Guild Leader]";
+	mes ""+@gmchange$+" is not online.";
+	close;
+
+NoGC:
+	mes "[Change Guild Leader]";
+	mes "You don't have the required Gold Coins.";
+	close;
+
+NoGuild:
+
+	mes "[Change Guild Leader]";
+	mes "Sorry, I can only help Guild Leaders.Why don't you create one?";
+	close;
+
+Error:
+
+	mes "[Change Guild Leader]";
+	mes "An error occured. Please try again.";
+	close;
+}

@@ -1,0 +1,394 @@
+//===== rAthena Script =======================================
+//= Woon-Ro Database Search	
+//===== By: ==================================================
+//= Ridley
+//===== Compatible With: =====================================
+//= eamod SVN
+//===== Description: =========================================
+//   Description: Makes searches on players          
+//                inventories and storage 
+//============================================================
+
+que_moon,100,38,2	script	Database Search	808,{
+OnWhisperGlobal:
+if (getgmlevel()<75){
+mes "Only for level 75 GM and up";
+close;
+}
+search:
+mes "So you want to search items on the server? 0 Cancels";
+
+announce "Insert item id",bc_self;
+
+input @itemidlog;
+if(@itemidlog==0) close;
+
+next;
+deletearray @nameidc[0],300;
+setarray @nameidc,"";
+
+deletearray @charidsc[0],300;
+setarray @charidsc,"";
+
+deletearray @amountc[0],300;
+setarray @amountc,"";
+
+deletearray @refinec[0],300;
+setarray @refinec,"";
+
+deletearray @card0c[0],300;
+setarray @card0c,"";
+
+deletearray @card1c[0],300;
+setarray @card0c,"";
+
+deletearray @card2c[0],300;
+setarray @card0c,"";
+
+deletearray @card3c[0],300;
+setarray @card0c,"";
+
+deletearray @idc[0],300;
+setarray @idc,"";
+
+deletearray @nameidi[0],300;
+setarray @nameidi,"";
+
+deletearray @charidsi[0],300;
+setarray @charidsi,"";
+
+deletearray @amounti[0],300;
+setarray @amounti,"";
+
+deletearray @refinei[0],300;
+setarray @refinei,"";
+
+deletearray @card0i[0],300;
+setarray @card0i,"";
+
+deletearray @card1i[0],300;
+setarray @card0i,"";
+
+deletearray @card2i[0],300;
+setarray @card0i,"";
+
+deletearray @card3i[0],300;
+setarray @card0i,"";
+
+deletearray @idi[0],300;
+setarray @idi,"";
+deletearray @nameids[0],300;
+setarray @nameids,"";
+
+deletearray @accidss[0],300;
+setarray @accidss,"";
+
+deletearray @amounts[0],300;
+setarray @amounts,"";
+
+deletearray @refines[0],300;
+setarray @refines,"";
+
+deletearray @card0s[0],300;
+setarray @card0s,"";
+
+deletearray @card1s[0],300;
+setarray @card0s,"";
+
+deletearray @card2s[0],300;
+setarray @card0s,"";
+
+deletearray @card3s[0],300;
+setarray @card0s,"";
+
+deletearray @ids[0],300;
+setarray @ids,"";
+
+deletearray @nameidsg[0],300;
+setarray @nameidsg,"";
+
+deletearray @accidssg[0],300;
+setarray @accidssg,"";
+
+deletearray @amountsg[0],300;
+setarray @amountsg,"";
+
+deletearray @refinesg[0],300;
+setarray @refinesg,"";
+
+deletearray @card0sg[0],300;
+setarray @card0sg,"";
+
+deletearray @card1sg[0],300;
+setarray @card0sg,"";
+
+deletearray @card2sg[0],300;
+setarray @card0sg,"";
+
+deletearray @card3sg[0],300;
+setarray @card0sg,"";
+
+deletearray @idsg[0],300;
+setarray @idsg,"";
+
+deletearray @nameidsm[0],300;
+setarray @nameidsm,"";
+
+deletearray @sendid[0],300;
+setarray @sendid,"";
+
+deletearray @amountsm[0],300;
+setarray @amountsm,"";
+
+
+deletearray @card0sm[0],300;
+setarray @card0sm,"";
+
+deletearray @card1sm[0],300;
+setarray @card0sm,"";
+
+deletearray @card2sm[0],300;
+setarray @card0sm,"";
+
+deletearray @card3sm[0],300;
+setarray @card0sm,"";
+
+deletearray @receiveid[0],300;
+setarray @receiveid,"";
+
+query_sql "Select `nameid`,`char_id`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`id` from `cart_inventory` where (`nameid`='"+@itemidlog+"' OR `card0`='"+@itemidlog+"' OR `card1`='"+@itemidlog+"' OR `card2`='"+@itemidlog+"' OR `card3`='"+@itemidlog+"') AND `card0`!='-255' AND `card0`!='-256' AND `card3`!='3'",@nameidc,@charidsc,@amountc,@refinec,@card0c,@card1c,@card2c,@card3c,@idc;
+query_sql "Select `nameid`,`char_id`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`id` from `inventory` where (`nameid`='"+@itemidlog+"' OR `card0`='"+@itemidlog+"' OR `card1`='"+@itemidlog+"' OR `card2`='"+@itemidlog+"' OR `card3`='"+@itemidlog+"') AND `card0`!='-255' AND `card0`!='-256' AND `card3`!='3'",@nameidi,@charidsi,@amounti,@refinei,@card0i,@card1i,@card2i,@card3i,@idi;
+query_sql "Select `nameid`,`account_id`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`id` from `storage` where (`nameid`='"+@itemidlog+"' OR `card0`='"+@itemidlog+"' OR `card1`='"+@itemidlog+"' OR `card2`='"+@itemidlog+"' OR `card3`='"+@itemidlog+"') AND `card0`!='-255' AND `card0`!='-256' AND `card3`!='3'",@nameids,@accidss,@amounts,@refines,@card0s,@card1s,@card2s,@card3s,@ids;
+query_sql "Select `nameid`,`guild_id`,`amount`,`refine`,`card0`,`card1`,`card2`,`card3`,`id` from `guild_storage` where (`nameid`='"+@itemidlog+"' OR `card0`='"+@itemidlog+"' OR `card1`='"+@itemidlog+"' OR `card2`='"+@itemidlog+"' OR `card3`='"+@itemidlog+"') AND `card0`!='-255' AND `card0`!='-256' AND `card3`!='3'",@nameidsg,@accidssg,@amountsg,@refinesg,@card0sg,@card1sg,@card2sg,@card3sg,@idsg;
+query_sql "Select `nameid`,`send_id`,`dest_id`,`card0`,`card1`,`card2`,`card3` from `mail` where (`nameid`='"+@itemidlog+"' OR `card0`='"+@itemidlog+"' OR `card1`='"+@itemidlog+"' OR `card2`='"+@itemidlog+"' OR `card3`='"+@itemidlog+"') AND `card0`!='-255' AND `card0`!='-256' AND `card3`!='3'",@nameidsm,@sendid,@receiveid,@amountsm,@card0sm,@card1sm,@card2sg,@card3sm;
+
+mes "^FF0000[Item Search]^000000";
+mes "Searching item ^FF0000"+@itemidlog+"^000000 ...";
+mes "Found ^FF0000"+getarraysize(@charidsc)+"^000000 entries on carts.";
+mes "Found ^FF0000"+getarraysize(@charidsi)+"^000000 entries on inventories.";
+mes "Found ^FF0000"+getarraysize(@accidss)+"^000000 entries on storages.";
+mes "Found ^FF0000"+getarraysize(@accidssg)+"^000000 entries on guild storages.";
+mes "Found ^FF0000"+getarraysize(@sendid)+"^000000 entries on mail.";
+set @total,getarraysize(@charidsc)+getarraysize(@charidsi)+getarraysize(@accidss)+getarraysize(@accidssg)+getarraysize(@sendid);
+mes "Total: ^FF0000"+@total+"^000000 entries.";
+
+cart:
+next;
+
+mes "Searching...";
+deletearray @namesc$[0],300;
+setarray @namesc$,"";
+deletearray @accsc[0],300;
+setarray @accsc,"";
+
+next;
+mes "^FF0000[Item Search]^000000";
+mes "Searching item ^FF0000"+@itemidlog+"^000000 ...";
+mes "Found ^FF0000"+getarraysize(@charidsc)+"^000000 entries";
+mes "Listing char ids...";
+
+set @menu$,"";
+	for (set @count, 0; @count < getarraysize(@charidsc); set @count, @count + 1){
+set @menu$, @menu$+@charidsc[@count] +":";
+}
+set @menu$, @menu$+"Inventory:Storage:Guild Storage:New Search";
+
+set @a,select(@menu$);
+if (@a==getarraysize(@charidsc)+1) goto inventory;
+if (@a==getarraysize(@charidsc)+2) goto storage;
+if (@a==getarraysize(@charidsc)+3) goto gstorage;
+if (@a==getarraysize(@charidsc)+4) goto search;
+
+next;
+query_sql "Select `name`,`account_id`,`Online` from `char` where `char_id`='"+@charidsc[@a-1]+"'",@namesc$,@accsc,@ol;
+query_sql "Select `state`,`lastlogin` from `login` where `account_id`='"+@accsc+"'",@bannn,@bannn$;
+mes "^FF0000Name - Char id / Acc id^000000";
+mes "Online: "+@ol;
+mes "Account state: ^FF0000"+@bannn+"^000000.";
+mes "Last Login: ^FF0000"+@bannn$+"^000000.";
+mes @namesc$[0]+" - "+@charidsc[@a-1]+" / "+@accsc[0];
+mes "";
+mes "Item: "+@nameidc[@a-1]+" +"+@refinec[@a-1]+" x "+@amountc[@a-1]+". Cards: "+@card0c[@a-1]+","+@card1c[@a-1]+","+@card2c[@a-1]+","+@card3c[@a-1];
+if(select("Delete this item","Back")==2) goto cart;
+
+next;
+mes "Do not delete the item if the character is online.";
+mes "Are you sure you want to delete this item?";
+if (select("Yes","No")==2) goto cart;
+
+next;
+ 
+query_sql "DELETE FROM `cart_inventory` WHERE `id` ='"+@idc[@a-1]+"'";
+
+mes "Done.";
+next;
+goto cart;
+
+inventory:
+next;
+
+mes "Searching...";
+
+next;
+mes "^FF0000[Item Search]^000000";
+mes "Searching item ^FF0000"+@itemidlog+"^000000 ...";
+mes "Found ^FF0000"+getarraysize(@charidsi)+"^000000 entries";
+mes "Listing char ids...";
+
+set @menu$,"";
+	for (set @count, 0; @count < getarraysize(@charidsi); set @count, @count + 1){
+set @menu$, @menu$+@charidsi[@count] +":";
+}
+set @menu$, @menu$+"Storage:Guild Storage:Cart Inventory:New Search";
+
+set @a,select(@menu$);
+if (@a==getarraysize(@charidsi)+1) goto storage;
+if (@a==getarraysize(@charidsi)+2) goto gstorage;
+if (@a==getarraysize(@charidsi)+3) goto cart;
+if (@a==getarraysize(@charidsi)+4) goto search;
+
+next;
+query_sql "Select `name`,`account_id`,`Online` from `char` where `char_id`='"+@charidsi[@a-1]+"'",@namesi$,@accsi,@ol;
+query_sql "Select `state`,`lastlogin` from `login` where `account_id`='"+@accsi+"'",@bannn,@bannn$;
+mes "^FF0000Name - Char id / Acc id^000000";
+mes "Online: "+@ol;
+mes "Account state: ^FF0000"+@bannn+"^000000.";
+mes "Last login: ^FF0000"+@bannn$+"^000000.";
+mes @namesi$[0]+" - "+@charidsi[@a-1]+" / "+@accsi[0];
+mes "";
+mes "Item: "+@nameidi[@a-1]+" +"+@refinei[@a-1]+" x "+@amounti[@a-1]+". Cards: "+@card0i[@a-1]+","+@card1i[@a-1]+","+@card2i[@a-1]+","+@card3i[@a-1];
+if(select("Delete this item","Back")==2) goto inventory;
+
+next;
+mes "Do not delete the item if the character is online.";
+mes "Are you sure you want to delete this item?";
+if (select("Yes","No")==2) goto inventory;
+
+next;
+ 
+query_sql "DELETE FROM `inventory` WHERE `id` ='"+@idi[@a-1]+"'";
+
+mes "Done.";
+next;
+goto inventory;
+
+
+storage:
+
+next;
+
+mes "Searching...";
+
+
+mes "^FF0000[Item Search]^000000";
+mes "Searching item ^FF0000"+@itemidlog+"^000000 ...";
+mes "Found ^FF0000"+getarraysize(@accidss)+"^000000 entries";
+mes "Listing guild ids...";
+
+
+set @menu$,"";
+	for (set @count, 0; @count < getarraysize(@accidss); set @count, @count + 1){
+set @menu$, @menu$+@accidss[@count] +":";
+}
+set @menu$, @menu$+"Guild Storage:Cart Inventory:Inventory:New Search";
+
+set @a,select(@menu$);
+if (@a==getarraysize(@accidss)+1) goto gstorage;
+if (@a==getarraysize(@accidss)+2) goto cart;
+if (@a==getarraysize(@accidss)+3) goto inventory;
+if (@a==getarraysize(@accidss)+4) goto search;
+next;
+
+deletearray @names$[0],300;
+setarray @names$,"";
+
+deletearray @accss[0],300;
+setarray @accss,"";
+
+deletearray @ols[0],300;
+setarray @ols,"";
+
+query_sql "Select `name`,`char_id`,`Online` from `char` where `account_id`='"+@accidss[@a-1]+"'",@names$,@accss,@ols;
+query_sql "Select `state`,`lastlogin` from `login` where `account_id`='"+@accidss[@a-1]+"'",@bannn,@bannn$;
+mes "Account id: "+@accidss[@a-1];
+mes "Account state: ^FF0000"+@bannn+"^000000.";
+mes "Last Login: ^FF0000"+@bannn$+"^000000.";
+mes "^FF0000Name - Char id  - 1=On/0=Off^000000";
+	for (set @count, 0; @count < getarraysize(@accss); set @count, @count + 1){
+mes @names$[@count]+" - "+@accss[@count]+" - "+@ols[@count];
+}
+mes "";
+mes "Item: "+@nameids[@a-1]+" +"+@refines[@a-1]+" x "+@amounts[@a-1]+". Cards: "+@card0s[@a-1]+","+@card1s[@a-1]+","+@card2s[@a-1]+","+@card3s[@a-1];
+if(select("Delete this item","Back")==2) goto storage;
+
+next;
+mes "Do not delete the item if the character is online.";
+mes "Are you sure you want to delete this item?";
+if (select("Yes","No")==2) goto storage;
+
+next;
+ 
+query_sql "DELETE FROM `storage` WHERE `id` ='"+@ids[@a-1]+"'";
+
+mes "Done.";
+next;
+goto storage;
+
+gstorage:
+
+next;
+mes "Searching...";
+
+
+next;
+mes "^FF0000[Item Search]^000000";
+mes "Searching item ^FF0000"+@itemidlog+"^000000 ...";
+mes "Found ^FF0000"+getarraysize(@accidssg)+"^000000 entries";
+mes "Listing account ids...";
+
+
+set @menu$,"";
+	for (set @count, 0; @count < getarraysize(@accidssg); set @count, @count + 1){
+set @menu$, @menu$+@accidssg[@count] +":";
+}
+set @menu$, @menu$+"Cart Inventory:Inventory:Storage:New Search";
+
+set @a,select(@menu$);
+if (@a==getarraysize(@accidssg)+1) goto cart;
+if (@a==getarraysize(@accidssg)+2) goto inventory;
+if (@a==getarraysize(@accidssg)+3) goto storage;
+if (@a==getarraysize(@accidssg)+4) goto search;
+next;
+
+deletearray @names$[0],300;
+setarray @names$,"";
+
+deletearray @accss[0],300;
+setarray @accss,"";
+
+deletearray @ols[0],300;
+setarray @ols,"";
+
+query_sql "Select `name`,`master`,`connect_member` from `guild` where `guild_id`='"+@accidssg[@a-1]+"'",@names$,@accs$,@ols;
+mes "Guild id: "+@accidssg[@a-1];
+mes "^FF0000Name - Master Name  - Members Online^000000";
+mes @names$[0]+" - "+@accs$[0]+" - "+@ols[0];
+
+mes "";
+mes "Item: "+@nameidsg[@a-1]+" +"+@refinesg[@a-1]+" x "+@amountsg[@a-1]+". Cards: "+@card0sg[@a-1]+","+@card1sg[@a-1]+","+@card2sg[@a-1]+","+@card3sg[@a-1];
+if(select("Delete this item","Back")==2) goto gstorage;
+
+next;
+mes "Do not delete the item if the character is online.";
+mes "Are you sure you want to delete this item?";
+if (select("Yes","No")==2) goto gstorage;
+
+next;
+ 
+query_sql "DELETE FROM `guiltstorage` WHERE `id` ='"+@idsg[@a-1]+"'";
+
+mes "Done.";
+next;
+goto gstorage;
+
+}

@@ -1,0 +1,44 @@
+-	script	AutoActive#vermin	-1,{
+OnMinute22:
+OnMinute52:
+	set .@rand,(rand(11));
+	if(.@rand == 0){
+	announce "Please take the time to write an honest review for the server on www.ratemyserver.net.",0;
+	}
+	else if(.@rand == 1){
+	announce "Keep in mind that a member of the staff will never ask for any personal information.",0;
+	}
+	else if(.@rand == 2){
+	announce "Be sure to know the rules, not knowing them is not an excuse!",0;
+	}
+	else if(.@rand == 3){
+	announce "Please use the vending channel for vending messages. Vending messages are B> / S> / T> / PC>.",0;
+	}
+	else if(.@rand == 4){
+	announce "Be sure to be active on our forums. It's THE place for you to give us your input.",0;
+	}
+	else if(.@rand == 5){
+	announce "Got a question? Use @request to contact a council or staff member. The council is there to help you.",0;
+	}
+	else if(.@rand == 6){
+	announce "Got a suggestion to improve our server? Got a report about a player? Got a bug to report? Post it on forums!",0;
+	}
+	else if(.@rand == 7){
+	announce "If you just joined, don't forget to apply for a starter package. If you just created a guild, check out our guild package. Both can be found on our forums, www.ro.woongaming.com",0;
+	}
+	else if(.@rand == 8){
+	announce "Please refer to our forums to see our latest updates.",0;
+	}
+	else if(.@rand == 9){
+	announce "Please only use the english language in the main channel and prontera. Breaking this rule will mean that you get muted without a warning.",0;
+	}
+	else if(.@rand == 10){
+	announce "Don't forget to vote for us. You can vote for us on our control panel on our website www.woon-ro.com.",0;
+	}
+	else if(.@rand == 11){
+	announce "Want some detailed guides on how things work around WoonRO? Goto www.woon-ro.com/wiki for more information",0;
+	}
+	else if(.@rand == 12){
+	announce "Respect the staff and the council. If you respect them, they will respect you.",0;
+	}
+}

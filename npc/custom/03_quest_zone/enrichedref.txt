@@ -1,0 +1,39 @@
+new_5-2,93,99,4	script	Enriched Refiner	510,{
+	
+	switch(select("Make Enriched Oridecon:Make Enriched Elunium")) {
+		case 1:
+			mes "I will need 300pcs of Oridecon. You only have a 10% chance of being successful.";
+			next;
+				if(countitem(984) >= 300) {
+					set @rand,rand(1,100);
+						if(@rand <= 10) {
+							delitem 984,300;
+							getitem 7620,1;
+							close;
+						}  else {
+					delitem 984,300;
+					mes "Sorry! Failed to make item.";
+					close;
+					}
+				}
+			mes "You do not have enough Oridecon.";
+			close;
+		case 2:
+			mes "I will need 300pcs of Elunium. You only have a 10% chance of being successful.";
+			next;
+				if(countitem(985) >= 300) {
+					set @rand,rand(1,100);
+					if(@rand <= 10) {
+							delitem 985,300;
+							getitem 7619,1;
+							close;
+						} else {
+					delitem 985,300;
+					mes "Sorry! Failed to make item.";
+					close;
+					}
+				}
+			mes "You do not have enough Elunium.";
+			close;
+		}
+	}

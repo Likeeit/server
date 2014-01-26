@@ -1,0 +1,97 @@
+// ---            ARTHistic's Property            ---
+// ---    Please visit http://thdesigns.co.nr     ---
+// ---           Scripted By: ARTHistic           ---
+// ---         Do Not Revomed the Credits         ---
+
+-	script	Treasure Box Summoner	-1,{
+
+OnClock0001:
+OnClock0300:
+OnClock0500:
+OnClock0800:
+OnClock0900:
+OnClock1150:
+OnClock1300:
+OnClock1500:
+OnClock1701:
+OnClock2150:
+	switch(rand(1,12)){
+	
+	case 1: //Prontera
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Prontera. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "prontera.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+
+	case 2: //Payon
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Payon. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "payon.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+		
+	case 3: //Manuk
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Manuk. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "manuk.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+		
+	case 4: //Veins
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Veins. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "veins.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+		
+	case 5: //Rachel
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Rachel. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "rachel.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+		
+	case 6: //Alberta
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Alberta. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "alberta.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+	
+	case 7: //Comodo
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Comodo. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "comodo.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+		
+	case 8: //Louyang
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Louyang. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "louyang.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+		
+	case 9: //Morroc
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Morroc. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "morocc.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+		
+	case 10: //Lutie
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Lutie. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "xmas.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+		
+	case 11: //Amatsu
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Amatsu. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "amatsu.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+	
+	case 12: //Prontera doubled chance
+		announce2 "A rare Treasure Box will be spawned in 5 seconds at Prontera. Find it and kill it for a prize.",17;
+		sleep2 5000;
+		monster "prontera.gat",0,0,"Treasure Box",1845,1,"Treasure Box Summoner::OnTBoxKilled";
+		end;
+	}
+		
+OnTBoxKilled:
+	announce2 "The rare Treasure Box has been found and destroyed by "+strcharinfo(0)+"!",17;
+	getitem 671, 1;
+	end;
+}

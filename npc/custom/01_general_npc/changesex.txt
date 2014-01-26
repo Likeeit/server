@@ -1,0 +1,27 @@
+job3_rune02,46,40,3	script	Sex Change	436,{ 
+	
+	mes "[CharConfig]";
+	mes "Hello, you may change your sex here.";
+	next;
+	menu "Change Sex", l_sex;
+
+	l_sex:
+			
+		mes "[CharConfig]";
+		mes "If you have a Bard or Dancer character, use all of your skill points or you will lose them.";
+		mes "Are you sure you want to change your sex?";
+		next;
+		switch(select("No","Yes")){
+			case 1: close;
+			case 2: break;
+		}
+			
+		mes "[CharConfig]";
+		mes "Your sex will be changed. You will be disconnected...";
+		close2;
+
+		atcommand "@changesex";
+	
+	close;
+		
+}

@@ -1,0 +1,8 @@
+// Veins -------------------------------------------------------------------
+veins,221,127,4	script	Kafra Employee::kaf_veins	860,{
+	callfunc "F_Kafra",0,1,1,150,0;
+
+	M_Save:
+		savepoint "veins",216,123;
+		callfunc "F_KafEnd",0,1,"in the city of veins";
+}

@@ -1,0 +1,93 @@
+new_5-2,92,101,3	script	Active Girl	724,{
+cutin "job_dancer_eir01",2;
+
+
+mes "[Game Trader]";
+mes "Hello, I can trade your Activity and AFK Points to useable coins in my shop.";
+mes "Those points are gained trough being Active or AFK.";
+mes "You can trade those points to coins trough me.";
+mes "You will get roughly 1 coin per 5 minutes.";
+mes "Which service do you want to use?";
+next;
+switch(select("Trade in for Activity Points","Trade in for AFK Points.","Cancel")) {
+
+	case 1:
+	mes "[Game Trader]";
+	mes "Your current Activity Points are: " + #activitypoints + ".";
+	mes "Please enter, how many Ancient Gold Coin(s) you want to receive.";
+	mes "The exchange rate is 5 Activity Point for 1 Ancient Gold Coin.";
+	next;
+	input $GCTCG;
+	mes "[Game Trader]";
+	mes "So you want to trade in "+($GCTCG*5)+" Activity Point(s) for "+$GCTCG+" Ancient Gold Coin(s)?";
+	next;
+	switch(select("Yes","No")) {
+
+		case 1:
+		cutin "job_dancer_eir02",2;
+		if (#activitypoints < ($GCTCG*5)) goto Failure;
+		mes "[Game Trader]";
+		mes "Here are your Ancient Gold Coin(s).";
+		set #activitypoints, #activitypoints - ($GCTCG*5);
+		getitem 7959, $GCTCG;
+		close2;
+		cutin "",255;
+		end;
+
+		case 2:
+		cutin "job_dancer_eir03",2;
+		mes "[Game Trader]";
+		mes "Aw, that's too bad. You know where to find me.";
+		close2;
+		cutin "",255;
+		end;
+	}
+
+	Case 2:
+	mes "[Game Trader]";
+	mes "Your current AFK Points are: " + #afkpoints + ".";
+	mes "Please enter, how many Ancient Silver Coin(s) you want to receive.";
+	mes "The exchange rate is 5 Activity Point(s) for 1 Ancient Silver Coin(s).";
+	next;
+	input $GCTCG;
+	mes "[Game Trader]";
+	mes "So you want to trade in "+($GCTCG*5)+" AFK Point for "+$GCTCG+" Ancient Silver Coin(s)?";
+	next;
+	switch(select("Yes","No")) {
+
+		case 1:
+		cutin "job_dancer_eir02",2;
+		if (#afkpoints < ($GCTCG*5)) goto Failure;
+		mes "[Game Trader]";
+		mes "Here are your Ancient Silver Coin(s).";
+		set #afkpoints, #afkpoints - ($GCTCG*5);
+		getitem 7960, $GCTCG;
+		close2;
+		cutin "",255;
+		end;
+
+		case 2:
+		cutin "job_dancer_eir03",2;
+		mes "[Game Trader]";
+		mes "Aw, that's too bad. You know where to find me.";
+		close2;
+		cutin "",255;
+		end;
+	}
+
+	Case 3:
+	cutin "job_dancer_eir03",2;
+	close2;
+	cutin "",255;
+	end;
+	}
+	
+Failure:
+
+	mes "[Game Trader]";
+	cutin "job_dancer_eir03",2;
+	mes "You don't have enough points. Please try again later.";
+	close2;
+	cutin "",255;
+	end;
+}

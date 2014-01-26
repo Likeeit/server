@@ -1,0 +1,101 @@
+-	script	AutoActive	-1,{
+OnPCLoginEvent:
+
+	//if (getgmlevel() < 30)
+	//	atcommand "@kick "+strcharinfo(0)+"";
+	
+	//Check for atcommand recorder [Kichi]
+	for (set .@i,1;.@i <=10;set .@i,.@i+1){
+		if ((getd("atcmd"+.@i+"$")=="")|| (getd("atcmd"+.@i+"$")== "0"))continue;
+		set .@command$,getd("atcmd"+.@i+"$");
+		atcommand .@command$;
+	}
+if(Class == 0 && BaseExp == 0){
+    mes "Hello, are you new to WoonRO?";
+    set BaseExp, 1;
+    if(select("Yes:No")==2) close;
+    next;
+    mes "If you are a new player to the server, go on our forums and introduce your self in the Woon Arrivals and Departures Section. By doing so you will get a beginners pack of items.";
+	next;
+	mes "Once your post has been reviewed by a GM you can claim your items in prontera by clicking on the Package Claim NPC.";
+	next;
+	mes "Some basic commands are";
+	mes "@join #main, @go 32 for BG, @go vend for vending area";
+	close;
+	end;
+    }
+end;
+}	
+
+//Save atcommand by [Kichi]
+new_1-1,46,108,5	script	Save Command#Kichi	902,{
+	mes "Helo,";
+	mes "I could save your atcommand,";
+	mes "so whenever you logs in";
+	mes "you don't need to type it/them again ";
+	L_Utama:
+	set .@pilihan$,"";
+	for (set .@i,1;.@i <=10;set .@i,.@i+1){
+		set .@pilihan$,.@pilihan$ +"Slot["+.@i+"] "+(getd("atcmd"+.@i+"$")?getd("atcmd"+.@i+"$"):"None")+":";
+	}
+	set .@pilih, select(.@pilihan$);
+	next;
+	mes "Please select the atcommand you want.";
+	
+	for (set .@i,0;.@i <=getarraysize(.commands$);set .@i,.@i+1){
+		set .@pilihancmd$,.@pilihancmd$+.commands$[.@i]+":";
+	}
+	set .@pilihcmd, select(.@pilihancmd$);
+	set .@pilihcmd,.@pilihcmd-1;
+	switch(.@pilihcmd){
+		
+		case 1:
+			mes "Write rate between < 0~100 >";
+			set .@extra,1;
+		break;
+		case 2:
+			mes "Write the extra argument <item id>";
+			set .@extra,1;
+		break;
+		default:
+		break;
+	
+		}
+	mes .commands$[.@pilihcmd];
+	if(.@extra>0){
+		input .@sementara$;
+		if (.@sementara$== "" || .@sementara$ == "0")
+		goto L_Utama;
+		setd ("atcmd"+.@pilih+"$"),.commands$[.@pilihcmd]+.@sementara$;
+		mes .commands$[.@pilihcmd]+.@sementara$;
+		next;
+		mes .commands$[.@pilihcmd]+.@sementara$;
+		mes "Done";
+		close;
+	}else{
+		if (.commands$[.@pilihcmd]=="remove")
+		setd ("atcmd"+.@pilih+"$"),"";
+		else
+		setd ("atcmd"+.@pilih+"$"),.commands$[.@pilihcmd];
+		next;
+		mes .commands$[.@pilihcmd]+.@sementara$;
+		mes "Done";
+		
+		close;
+		
+	}
+	close;
+	OnInit:
+	// ================ Settings =================== //
+	
+	//This array contain the list of atcommand that NPC would read.
+	setarray .commands$,"remove"
+						,"@autoloot "
+						,"@aloot "
+						,"@noks "
+						,"@battleinfo"
+						,"@showexp"
+						;
+	end;
+	
+}

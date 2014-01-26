@@ -1,0 +1,125 @@
+xmas,157,135,5	script	Guess The Card	485,{
+	if (G_C_E != gettime(8)) {
+		set G_C_T, 0;
+	}
+	L_Intro:
+	set .@name$, "[Guess The Card]";
+	mes .@name$;
+	mes "Hi, would you like to play the game?";
+	mes "It costs 100,000 Zeny and you may only play 1 game a day.";
+	menu "Yes!", -, "Explain the rules", L_Rules;
+
+	next;
+	if (G_C_T >= 1) {
+		mes .@name$;
+		mes "You've already played 1 game today.";
+		mes "Please come back tomorrow.";
+		close;
+	}
+	if (Zeny < 100000) {
+		mes .@name$;
+		mes "Not enough Zeny!";
+		close;
+	}
+	set Zeny, Zeny - 100000;
+	set G_C_T, G_C_T + 1;
+	set G_C_E, gettime(8);
+	L_Start:
+	set .@round, .@round + 1;
+	if (.@round > 5) {
+		mes .@name$;
+		mes "Unfortunately, you have no more tries left.";
+		mes "Please come back tomorrow!";
+		close;
+	}
+	set .@name$, "[Guess The Card]"+" - Round "+.@round;
+	set .@npc_card, rand(1,3);
+	switch(.@npc_card) {
+		case 1:
+			set .@text$, "^89ceceGhostring^000000";
+			break;
+		case 2:
+			set .@text$, "^3e005eDeveling^000000";
+			break;
+		case 3:
+			set .@text$, "^ff557fAngeling^000000";
+			break;
+	}
+	mes .@name$;
+	mes "It's my turn.";
+	mes "Shuffling the deck....";
+	next;
+	mes .@name$;
+	mes "Picking a random card from the deck....";
+	next;
+	mes .@name$;
+	mes "I picked card "+.@npc_card+" and drew a "+.@text$+".";
+	mes "Putting the card back into the deck....";
+	next;
+	mes .@name$;
+	mes "Reshufling the deck....";
+	next;
+	mes .@name$;
+	mes "It's your turn.";
+	mes "Pick a card.";
+	set .@chosen, select("Card 1:Card 2:Card 3");
+	next;
+	set .@my_card, rand(1,3);
+	switch(.@my_card) {
+		case 1:
+			set .@text$, "^89ceceGhostring^000000";
+			break;
+		case 2:
+			set .@text$, "^3e005eDeveling^000000";
+			break;
+		case 3:
+			set .@text$, "^ff557fAngeling^000000";
+			break;
+	}
+	mes .@name$;
+	mes "You picked card "+.@chosen+" and drew a "+.@text$+".";
+	if (.@my_card == .@npc_card) {
+		set .@wins, .@wins + 1;
+		if (.@wins >= 3) {
+			mes "You picked ^00FF00correctly^000000!";
+			mes "You have 3 wins, which means you won the game!";
+			next;
+			mes .@name$;
+			mes "Here is your prize. Enjoy!";
+			getitem .prize_id, 1;
+			close;
+		}
+		mes "You guessed correctly!";
+		mes "You have now ^FF0000"+.@wins+"^000000 "+((.@wins > 1)? "wins":"win")+".";
+		mes (3-.@wins)+" more "+(((3-.@wins) > 1)? "wins":"win")+" to get a prize!";
+		next;
+		goto L_Start;
+	}
+	else {
+		mes "You picked ^FF0000incorrectly^000000!";
+		mes "You have ^FF0000"+.@wins+"^000000 "+((.@wins > 1 || .@wins == 0)? "wins":"win")+".";
+		mes (3-.@wins)+" more "+(((3-.@wins) > 1)? "wins":"win")+" to get a prize.";
+		next;
+		goto L_Start;	
+	}
+
+
+	L_Rules:
+	next;
+	mes .@name$;
+	mes "I have three cards in my deck: Ghostring, Develing and Angeling.";
+	mes "I will shuffle the deck and pick a random card.";
+	mes "I will then reshuffle the deck and you must pick a card.";
+	mes "If we picked the same card, you win.";
+	next;
+	mes .@name$;
+	mes "We will play the game 5 times, if you win 3 out of the 5 times, you will receive a prize!";
+	next;
+	goto L_intro;
+
+	OnInit:
+	set .prize_id, 6092;
+	end;
+}
+
+xmas,0,0,0,0	monster	Antonio	1247,10,3000000,2400000,0

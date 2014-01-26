@@ -1,0 +1,397 @@
+// Raziel - halloween event------
+
+-	script	asdfghjk	-1,{
+
+OnInit:
+	disablenpc "Fallen Halloween Master";
+	disablenpc "Fallen Besty";
+	end;
+}
+
+niflheim,81,154,4	script	Halloween Spirit	411,5,6,{
+	if (#HALLOWEEN_EVENT >= 1) goto Talk;
+	mes "[Halloween Spirit]";
+	mes "Hey! You!";
+	mes "Come here!";
+	npctalk "Over Here!";
+	menu "Huh me?",-,"Umm... See ya?",No;
+	next;
+	mes "[Halloween Spirit]";
+	mes "Yea! You! Come here!";
+	mes "Wanna go out and Trick and Treat?";
+	menu "Oh! Sounds like fun!",-,"Eww! That's Childish!",No;
+	next;
+	mes "[Halloween Spirit]";
+	mes "Cool. Alright...";
+	mes "I heard... That, if you get a lot of Candy.";
+	mes "You can get a CRAZY~GOOD~PRIZE~!";
+	next;
+	mes "[Halloween Spirit]";
+	mes "This happens every year, with a Different PRIZE!";
+	mes "So... Your in?";
+	menu "Yeahh!!",-,"Nah... That sounds Dumb",No;
+	next;
+	mes "[Halloween Spirit]";
+	mes "Okay. Lemme explain how things work here...";
+	mes "The People here are... a bit Cou~Cou...";
+	mes "You have to talk to people in order, house to house";
+	mes "Or. They will nuke you, and toss you around like a piece of gum warper.";
+	next;
+	mes "[Halloween Spirit]";
+	mes "OH! Almost forgot!";
+	mes "Here Take this!";
+	getitem 2288,1;
+	next;
+	mes "[Halloween Spirit]";
+	mes "Here's a Little Costume for you! I know your scary just the way you are, but this will help!";
+	next;
+	mes "[Halloween Spirit]";
+	mes "Good Luck!";
+	set #HALLOWEEN_EVENT,1;
+	close;
+	end;
+
+	Talk:
+	mes "[Halloween Spirit]";
+	mes "Oh Hey! How your doing? Lemme remind you how things work.";
+	next;
+	mes "[Halloween Spirit]";
+	mes "Okay. Lemme explain how things work here...";
+	mes "The People here are... a bit Cou~Cou...";
+	mes "You have to talk to people in order, house to house";
+	mes "Or. They will nuke you, and toss you around like a piece of gum warper.";;
+	next;
+	mes "[Halloween Spirit]";
+	mes "Good Luck!";
+	close;
+
+	No:
+	close;
+
+}
+
+niflheim,155,175,6	script	Cat Man	421,{
+	if (#HALLOWEEN_EVENT == 1) goto Yess;
+	if (#HALLOWEEN_EVENT > 1) goto Oops;
+	end;
+	Yess:
+	mes "[Cat Man]";
+	mes "Meow!!!";
+	mes "Yay! Meow! MY First Trick or Treater";
+	mes "You want this Caaannnndddyy?";
+	mes "Meow...";
+	next;
+	menu "I want your Candy!",-;
+	next;
+	mes "[Cat Man]";
+	mes "Meoww!";
+	mes "okaayy! What's my NICK Name...?";
+	input .@a$;
+	if (.@a$ == "pu$$y") goto Yes;
+	next;
+	mes "[Cat Man]";
+	mes "Hmmm... You don't know? Why won't you search around Niflheim...";
+	mes "MEOW!";
+	close2;
+	atcommand "@jump";
+	end;
+
+	Yes:
+	next;
+	mes "[Cat Man]";
+	mes "Meoww!";
+	mes "That was an Easy Question!";
+	mes "Here take this!";
+	next;
+	getitem 7941,10;
+	mes "[Cat Man]";
+	mes "You have ^FF00004^000000 person left to go!";
+	mes "Look for someone... Strong and that can Fly!";
+	mes "Good Luck!";
+	set #HALLOWEEN_EVENT,2;
+	next;
+	close;
+
+	Oops:
+	mes "[Cat Man]";
+	mes "MeowWWWWWW!! You already talked to me!";
+	close;
+
+}
+
+niflheim,202,205,4	script	Fairy Man	447,{
+	if (#HALLOWEEN_EVENT == 1) goto Umm;
+	if (#HALLOWEEN_EVENT >= 3) goto Oops;
+	if (#HALLOWEEN_EVENT == 2) goto Yess;
+	end;
+	Umm:
+	mes "[Fairy Man]";
+	mes "Umm.. Who are you?!";
+	close;
+
+	Yess:
+	mes "[Fairy Man]";
+	mes "Hello!";
+	mes "Soo... Want me Candy huh?";
+	next;
+	mes "[Fairy Man]";
+	mes "What's my Favorite... Food?";
+	input .@a$;
+	if (.@a$ == "Pie") goto Yes;
+	next;
+	mes "[Fairy Man]";
+	mes "WRONG!";
+	mes "What the hell is "+.@a$+"!!?!";
+	close;
+	end;
+
+	Oops:
+	mes "[Fairy Man]";
+	mes "Errmm... You already talked to me!";
+	close;
+
+	Yes:
+	next;
+	mes "[Fairy Man]";
+	mes "Good Job!";
+	mes "^FF00003^000000 Left to Go!";
+	getitem 12277,1;
+	next;
+	mes "[Fairy Man]";
+	mes "Good Luck";
+	set #HALLOWEEN_EVENT,3;
+	close;
+
+}
+
+niflheim,186,80,4	script	Besty the Cow	889,{
+	if (#HALLOWEEN_EVENT == 1) goto Umm;
+	if (#HALLOWEEN_EVENT == 2) goto Umm;
+	if (#HALLOWEEN_EVENT >= 4) goto Oops;
+	if (#HALLOWEEN_EVENT == 3) goto Yess;
+	end;
+
+	Umm:
+	mes "[Besty the Cow]";
+	mes "Moooo!!!";
+	close;
+
+	Oops:
+	mes "[Besty the Cow]";
+	mes "Moo!! You already talked to me!";
+	close;
+
+	Yess:
+	mes "[Besty the Cow]";
+	mes "Mooo!!";
+	mes "Mo~";
+	next;
+	mes "[Besty the Cow]";
+	mes "You want this... Candy?";
+	mes "Moo! Course you doo....";
+	mes "........";
+	next;
+	mes "["+strcharinfo(0)+"]";
+	mes "Umm... Besty?";
+	next;
+	mes "[Besty the Cow]";
+	mes "Moo?";
+	close2;
+	monster "niflheim",179,73,"Beasty",1149,1,"Besty the Cow::OnKilled";
+	npctalk "Mooo!! Kill those Porings!";
+	end;
+
+	OnKilled:
+	enablenpc "Fallen Besty";
+	end;
+}
+
+niflheim,187,71,4	script	Fallen Besty	1149,{
+	if (#HALLOWEEN_EVENT == 1) goto Umm;
+	if (#HALLOWEEN_EVENT == 2) goto Umm;
+	if (#HALLOWEEN_EVENT >= 4) goto Oops;
+	if (#HALLOWEEN_EVENT == 3) goto Donee;
+
+	Donee:
+	mes "[Besty the Cow]";
+	percentheal 100,100;
+	mes "Moo Job!";
+	mes "You obtained Candy!";
+	next;
+	getitem 7941,10;
+	mes "[Besty the Cow]";
+	mes "You have ^FF00002^000000 People to go!";
+	mes "You will have to get Items...!";
+	mes "Good Luck";
+	set #HALLOWEEN_EVENT,4;
+	close2;
+	goto finee;
+	end;
+
+	finee:
+	disablenpc "Fallen Besty";
+	end;
+
+}
+
+niflheim,230,271,5	script	Cat Man's Lion	1989,{
+	mes "[Cat Man's Lion]";
+	mes "Rawr!!";
+	next;
+	menu "Umm... What's Cat Man's Nickname?",-,"Kick the Lion",No;
+	next;
+	mes "[Cat Man's Lion]";
+	mes "Rawr~!";
+	mes "^Ff0000pu$$y^000000.";
+	close;
+	end;
+	No:
+	next;
+	mes "[Cat Man's Lion]";
+	mes "RAWR!";
+	next;
+	atcommand "@die";
+	close;
+	end;
+
+}
+
+niflheim,184,38,4	script	Fairy Girl	437,{
+	mes "[Fairy Girl]";
+	mes "Yummm~";
+	mes "Oh Sorry!";
+	next;
+	mes "[Fairy Girl]";
+	mes "I'm eating ^FF0000Pie^000000 I stole from my Brother!";
+	mes "Fairy Man...";
+	close;
+}
+
+niflheim,155,260,4	script	Jr. Leo	1415,{
+	if (#HALLOWEEN_EVENT == 1) goto Umm;
+	if (#HALLOWEEN_EVENT == 2) goto Umm;
+	if (#HALLOWEEN_EVENT == 3) goto Umm;
+	if (#HALLOWEEN_EVENT >= 5) goto Oops;
+	if (#HALLOWEEN_EVENT == 4) goto Yess;
+	end;
+
+	Oops:
+	mes "[Jr. Leo]";
+	mes "Lol! I know you love me..";
+	mes "But, you already talked to me!";
+	close;
+
+	Umm:
+	mes "[Jr. Leo]";
+	mes "WOW! Nice Costume!";
+	close;
+
+	Yess:
+	mes "[Jr. Leo]";
+	mes "Hello! Welcome to my Ugly-Ass House!";
+	next;
+	mes "[Jr. Leo]";
+	mes "You want Candy?";
+	mes "Well? I want 25 ^FF0000Fabrics^000000 from the Ludes!";
+	next;
+	if (countitem(1059) >= 25) goto WOW;
+	mes "[Jr. Leo]";
+	mes "Get me some... When your back!";
+	close;
+	end;
+
+	WOW:
+	mes "[Jr. Leo]";
+	mes "Hmmm.... Thanks!";
+	delitem 1059,25;
+	mes "Here!";
+	next;
+	getitem 5445,1;
+	mes "[Jr. Leo]";
+	mes "You have ^FF00001^000000 more Person to GO!";
+	mes "Good Luck. Your gonna need it...";
+	set #HALLOWEEN_EVENT,5;
+	close;
+
+}
+
+nif_in,115,175,4	script	Fallen Halloween Master	1373,{
+	if (#HALLOWEEN_EVENT == 1) goto bgone;
+	if (#HALLOWEEN_EVENT == 2) goto bgone;
+	if (#HALLOWEEN_EVENT == 3) goto bgone;
+	if (#HALLOWEEN_EVENT == 4) goto bgone;
+	if (#HALLOWEEN_EVENT >= 6) goto bgone;
+	if (#HALLOWEEN_EVENT == 5) goto Yessir;
+	end;
+
+	bgone:
+	mes "[Halloween Master]";
+	mes "Be gone!";
+	next;
+	atcommand "@nuke "+strcharinfo(0)+"";
+	close;
+	end;
+
+	Yessir:
+	mes "[Fallen Halloween Master]";
+	mes "I admit defeat and will server thee as my Master...!";
+	close2;
+	announce ""+strcharinfo(0)+" has finished the Trick or Treat Event!",0;
+	getitem 7941,50;
+	set #HALLOWEEN_EVENT,6;
+	goto done;
+	end;
+
+	done:
+	disablenpc "Fallen Halloween Master";
+	end;
+}
+
+niflheim,329,237,6	script	Halloween Master	1373,{
+	if (#HALLOWEEN_EVENT == 1) goto bgone;
+	if (#HALLOWEEN_EVENT == 2) goto bgone;
+	if (#HALLOWEEN_EVENT == 3) goto bgone;
+	if (#HALLOWEEN_EVENT == 4) goto bgone;
+	if (#HALLOWEEN_EVENT >= 6) goto Oopsy;
+	if (#HALLOWEEN_EVENT == 5) goto Yessir;
+	end;
+
+	bgone:
+	mes "[Halloween Master]";
+	mes "Be gone!";
+	next;
+	atcommand "@nuke "+strcharinfo(0)+"";
+	close;
+	end;
+
+	Oopsy:
+	mes "[Halloween]";
+	mes "I am Loyal to you Master...!";
+	close;
+
+	Yessir:
+	mes "[Halloween Master]";
+	if(hmkill == 1) goto warrp;
+	mes "Muahah! You have Did it!";
+	mes "You have fallen for my Trap!";
+	mes "This is the last time you will see me!";
+	next;
+	monster "nif_in",115,175,"Halloween Master",1373,1,"Halloween Master::OnKilled";
+	mes "Fight the Halloween Master!";
+	close2;
+	set hmkill,1;
+	goto warrp;
+	end;
+
+	warrp:
+	warp "nif_in",116,167;
+	end;
+
+	OnKilled:
+	mes "[Halloween Master]";
+	mes "NOO!! You have defeated me!";
+	enablenpc "Fallen Halloween Master";
+	close;
+	end;
+
+}

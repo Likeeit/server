@@ -1,0 +1,256 @@
+// Script:		  Pologue 2
+// Author:        Sovane/Nihad
+// Scripter:      Sovane
+
+// Script Function:
+//	
+
+// (Jynx) brasilia 131 63 NPC: 102
+// (Surge) brasailia 348 231 NPC: 102
+// (Rake) brasailia 131 64 NPC: 102
+// (Lucifer) brasailia 131 64 NPC: 102
+// (???) brasailia 131 64 NPC: 102
+
+morocc,191,227,4	script	Jynx#pro2	88,{
+	
+	if (jynCount == 3) goto Jyn_Talk4;
+	if (itemCount == 3) goto Jyn_Talk3;
+	if (jynCount == 1) goto Jyn_Talk2;
+	if (bCount == 3) goto Jyn_Talk1;
+	
+	mes "[Jynx]";
+	mes "Oh my, what am i going to do?";
+	close;
+	
+	Jyn_Talk1:
+	
+	mes "[Jynx]";
+	mes "Excuse me, but do you think you could help me with something?";
+	next;
+		switch(select("Sorry, I don't have time.:Yeah sure.")) {
+		
+		case 1:
+		mes "[Jynx]";
+		mes "Oh, alright. Thanks anyways.";
+		close;
+		
+		case 2:
+		mes "[Jynx]";
+		mes "Thank you! I need help fixing this gate, but I don't have the materials to do so. Do you think you could get them?";
+		next;
+			switch(select("Yeah, what do you need?:Nah, sounds like work.")) {
+			
+			case 1:
+			mes "[Jynx]";
+			mes "Ok, I need two things...";
+			next;
+			mes "[Jynx]";
+			mes "First you need to find a blacksmith named Surge in ^FF3355Geffen.^000000 He has the materials we need.";
+			next;
+			mes "[Jynx]";
+			mes "Second, I need a purified crystal. I believe there is someone in ^FF3355Juno^000000 that may posses such an item.";
+			set jynCount, 1;
+			set itemCount, 1;
+			close;
+			
+			case 2:
+			mes "[Jynx]";
+			mes "A little work might do you some good.";
+			close;
+			}
+		
+		}
+		
+	Jyn_Talk2:
+	mes "[Jynx]";
+	mes "I need you to go to ^FF3355Geffen.^000000 and find Surge.";
+	next;
+	mes "[Jynx]";
+	mes "Then you need to travel to ^FF3355Yuno^000000, and get a Purified Crystal.";
+	close;
+	
+	Jyn_Talk3:
+	mes "[Jynx]";
+	mes "Hey you got the stuff!";
+	mes "Now can you give me a hand?";
+	next;
+	mes "^FF3355Clank..^000000";
+	next;
+	mes "^FF3355Clank..Clank^000000";
+	next;
+	mes "^FF3355Clank..Clank...Clank^000000";
+	next;
+	mes "^FF3355BANG!^000000";
+	next;
+	mes "[???]";
+	mes "Oh dear...";
+	next;
+	mes "^FF3355You see Jynx struggle as the gate begins to collapse on you.^000000";
+	set jynCount,3;
+	next;
+	warp "morocc_in",80,127;
+	end;
+	
+	Jyn_Talk4:
+	mes "[Jynx]";
+	mes "Sorry about earlier.";
+	close;
+
+}
+
+geffen,184,64,2	script	Surge#pro2	98,{
+	
+	if (surCount == 2) goto Sur_Talk3;
+	if (surCount == 1) goto Sur_Talk2;
+	if (jynCount == 1) goto Sur_Talk1;
+
+	mes "[Surge]";
+	mes "Not now kid, I'm busy";
+	close;
+	
+	Sur_Talk1:
+	mes "[Surge]";
+	mes "Hmm? What do you need?";
+	next;
+	switch(select("Jynx sent me to find you.:Just making small talk.")) {
+	
+	case 1:
+	mes "[Surge]";
+	mes "Jynx? He must want to borrow my tools again huh? No problem, but im gonna need some payment.";
+	next;
+	mes "[Surge]";
+	mes "Bring me:";
+	mes "^FF335520x Iron^000000";
+	mes "^FF335520x Steel^000000";
+	mes "^FF335520x Oridecon^000000";
+	mes "^FF33553x Gold^000000";
+	next;
+	mes "[Surge]";
+	mes "That should be enough.";
+	set surCount, 1;
+	close;
+	
+	case 2:
+	mes "[Surge]";
+	mes "I don't have time for that.";
+	close;
+	}
+	Sur_Talk2:
+	
+		if ((countitem(984) > 19) && (countitem(998) > 19) && (countitem(999) > 19) && (countitem(969) > 2)) {
+	mes "[Surge]";
+	mes "Oh, Nice!";
+		delitem 984,20;
+		delitem 998,20;
+		delitem 999,20;
+		delitem 969,3;
+	next;
+	mes "[Surge]";
+	mes "Alright like I promised, here you go.";
+	next;
+		mes "^FF3355You have recieved Surge's tools^000000";
+		set itemCount, itemCount+1;
+		set surCount, surCount+1;
+		close;
+		end;
+	}
+	else	{
+	mes "[Surge]";
+	mes "How's your progress?";
+	mes countitem(984) + "/20 ^FF3355Oridecon^000000";
+	mes countitem(998) + "/20 ^FF3355Iron^000000";
+	mes countitem(999) + "/20 ^FF3355Steel^000000";
+	mes countitem(969) + "/3 ^FF3355Gold^000000";
+		close;
+		end;
+		}
+		
+		Sur_Talk3:
+		
+		mes "[Surge]";
+		mes "Little busy kid.";
+		close;
+
+}
+
+yuno,291,219,4	script	Xander#pro2	402,{
+
+	if (jynCount == 1) goto Xan_Talk1;
+	if (xanCount == 1) goto Xan_Talk2;
+
+	mes "[Xander]";
+	mes ".....";
+	close;
+
+	Xan_Talk1:
+	mes "[Xander]";
+	mes "What do you need?";
+	next;
+	switch(select("I'm looking for a purified Crystal.:A billion zennys!")) {
+	
+	case 1:
+	mes "[Xander]";
+	mes "Ah yes, but there is only one thing I need right now, and i'm sure you don't have it.";
+	next;
+	if (countitem(5332) > 0) goto Enuf;
+	mes "[Xander]";
+	mes "Sorry";
+	close;
+	
+	Enuf:
+	
+	mes "[Xander]";
+	mes "Wait, is that...^FF3355Loki's mask?!^000000";
+	next;
+	mes "[Xander]";
+	mes "I'll gladly trade the Crystal for that!";
+	next;
+	switch(select("Yes:No")) {
+	
+	case 1:
+	delitem 5332,1;
+	mes "[Xander]";
+	mes "Thank you very much! Here you are";
+	next;
+	mes "^FF3355You recieved the Purified Crystal^000000";
+	set itemCount, itemCount+1;
+	set xanCount,1;
+	close;
+	
+	case 2:
+	mes "[Xander]";
+	mes "Have fun finding this Crystal somewhere else!";
+	close;
+	}
+	case 2:
+	mes "[Xander]";
+	mes "Don't we all.";
+	close;
+	}	
+	
+	Xan_Talk2:
+	mes "[Xander]";
+	mes "That mask! Keep it away from me!";
+	close;
+}
+
+morocc_in,80,127,4	script	#pro2	111,3,3,{
+OnTouch:
+
+	if (dnCount == 1) goto tlk;
+	if (jynCount == 3) goto inn;
+	
+	end;
+		
+	inn:
+	mes "^FF3355You awake in the inn. It appears you have a mask.^000000";
+	next;
+	mes "^FF3355There is also something poking out of your bag.^000000";
+	set dnCount,1;
+	getitem 5332,1;
+	getitem 5754,1;
+	close;
+	
+	tlk:
+	end;
+}

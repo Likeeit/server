@@ -1,0 +1,42 @@
+-	script	exp_event_start	-1,{
+OnClock0025:
+		announce "Double EXP rates in all abbey dungeons for the next 2 hours.",0;
+end;
+}
+
+-	script	exp_event_start_2	-1,{
+OnClock1225:
+		announce "Double EXP rates in all LHZ dungeons for the next 2 hours.",0;
+end;
+}
+//--------------------
+
+-	script	exp_event_end_1	-1,{
+
+OnClock0225:
+		announce "Double EXP rates in all abbey dungeons are over.",0;
+end;
+}
+
+-	script	exp_event_end_2	-1,{
+
+OnClock1425:
+		announce "Double EXP rates in all LHZ dungeons are over.",0;
+end;
+}
+
+abbey01	mapflag	bexp_event	0, 25, 02, 25, 100
+abbey01	mapflag	jexp_event	0, 25, 02, 25, 100
+abbey02	mapflag	bexp_event	0, 25, 02, 25, 100
+abbey02	mapflag	jexp_event	0, 25, 02, 25, 100
+abbey03	mapflag	bexp_event	0, 25, 02, 25, 100
+abbey03	mapflag	jexp_event	0, 25, 02, 25, 100
+
+lhz_dun01	mapflag	bexp_event	12, 25, 14, 25, 100
+lhz_dun01	mapflag	jexp_event	12, 25, 14, 25, 100
+lhz_dun02	mapflag	bexp_event	12, 25, 14, 25, 100
+lhz_dun02	mapflag	jexp_event	12, 25, 14, 25, 100
+lhz_dun03	mapflag	bexp_event	12, 25, 14, 25, 100
+lhz_dun03	mapflag	jexp_event	12, 25, 14, 25, 100
+lhz_dun04	mapflag	bexp_event	12, 25, 14, 25, 100
+lhz_dun04	mapflag	jexp_event	12, 25, 14, 25, 100

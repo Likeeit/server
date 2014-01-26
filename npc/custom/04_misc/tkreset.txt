@@ -1,0 +1,12 @@
+-	script	tkreset	-1,{
+	OnInit:
+	set .month, gettime(5);
+	end;
+
+	OnClock0001:
+	if (gettime(5) != .month) {
+		tkrankreset;
+		set .month, gettime(5);
+	}
+	end;
+}

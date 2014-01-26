@@ -1,0 +1,2 @@
+wvend	mapflag	nobranch
+wvend	mapflag	town

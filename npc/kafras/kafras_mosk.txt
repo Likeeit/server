@@ -1,0 +1,28 @@
+//===== eAthena Script ======================================= 
+//= Moscovia Kafras
+//===== By: ================================================== 
+//= Kisuka
+//===== Current Version: ===================================== 
+//= 1.0
+//===== Compatible With: ===================================== 
+//= eAthena SVN
+//===== Description: ========================================= 
+//= Kafras for the town of Moscovia.
+//===== Additional Comments: ================================= 
+//= 1.0 First Version. [Kisuka]
+//============================================================ 
+
+moscovia,219,180,6	script	Kafra Staff#mosk	114,{
+	cutin "kafra_04",2;
+	mes "[Kafra Staff]";
+	mes "Welcome to the";
+	mes "Kafra Corporation.";
+	mes "The Kafra services";
+	mes "are always on your side.";
+	mes "How may I assist you?";
+	callfunc "F_Kafra",5,3,1,50,700;
+
+	M_Save:
+		savepoint "moscovia",221,194;
+		callfunc "F_KafEnd",0,1,"in the city of moscovia";
+}

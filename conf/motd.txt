@@ -1,0 +1,2 @@
+// Internal default is limited to 128 lines.  If you need more, you will need to modify the MOTD_LINE_SIZE definition in pc.c
+Welcome to Woon Reloaded Ragnarok Online. Please vote and review us on RMS. Use our forums to make suggestions and report bugs.

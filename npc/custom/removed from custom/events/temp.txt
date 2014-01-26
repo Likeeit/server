@@ -1,0 +1,16 @@
+-	script	halloweentempevent	-1,{
+
+OnMinute45:
+	announce "A few uninvited spirits from Halloween Town have appeared in Niflheim...! Use @go 13 to warp to the map. The halloween spirits drop pumpkin mojos ...",0;
+	sleep2 5000;
+	monster "niflheim.gat",0,0,"Halloween Spirit",1812,25;
+	end;
+
+
+OnMinute30:
+	announce "A few uninvited spirits from Halloween Town have appeared in Niflheim...! Use @go 13 to warp to the map. The halloween spirits drop pumpkin mojos ...",0;
+	sleep2 5000;
+	monster "niflheim.gat",0,0,"Halloween Spirit",1812,25;
+	end;
+
+}

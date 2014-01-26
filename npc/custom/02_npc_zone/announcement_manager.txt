@@ -1,0 +1,66 @@
+// Announcements Manager
+// How this works:
+// In scripts use announce2 rather than the announce script command.
+// Format is: announce2 "some text", <announcement number>
+// Announcement number would be position of that announcement in the .announcements$ array below
+// @votekick for example uses this format: announce2 "some text", 5
+
+
+job3_rune02,48,42,5	script	Announcements	49,{
+	set .@name$, "[Announcements Manager]";
+
+	mes .@name$;
+	mes "Hello, I am the Announcements Manager.";
+	mes "I can customize what kind of announcements you wish to receive.";
+	mes "Please toggle on/off the announcements in the menu below.";
+	L_Set:
+	for (set .@i, 0; .@i < getarraysize(.announcements$); set .@i, .@i + 1) {
+		if (.@i > 0)
+			set .@menu$, .@menu$+":"+.announcements$[.@i]+((announcements_on&pow(2,.@i))? " - ON" : " - OFF");
+		else
+			set .@menu$, .announcements$[.@i]+((announcements_on&pow(2,.@i))? " - ON" : " - OFF");
+	}
+	set .@selected, select(.@menu$);
+	set .@flag, pow(2,.@selected-1);
+	set announcements_on, announcements_on + (.@flag*((announcements_on&.@flag)? -1:1));
+	goto L_Set;
+	close;
+
+	OnInit:
+	setarray .announcements$[0],
+	"Conquest",
+	"Rush",
+	"Capture The Flag",
+	"Team Deathmatch",
+	"@votekick",
+	"@votemute",
+	"Cluckers",
+	"Poring Catcher",
+	"Novice Vs Zombie",
+	"Counting Game",
+	"Poring Punch",
+	"Mr Password",
+	"Invader",
+	"Maze",
+	"Lottery",
+	"Disguise",
+	"Treasure Box",
+	"Gladiator",
+	"PvP Challenges", //19
+	"Boss/ Mini Boss Card Drop",
+	"Endless Tower",
+	"PvP Streaks"; //22
+	end;
+
+	OnWhisperGlobal:
+	mapannounce2 strcharinfo(3),"asdf",22;
+	dispbottom announcements_on;
+	end;
+
+	OnPCLoginEvent:
+	if (!announcements_set) {
+		set announcements_on, 4194303;
+		set announcements_set, 1;
+	}
+	end;
+}

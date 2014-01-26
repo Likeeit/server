@@ -1,0 +1,7 @@
+bat_c02,82,78,5	script	HealEvent	971,{
+
+sc_start SC_BLESSING,0,10;
+sc_start SC_INCREASEAGI,0,10;
+percentheal 100,100;
+end;
+}

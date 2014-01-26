@@ -1,0 +1,20 @@
+// MySQL Login SQL Server
+login_server_ip: localhost
+login_server_port: 3306
+login_server_id: root
+login_server_pw: swej7Kaspesta3R7ce
+login_server_db: ragnarok
+// Ipban features (SQL only)
+ipban.enable: yes
+ipban.sql.db_hostname: localhost
+ipban.sql.db_port: 3306
+ipban.sql.db_username: root
+ipban.sql.db_password: swej7Kaspesta3R7ce
+ipban.sql.db_database: ragnarok
+ipban.sql.ipban_table: ipbanlist
+// SQL
+account.sql.db_hostname: localhost
+account.sql.db_port: 3306
+account.sql.db_username: root
+account.sql.db_password: swej7Kaspesta3R7ce
+account.sql.db_database: ragnarok

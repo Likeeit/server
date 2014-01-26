@@ -1,0 +1,52 @@
+//===== rAthena Script =======================================
+//= Woon-Ro GM Mapflag Manager
+//===== By: ==================================================
+//= Ridley
+//===== Compatible With: =====================================
+//= eamod SVN
+//===== Description: =========================================
+//= PM npc:mf to activate/disable specific mapflags on a given map.
+//============================================================
+-	script	mf	-1,{
+
+OnWhisperGlobal:
+	set .@name$,"[^0000FFMap Flag Manager^000000]";
+	if(getgmlevel() >= 50) {
+		mes .@name$;
+		mes "I can ^00FF00activate^000000 or ^FF0000deactivate^000000 Map Flags on any map.";
+		mes "[^FF0000NOTE: Do not use this system on special maps such as PVP, GvP, BG, or Towns.^000000]";
+		set .@act1,select("Activate Map Flag:Deactivate Map Flag");
+		next;
+		mes .@name$;
+		mes "Please enter the desired ^0000FFMap^000000";
+		input(.@map$);
+		next;
+		mes "Please select Map Flag";
+		set .@act2,select("No Memo:No Teleport:No Save:No Branch:PvP:PvP No Party:PvP No Guild:GvG:GvG No Party:No Trade:No Skill:No Warp:Party Lock:No Ice Wall:Indoors:No Go:No Base EXP Gain:No Job EXP Gain:No EXP Penalty:No Mob Loot:No MvP Loot:No Return:No Warp To:No Nightmare Drop:No Command:No Drop:No Vending:No Chat:Guild Lock") - 1;
+		close2;
+		setarray .@mf_name[0],mf_nomemo,mf_noteleport,mf_nosave,mf_nobranch,mf_pvp,mf_pvp_noparty,mf_pvp_noguild,mf_gvg,mf_gvg_noparty,mf_notrade,mf_noskill,mf_nowarp,mf_partylock,mf_noicewall,mf_indoors,mf_nogo,mf_nobaseexp,mf_nojobexp,mf_noexppenalty,mf_nomobloot,mf_nomvploot,mf_noreturn,mf_nowarpto,mf_nonightmaredrop,mf_nocommand,mf_nodrop,mf_novending,mf_nochat,mf_guildlock;
+		if(.@act2 == 3) {
+			switch(.@act1) {
+				case 1:
+					setmapflag .@map$,.@mf_name[.@act2],"SavePoint";
+					break;
+				case 2:
+					removemapflag .@map$,.@mf_name[.@act2];
+					break;
+			}
+		} else {
+			switch(.@act1) {
+				case 1:
+					setmapflag .@map$,.@mf_name[.@act2];
+					break;
+				case 2:
+					removemapflag .@map$,.@mf_name[.@act2];
+					break;
+			}
+		}
+		dispbottom "Command sent.";
+	} else {
+		message strcharinfo(0),"Access Denied: You are not authorized to use this system.";
+	}
+	end;
+}

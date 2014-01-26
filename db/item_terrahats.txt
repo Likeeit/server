@@ -1,0 +1,25 @@
+// Custom Woon's gift Box (item id 5000) Obtainable Items Database
+// Structure of Database:
+// GroupID,ItemID,Rate
+
+// Reward Hats 
+55,5447,10 //(Frog_Cap)
+55,5498,10 //(Wondering_Wolf_Helm)
+55,5780,10 //(Tendrilion_Hat)
+55,5528,10 //(King_Frog_Hat)
+55,5416,10 //(Beer_Cap) 
+55,5410,10 //(Bread_Bag2)
+55,5367,10 //(Hyegun_Hat)
+55,5360,10 //(Whikebain_Ears)
+55,5225,10 //(Marcher_Hat)
+55,5324,10 //(Little_Angel_Doll)
+55,5305,10 //(Pirate_Dagger)
+55,5294,10 //(Whisper_Mask)
+55,5210,10 //(Flying_Angel)
+55,5761,10 //(Sloth_Hat)
+55,5579,10 //(Wanderer's_Sakkat)
+55,18503,10 //(Majestic_Devil)
+55,5378,10 //(Rabbit_Ear_Hat)
+55,5254,10 //(Deviling_Hat)
+55,5464,10 //(Zaha_Doll_Hat)
+55,5497,10 //(King_Tiger_Doll_Hat)

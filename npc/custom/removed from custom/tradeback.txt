@@ -1,0 +1,101 @@
+new_5-2,94,107,3	script	Trade Back	415,{
+
+mes "[Trade Back]";
+mes "I'm here to trade back the items for the pvp hats that have been nerfed.";
+next;
+			menu "PvP AnneC",pvp1,"PvP Dirty",pvp2,"PvP Randell",pvp3,"NvM",l_exit;
+
+pvp1:
+mes "[Trade Back]";
+mes "Bring me....";
+mes "PvP HoF A n n e C, and";
+mes "I will give you back all the requirements for making it ";
+next;
+	mes "[Trade Back]";
+	mes "What do you say?";
+	next;
+		menu "Sure thing!",pvph1,"no way!!",l_exit;
+
+pvph1:
+if(countitem(5603)<1) goto l_noitem;
+
+delitem 5603,1;
+mes "[Trade Back]";
+mes "Okay...";
+next;
+	mes "[Trade Back]";
+	mes "Here you go...!";
+	getitem 671,5;
+	getitem 12738,5;
+	getitem 616,3;
+	getitem 6089,20;
+	getitem 7450,1;
+		set zeny, zeny + 5000000;
+	close;
+pvp2:
+mes "[Trade Back]";
+mes "Bring me....";
+mes "Pvp HoF Dirty Dozeb, and";
+mes "I will give you back all the requirements for making it ";
+next;
+	mes "[Trade Back]";
+	mes "What do you say?";
+	next;
+		menu "Sure thing!",pvph2,"no way!!",l_exit;
+
+pvph2:
+if(countitem(5604)<1) goto l_noitem;
+
+delitem 5604,1;
+mes "[Trade Back]";
+mes "Okay...";
+next;
+	mes "[Trade Back]";
+	mes "Here you go...!";
+	getitem 671,5;
+	getitem 12738,5;
+	getitem 616,3;
+	getitem 6089,20;
+	getitem 2662,1;
+		set zeny, zeny + 5000000;
+	close;
+pvp3:
+mes "[Trade Back]";
+mes "Bring me....";
+mes "Pvp HoF RANDELL MARK, and";
+mes "I will give you back all the requirements for making it ";
+next;
+	mes "[Trade Back]";
+	mes "What do you say?";
+	next;
+		menu "Sure thing!",pvph3,"no way!!",l_exit;
+
+pvph3:
+if(countitem(5605)<1) goto l_noitem;
+
+delitem 5605,1;
+mes "[Trade Back]";
+mes "Okay...";
+next;
+	mes "[Trade Back]";
+	mes "Here you go...!";
+	getitem 671,5;
+	getitem 12738,5;
+	getitem 616,3;
+	getitem 6089,20;
+	getitem 6224,1;
+		set zeny, zeny + 5000000;
+	close;		
+l_noitem:
+mes "[Trade Back]";
+mes "You need to have one of those 3 PvP HoF Hat";
+close;
+
+l_exit:
+mes "[Trade Back]";
+mes "I guess you don't have the hat...";
+mes "Bye...";
+close;
+
+
+}

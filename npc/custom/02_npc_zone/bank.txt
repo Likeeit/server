@@ -1,0 +1,171 @@
+//===== rAthena Script =======================================
+//= The Billion Banker
+//===== By: ==================================================
+//= Joseph, Sovane edited so it doesnt suck as much
+//===== Current Version: =====================================
+//= 1.1
+//===== Compatible With: =====================================
+//= rAthena, 3ceam, eAthena
+//===== Description: =========================================
+//= Withdraw and deposit large amount of Zeny
+//===== Additional Comments: =================================
+//= 1.0 - Released!
+//= 1.1 - Merged with WoonRO's old banker. Set up backup
+//=     incase of bug / failure.
+//============================================================
+job3_rune02,31,38,5	script	Banker	985,{
+set #oldbankstorage, #oldbankstorage + #bankstorage;
+set #savings, #savings + #bankstorage;
+set #bankstorage, 0;
+	function	FailMessage;
+	function	Transaction;
+
+	// == Configurations =========================================
+	set .@mz, 2000000000;	// Server Max Zeny (Default: 1000000000)
+	set .@n$, "[Banker]";	// NPC Name
+	// ===========================================================
+	
+	mes .@n$;
+	mes "Greetings!";
+	mes "How can I help you?";
+	mes " ";
+	mes "Balance: " + #savings;
+	set .@menu$, "Withdraw:Deposit";
+	set .@j, select ( .@menu$ ) - 1;
+	setarray .@menu$, "Withdraw", "Deposit";
+	
+	next;
+	mes .@n$;
+	mes "How much would you like to " + .@menu$[.@j] + "?";
+	mes "Balance: " + #savings;
+	set .@choose, select("Input Amount:"+.@menu$[.@j]+" as much as possible");
+	next;
+	mes .@n$;
+	if (.@choose == 2) {
+		if (.@j == 0) {
+			if (Zeny >= 1000000000) {
+				mes "You have already the maximum amount of Zeny you can hold.";
+				close;
+			}
+			if (#savings < 1) {
+				mes "You have insufficient balance.";
+				close;
+			}
+			else {
+				set .@amt, 1000000000-Zeny;
+				if (.@amt > #savings)
+					set .@amt, #savings;
+				mes "Calculating how much you can withdraw...";
+			}
+		}
+		if (.@j == 1) {
+			if (Zeny < 1) {
+				mes "You have no Zeny.";
+				close;
+			}
+			if (#savings >= 2000000000) {
+				mes "Your balance is already at its maximum.";
+				close;
+			}
+			else {
+				set .@amt, 2000000000-#savings;
+				if (.@amt > Zeny)
+					set .@amt, Zeny;
+				mes "Calculating how much you can deposit...";
+			}
+		}
+	}
+	else {
+		mes "Please enter how much you wish to "+.@menu$[.@j]+".";
+		input .@amt,0,.@mz;
+	}
+	
+	if ( .@amt == 0 )
+	{
+		next;
+		mes .@n$;
+		mes "^FF0000Invalid input...^000000";
+		close;
+	}
+	
+	if ( .@menu$[.@j] == "Deposit" )
+	{
+		goto s_Withdraw;
+	}
+	
+	if ( .@menu$[.@j] == "Withdraw" )
+	{
+		goto s_Proceed;
+	}
+	
+	if ( .@amt == 0 )
+	{
+		next;
+		mes .@n$;
+		mes "^FF0000Invalid input...^000000";
+		close;
+	}
+	
+	s_Withdraw:
+		if ( .@amt + #savings > 2000000000 )
+	{
+		next;
+		mes .@n$;
+		mes "^FF0000You cannot deposit more than 2,000,000,000 in the bank...^000000";
+		close;
+	}
+	s_Proceed:
+	next;
+	mes .@n$;
+	mes .@menu$[.@j] + ": " + .@amt;
+	mes " ";
+	mes (.@j!=2)?"Would you like to proceed?":"Thank you!";
+	if ( select ( "Yes:No" ) == 2 ) close;
+	next;
+	mes .@n$;
+	if ( FailMessage(.@j,.@amt,.@mz) != "" )
+	{
+		mes "^FF0000" +@msg$+ "^000000";
+		set @msg$, "";
+		close;
+	}
+	Transaction(.@j,.@amt);
+	mes .@menu$[.@j] + " successful!";
+	close;
+
+	function	FailMessage	{
+	
+		switch (getarg(0))
+		{
+			Case 0:	// Withdraw
+				if ( 1000000000 < (Zeny + getarg(1)) ) set @msg$, "You can't hold that much Zeny. The most you can hold is 1,000,000,000";
+				if ( #savings < getarg(1) ) set @msg$, "You have insufficient amount of Zeny in your bank account.";
+				break;
+				
+			Case 1:	// Deposit
+				if ( Zeny < getarg(1) ) set @msg$, "You have insufficient amount of Zeny on hand.";
+				break;
+		}
+		return @msg$;
+	
+	}
+	
+	function	Transaction	{
+	
+		switch (getarg(0))
+		{
+			Case 0:	// Withdraw
+				set Zeny, Zeny + getarg(1);
+				set #savings, #savings - getarg(1);
+				break;
+				
+			Case 1:	// Deposit
+				set Zeny, Zeny - getarg(1);
+				set #savings, #savings + getarg(1);
+				break;
+		}
+		return;
+		
+	}
+	
+}

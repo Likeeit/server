@@ -1,0 +1,6 @@
+-	script	tkreset	-1,{
+	OnClock0001:
+	if (gettime(4) == 0)
+		tkrankreset;
+	end;
+}

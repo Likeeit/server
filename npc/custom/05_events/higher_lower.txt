@@ -1,0 +1,93 @@
+xmas,158,134,5	script	Higher or Lower?	485,{
+	if (H_L_E != gettime(8)) {
+		set H_L_T, 0;
+	}
+	L_Intro:
+	set .@name$, "[Higher or Lower?]";
+	mes .@name$;
+	mes "Hi, would you like to play the game?";
+	mes "It costs 100,000 Zeny and you may only play 5 rounds a day.";
+	menu "Yes!", -, "Explain the rules", L_Rules;
+
+	next;
+	if (H_L_T >= 5) {
+		mes .@name$;
+		mes "You've already played 5 rounds today.";
+		mes "Please come back tomorrow.";
+		close;
+	}
+	if (Zeny < 100000) {
+		mes .@name$;
+		mes "Not enough Zeny!";
+		close;
+	}
+	set Zeny, Zeny - 100000;
+	set H_L_T, H_L_T + 1;
+	set H_L_E, gettime(8);
+	L_Start:
+	set .@mynumber, rand(2,9);
+	set .@npcnumber, rand(1,10);
+	while (.@npcnumber == .@mynumber) {
+		set .@npcnumber, rand(1,10);
+	}
+	mes .@name$;
+	mes "Your number is ^0000FF"+.@mynumber+"^000000";
+	mes "Is my number higher or lower than yours?";
+	set .@choice, select("Higher:Lower");
+	next;
+	switch(.@choice) {
+		case 1:
+			if (.@npcnumber > .@mynumber)
+				set .@correct, 1;
+			else
+				set .@correct, 0;
+			break;
+		
+		case 2:
+			if (.@npcnumber > .@mynumber)
+				set .@correct, 0;
+			else
+				set .@correct, 1;
+			break;
+	}
+	mes .@name$;
+	if (.@correct) {
+		set .@wins, .@wins + 1;
+		if (.@wins >= 5) {
+			mes "You guessed correctly!";
+			mes "You have 5 wins, which means you won the game!";
+			next;
+			mes .@name$;
+			mes "Here is your prize. Enjoy!";
+			getitem .prize_id, .prize_amount;
+			close;
+		}
+		mes "You guessed correctly!";
+		mes "You have now ^FF0000"+.@wins+"^000000 "+((.@wins > 1)? "wins":"win")+".";
+		mes (5-.@wins)+" more "+(((5-.@wins) > 1)? "wins":"win")+" to get a prize!";
+		next;
+		goto L_Start;
+	}
+	else {
+		mes "You guessed incorrectly!";
+		mes "Try again next time!";
+		close; 
+	}
+	
+
+
+	L_Rules:
+	next;
+	mes .@name$;
+	mes "Ok, I will initially give you a number between 1 and 10.";
+	mes "Then I will give myself a number between 1 and 10 (hidden).";
+	mes "You must guess whether my number is higher or lower than yours.";
+	mes "In order to win the prize you must win 5 times in a row.";
+	next;
+	goto L_intro;
+
+	OnInit:
+	set .prize_id, 6092;
+	set .prize_amount, 3;
+	end;
+}

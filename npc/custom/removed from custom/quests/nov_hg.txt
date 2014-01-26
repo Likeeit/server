@@ -1,0 +1,53 @@
+prontera,161,185,3	script	Anniversary Headgear Quest	446,{
+ 
+mes "[Anniversary Headgear Quest]";
+mes "It's the first year anniversary for Woon!";
+mes "How about something that suits the occasion?";
+next;
+	menu "Sure",-,"Nah...I'll pass on it",H_exit;
+	mes "[Anniversary Headgear Quest]";
+	mes "It's a King Tiger Doll Hat!";
+	next;
+		menu "How do i get it?",I_king,"Cancel",H_cancel;
+
+I_king:
+mes "[Anniversary Headgear Quest]";
+mes "Bring me the following:";
+mes "5x Tiger skin";
+mes "2x Tiger's Footskin";
+mes "100x Tiger Panty";
+mes "4,000,000 zeny";
+next;
+	mes "[Anniversary Headgear Quest]";
+	mes "So, do you have the items?";
+	next;
+		menu "Here are the items!",M_items,"I need more time to gather them",H_exit;
+
+M_items:
+if(countitem(1029)<5 || countitem(1030)<2 || countitem(7267)<100 || Zeny<4000000) goto M_insufficient;
+delitem 1029,5;
+delitem 1030,2;
+delitem 7267,100;
+set zeny,zeny-4000000;
+next;
+	mes "[Anniversary Headgear Quest]";
+	mes "Here you go!";
+	getitem 5497,1;
+	close;
+	
+M_insufficient:
+mes "[Anniversary Headgear Quest]";
+mes "Sorry but you don't have the required items.";
+mes "Maybe you should go take a look again.";
+close;
+
+H_exit:
+mes "[Anniversary Headgear Quest]";
+mes "Come back later...";
+close;
+
+H_cancel:
+mes "[Anniversary Headgear Quest]";
+mes "Nevermind...";
+close;
+}

@@ -1,0 +1,888 @@
+//***********************//
+//Author: Vermin         //
+//***********************//
+//WoonRO's Anniversary   //
+//Goal setter and quests //
+//***********************//
+//Version 1.0 22-09-2013 //
+//***********************//
+prontera,163,184,5	script	Goal	450,{
+set .@vname$, "[Goals]";
+if(getgmlevel() > 90){
+V_GM:
+mes .@vname$;
+mes "Hey there handsome.";
+mes "What can I do for you?";
+switch(select("Leave the npc","Go to player menu","Toggle goals")){
+case 1:
+mes "See you next time.";
+close;
+case 2:
+next;
+mes .@vname$;
+mes "Ok, have fun in the player menu.";
+next;
+goto V_Player;	
+case 3:
+next;
+mes .@vname$;
+if($gone == 1) mes "^00FF001. Achieve a total of 5000 likes on WoonRO's Facebook Page^FF0000";
+else mes "^FF00001. Achieve a total of 5000 likes on WoonRO's Facebook Page^FF0000";
+
+if($gtwo == 1) mes "^00FF002. WoonRO Facebook lottery has reached 300 attendees^FF0000";	
+else mes "2. WoonRO Facebook lottery has reached 300 attendees^FF0000";
+
+if($gthree == 1) mes "^00FF003. The player peak on our website reaches 700^FF0000";	
+else mes "3. The player peak on our website reaches 700^FF0000";
+
+if($gfour == 1) mes "^00FF004. The forum total member count reaches 6000^FF0000";	
+else mes "4. The forum total member count reaches 6000^FF0000";
+
+if($gfive == 1) mes "^00FF005. Have 50 participating people participate in the Anniversary New Heights Event^FF0000";	
+else mes "5. Have 50 participating people participate in the Anniversary New Heights Event^FF0000";
+
+if($gsix == 1) mes "^00FF006. WoonRO Zoo Screen Shot – 200 players^FF0000";	
+else mes "6. WoonRO Zoo Screen Shot – 200 players^FF0000";
+
+if($gseven == 1) mes "^00FF007. Welcome 50 players old players back within a single week^FF0000";	
+else mes "7. Welcome 50 players old players back within a single week^FF0000";
+
+if($geight == 1) mes "^00FF008. Welcome 120 new players within a single week^FF0000";	
+else mes "8. Welcome 120 new players within a single week^FF0000";
+
+if($gnine == 1) mes "^00FF009. When the date reaches the 31st of October^FF0000";	
+else mes "9. When the date reaches the 31st of October^FF0000";
+
+if($gten == 1) mes "^00FF0010. When the date reaches the 1st of November^000000";	
+else mes "10. When the date reaches the 1st of November^000000";
+mes "Please select which goal you want to toggle";
+switch(select("Goal 1","Goal 2","Goal 3","Goal 4","Goal 5","Goal 6","Goal 7","Goal 8","Goal 9","Goal 10")){
+next;
+mes .@vname$;
+case 1:
+mes "This goal is:";
+mes "5000 likes on WoonRO Facebook Page";
+if($gone == 1){
+mes "Are you sure you want to turn this goal off?";
+switch(select("Yes","No")){	
+case 1:
+mes "Ok";
+set $gone, 0;
+mes "This goal has been turned off.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;
+}
+} 
+else{
+mes "Are you sure you want to turn this goal on?";
+switch(select("Yes","No")){
+case 1:
+mes "Ok";
+set $gone, 1;
+mes "This goal is now turned on."; 
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;  
+}
+}
+case 2:
+mes "This goal is:";
+mes "WoonRO Facebook lottery has 300 attendees";
+if($gtwo == 1){
+mes "Are you sure you want to turn this goal off?";
+switch(select("Yes","No")){	
+case 1:
+mes "Ok";
+set $gtwo, 0;
+mes "This goal has been turned off.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;
+}
+} 
+else{
+mes "Are you sure you want to turn this goal on?";
+switch(select("Yes","No")){
+case 1:
+mes "Ok";
+set $gtwo, 1;
+mes "This goal is now turned on.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;  
+}
+}
+case 3:
+mes "This goal is:";
+mes "Player Peak on Website Reaches 700";
+if($gthree == 1){
+mes "Are you sure you want to turn this goal off?";
+switch(select("Yes","No")){	
+case 1:
+mes "Ok";
+set $gthree, 0;
+mes "This goal has been turned off.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;
+}
+} 
+else{
+mes "Are you sure you want to turn this goal on?";
+switch(select("Yes","No")){
+case 1:
+mes "Ok";
+set $gthree, 1;
+mes "This goal is now turned on.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;  
+}
+}
+case 4:
+mes "This goal is:";
+mes "4.	Forum total member count 6000";
+if($gfour == 1){
+mes "Are you sure you want to turn this goal off?";
+switch(select("Yes","No")){	
+case 1:
+mes "Ok";
+set $gfour, 0;
+mes "This goal has been turned off.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;
+}
+} 
+else{
+mes "Are you sure you want to turn this goal on?";
+switch(select("Yes","No")){
+case 1:
+mes "Ok";
+set $gfour, 1;
+mes "This goal is now turned on.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;  
+}
+}
+case 5:
+mes "This goal is:";
+mes "50 people participate in the  new heights event";
+if($gfive == 1){
+mes "Are you sure you want to turn this goal off?";
+switch(select("Yes","No")){	
+case 1:
+mes "Ok";
+set $gfive, 0;
+mes "This goal has been turned off.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;
+}
+} 
+else{
+mes "Are you sure you want to turn this goal on?";
+switch(select("Yes","No")){
+case 1:
+mes "Ok";
+set $gfive, 1;
+mes "This goal is now turned on.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;  
+}
+}
+case 6:
+mes "This goal is:";
+mes "WoonRO Zoo Screen Shot – 200 players";
+if($gsix == 1){
+mes "Are you sure you want to turn this goal off?";
+switch(select("Yes","No")){	
+case 1:
+mes "Ok";
+set $gsix, 0;
+mes "This goal has been turned off.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;
+}
+} 
+else{
+mes "Are you sure you want to turn this goal on?";
+switch(select("Yes","No")){
+case 1:
+mes "Ok";
+set $gsix, 1;
+mes "This goal is now turned on.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu."; 
+next;
+goto V_GM;  
+}
+}
+case 7:
+mes "This goal is:";
+mes "50 players return in a single week";
+if($gseven == 1){
+mes "Are you sure you want to turn this goal off?";
+switch(select("Yes","No")){	
+case 1:
+mes "Ok";
+set $gseven, 0;
+mes "This goal has been turned off.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;
+}
+} 
+else{
+mes "Are you sure you want to turn this goal on?";
+switch(select("Yes","No")){
+case 1:
+mes "Ok";
+set $gseven, 1;
+mes "This goal is now turned on."; 
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu."; 
+next;
+goto V_GM;  
+}
+}
+case 8:
+mes "This goal is:";
+mes "120 new players in a single week";
+if($geight == 1){
+mes "Are you sure you want to turn this goal off?";
+switch(select("Yes","No")){	
+case 1:
+mes "Ok";
+set $geight, 0;
+mes "This goal has been turned off.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;
+}
+} 
+else{
+mes "Are you sure you want to turn this goal on?";
+switch(select("Yes","No")){
+case 1:
+mes "Ok";
+set $geight, 1;
+mes "This goal is now turned on."; 
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu."; 
+next;
+goto V_GM;  
+}
+}
+case 9:
+mes "This goal is:";
+mes "The date is 31 October";
+if($gnine == 1){
+mes "Are you sure you want to turn this goal off?";
+switch(select("Yes","No")){	
+case 1:
+mes "Ok";
+set $gnine, 0;
+mes "This goal has been turned off.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;
+}
+} 
+else{
+mes "Are you sure you want to turn this goal on?";
+switch(select("Yes","No")){
+case 1:
+mes "Ok";
+set $gnine, 1;
+mes "This goal is now turned on.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;  
+}
+}
+case 10:
+mes "This goal is:";
+mes "The date is 1 November";
+if($gten == 1){
+mes "Are you sure you want to turn this goal off?";
+switch(select("Yes","No")){	
+case 1:
+mes "Ok";
+set $gten, 0;
+mes "This goal has been turned off.";
+next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;
+}
+} 
+else{
+mes "Are you sure you want to turn this goal on?";
+switch(select("Yes","No")){
+case 1:
+mes "Ok";
+set $gten, 1;
+mes "This goal is now turned on."; next;
+goto V_GM;
+  
+case 2:
+mes "Ok, I'll set you back to the main menu.";
+next;
+goto V_GM;  
+}
+}	
+}
+}
+}
+else{
+V_Player:
+mes .@vname$;
+mes "The WoonRO Goals will be extended until December 17th.";
+mes "Thanks for all of your support so far!";
+next;
+mes .@vname$;
+mes "The goals in red are the ones we have not met, and the ones in green we have met.";
+next;
+mes .@vname$;
+if($gone == 1) mes "^00FF001. Achieve a total of 5000 likes on WoonRO's Facebook Page^FF0000";
+else mes "^FF00001. Achieve a total of 5000 likes on WoonRO's Facebook Page^FF0000";
+
+if($gtwo == 1) mes "^00FF002. WoonRO Facebook lottery has reached 300 attendees^FF0000";	
+else mes "2. WoonRO Facebook lottery has reached 300 attendees^FF0000";
+
+if($gthree == 1) mes "^00FF003. The player peak on our website reaches 700^FF0000";	
+else mes "3. The player peak on our website reaches 700^FF0000";
+
+if($gfour == 1) mes "^00FF004. The forum total member count reaches 6000^FF0000";	
+else mes "4. The forum total member count reaches 6000^FF0000";
+
+if($gfive == 1) mes "^00FF005. Have 50 participating people participate in the Anniversary New Heights Event^FF0000";	
+else mes "5. Have 50 participating people participate in the Anniversary New Heights Event^FF0000";
+
+if($gsix == 1) mes "^00FF006. WoonRO Zoo Screen Shot – 200 players^FF0000";	
+else mes "6. WoonRO Zoo Screen Shot – 200 players^FF0000";
+
+if($gseven == 1) mes "^00FF007. Welcome 50 players old players back within a single week^FF0000";	
+else mes "7. Welcome 50 players old players back within a single week^FF0000";
+
+if($geight == 1) mes "^00FF008. Welcome 120 new players within a single week^FF0000";	
+else mes "8. Welcome 120 new players within a single week^FF0000";
+
+if($gnine == 1) mes "^00FF009. When the date reaches the 31st of October^FF0000";	
+else mes "9. When the date reaches the 31st of October^FF0000";
+
+if($gten == 1) mes "^00FF0010. When the date reaches the 1st of November^000000";	
+else mes "10. When the date reaches the 1st of November^000000";
+
+mes "Please select a goal.";
+switch(select("Goal 1","Goal 2","Goal 3","Goal 4","Goal 5","Goal 6","Goal 7","Goal 8","Goal 9","Goal 10","Exit")){
+case 1:
+if($gone == 0) goto V_goalnotmet;
+else goto V_quest1;
+case 2:
+if($gtwo == 0) goto V_goalnotmet;
+else goto V_quest2;
+case 3:
+if($gthree == 0) goto V_goalnotmet;
+else goto V_quest3;
+case 4:
+if($gfour == 0) goto V_goalnotmet;
+else goto V_quest4;
+case 5:
+if($gfive == 0) goto V_goalnotmet;
+else goto V_quest5;
+case 6:
+if($gsix == 0) goto V_goalnotmet;
+else goto V_quest6;
+case 7:
+if($gseven == 0) goto V_goalnotmet;
+else goto V_quest7;
+case 8:
+if($geight == 0) goto V_goalnotmet;
+else goto V_quest8;
+case 9:
+if($gnine == 0) goto V_goalnotmet;
+else goto V_quest9;
+case 10:
+if($gten == 0) goto V_goalnotmet;
+else goto V_quest10;
+case 11:
+goto V_exit;
+}
+
+V_exit:
+next;
+mes .@vname$;
+mes "Ok, Cya later.";
+close;
+
+V_goalnotmet:
+next;
+mes .@vname$;
+mes "This goal has not yet been reached, please help meeting the requirements for this goal. If you already have done this, thank you for your effort.";
+close;
+
+V_materialsmissing:
+next;
+mes .@vname$;
+mes "Sorry, you are missing some materials for this headgear.";
+mes "Please come back when you do.";
+close;
+
+V_quest1:
+next;
+mes .@vname$;
+mes "For this quest you will get a:";
+mes getitemname(5410) + ", Item ID: 5410";
+mes "The materials you need are:";
+mes "x50 " +  getitemname(7225);
+mes "x50 " +  getitemname(7151);
+mes "x50 " +  getitemname(7112);
+mes "x50 " +  getitemname(7111);
+mes "x1 " +  getitemname(983);
+mes "Do you want to get this headgear?";
+switch(select("Yes","No")){
+case 1:
+if(countitem(7225) < 50 || countitem(7151) < 50 || countitem(7112) < 50 || countitem(7111) < 50 || countitem(983) < 1){
+goto V_materialsmissing;
+}
+else{
+delitem 7225,50;
+delitem 7151,50;
+delitem 7112,50;
+delitem 7111,50;
+delitem 983,1;
+getitem 5410,1;
+
+next;
+mes .@vname$;
+mes "Thanks for completing my quest. Hope to see you again for my other headgear quests.";
+mes "Bye.";
+close;
+}
+case 2:
+goto V_exit;
+}
+
+V_quest2:
+next;
+mes .@vname$;
+mes "For this quest you will get a:";
+mes getitemname(5762) + ", Item ID: 5762";
+mes "The materials you need are:";
+mes "x25 " +  getitemname(932);
+mes "x25 " +  getitemname(947);
+mes "x1 " +  getitemname(6089);
+mes "x50 " +  getitemname(7205);
+mes "x100 " +  getitemname(7322);
+mes "Do you want to get this headgear?";
+switch(select("Yes","No")){
+case 1:
+if(countitem(932) < 25 || countitem(947) < 25 || countitem(6089) < 1 || countitem(7205) < 50 || countitem(7322) < 100){
+goto V_materialsmissing;
+}
+else{
+delitem 932,25;
+delitem 947,25;
+delitem 6089,1;
+delitem 7205,50;
+delitem 7322,100;
+getitem 5762,1;
+
+next;
+mes .@vname$;
+mes "Thanks for completing my quest. I hope to see you again for my other headgear quests.";
+mes "Bye.";
+close;
+}
+case 2:
+goto V_exit;
+}
+V_quest3:
+next;
+mes .@vname$;
+mes "You can choose from 2 different headgears.";
+switch(select(getitemname(5416) + "", "" + getitemname(5528))){
+case 1:
+next;
+mes .@vname$;
+mes "For this quest you will get a:";
+mes getitemname(5416) + ", Item ID: 5416";
+mes "The materials you need are:";
+mes "x100 " +  getitemname(7326);
+mes "x100 " +  getitemname(7448);
+mes "x10 " +  getitemname(12353);
+mes "x5 " +  getitemname(976);
+mes "x50 " +  getitemname(970);
+mes "Do you want to get this headgear?";
+switch(select("Yes","No")){
+case 1:
+if(countitem(7326) < 100 || countitem(7448) < 100 || countitem(12353) < 10 || countitem(976) < 5 || countitem(970) < 50){
+goto V_materialsmissing;
+}
+else{
+delitem 7326,100;
+delitem 7448,100;
+delitem 12353,10;
+delitem 976,5;
+delitem 970,50;
+getitem 5416,1;
+
+next;
+mes .@vname$;
+mes "Thanks for completing my quest. I hope to see you again for my other headgear quests.";
+mes "Bye.";
+close;
+}
+case 2:
+goto V_exit;
+}
+case 2:
+next;
+mes .@vname$;
+mes "For this quest you will get a:";
+mes getitemname(5528) + ", Item ID: 5528";
+mes "The materials you need are:";
+mes "x1 " +  getitemname(4058);
+mes "x1 " +  getitemname(2235);
+mes "x20 " +  getitemname(719);
+mes "x1 " +  getitemname(4014);
+mes "Do you want to get this headgear?";
+switch(select("Yes","No")){
+case 1:
+if(countitem(4058) < 1 || countitem(2235) < 1 || countitem(719) < 20 || countitem(4014) < 1){
+goto V_materialsmissing;
+}
+else{
+delitem 4058,1;
+delitem 2235,1;
+delitem 719,20;
+delitem 4014,1;
+getitem 5528,1;
+
+next;
+mes .@vname$;
+mes "Thanks for completing my quest. I hope to see you again for my other headgear quests.";
+mes "Bye.";
+close;
+}
+case 2:
+goto V_exit;
+}
+}
+V_quest4:
+next;
+mes .@vname$;	
+mes "For this quest you will get a:";
+mes getitemname(5464) + ", Item ID: 5464";
+mes "The materials you need are:";
+mes "x1 " +  getitemname(2700);
+mes "x200 " +  getitemname(1020);
+mes "x200 " +  getitemname(7165);
+mes "x1 " +  getitemname(7166);
+mes "Do you want to get this headgear?";
+switch(select("Yes","No")){
+case 1:
+if(countitem(2700) < 1 || countitem(1020) < 200 || countitem(7165) < 200 || countitem(7166) < 1){
+goto V_materialsmissing;
+}
+else{
+delitem 2700,1;
+delitem 1020,200;
+delitem 7165,200;
+delitem 7166,1;
+getitem 5464,1;
+
+next;
+mes .@vname$;
+mes "Thanks for completing my quest. I hope to see you again for my other headgear quests.";
+mes "Bye.";
+close;
+}
+case 2:
+goto V_exit;
+}
+V_quest5:
+next;
+mes .@vname$;	
+mes "For this quest you will get a:";
+mes getitemname(5780) + ", Item ID: 5780";
+mes "The materials you need are:";
+mes "x1 " +  getitemname(6033);
+mes "x20 " +  getitemname(6023);
+mes "x20 " +  getitemname(7063);
+mes "x3 " +  getitemname(2257);
+mes "x10 " +  getitemname(982);
+mes "Do you want to get this headgear?";
+switch(select("Yes","No")){
+case 1:
+if(countitem(6033) < 1 || countitem(6023) < 20 || countitem(7063) < 20 || countitem(2257) < 3 || countitem(982) < 10){
+goto V_materialsmissing;
+}
+else{
+delitem 6033,1;
+delitem 6023,20;
+delitem 7063,20;
+delitem 2257,3;
+delitem 982,10;
+getitem 5780,1;
+
+next;
+mes .@vname$;	
+mes "Thanks for completing my quest. I hope to see you again for my other headgear quests.";
+mes "Bye.";
+close;
+}
+case 2:
+goto V_exit;
+}
+V_quest6:
+next;
+mes .@vname$;
+mes "For this quest you will get a:";
+mes getitemname(5497) + ", Item ID: 5497";
+mes "The materials you need are:";
+mes "x5 " +  getitemname(1029);
+mes "x2 " +  getitemname(1030);
+mes "x100 " +  getitemname(7267);
+mes "x10 " +  getitemname(969);
+mes "Do you want to get this headgear?";
+switch(select("Yes","No")){
+case 1:
+if(countitem(1029) < 5 || countitem(1030) < 2 || countitem(7267) < 100 || countitem(969) < 10){
+goto V_materialsmissing;
+}
+else{
+delitem 1029,5;
+delitem 1030,2;
+delitem 7267,100;
+delitem 969,10;
+getitem 5497,1;
+
+next;
+mes .@vname$;	
+mes "Thanks for completing my quest. I hope to see you again for my other headgear quests.";
+mes "Bye.";
+close;
+}
+case 2:
+goto V_exit;
+}
+V_quest7:
+next;
+mes .@vname$;
+mes "For this quest you will get a:";
+mes getitemname(5367) + ", Item ID: 5367";
+mes "The materials you need are:";
+mes "x1 " +  getitemname(5046);
+mes "x1 " +  getitemname(2264);
+mes "x1 " +  getitemname(9018);
+mes "x1 " +  getitemname(9025);
+mes "x1 " +  getitemname(4328);
+mes "x100 " +  getitemname(7188);
+mes "Do you want to get this headgear?";
+switch(select("Yes","No")){
+case 1:
+if(countitem(5046) < 1 || countitem(2264) < 1 || countitem(9018) < 1 || countitem(9025) < 1 || countitem(4328) < 1 || countitem(7188) < 100){
+goto V_materialsmissing;
+}
+else{
+delitem 5046,1;
+delitem 2264,1;
+delitem 9018,1;
+delitem 9025,1;
+delitem 4328,1;
+delitem 7188,100;
+getitem 5367,1;
+
+next;
+mes .@vname$;	
+mes "Thanks for completing my quest. I hope to see you again for my other headgear quests.";
+mes "Bye.";
+close;
+}
+case 2:
+goto V_exit;
+}
+V_quest8:
+next;
+mes .@vname$;	
+mes "For this quest you will get a:";
+mes getitemname(5568) + ", Item ID: 5568";
+mes "The materials you need are:";
+mes "x5 " +  getitemname(4006);
+mes "x1 " +  getitemname(2214);
+mes "x1 " +  getitemname(2286);
+mes "x1 " +  getitemname(982);
+mes "Do you want to get this headgear?";
+switch(select("Yes","No")){
+case 1:
+if(countitem(4006) < 5 || countitem(2214) < 1 || countitem(2286) < 1 || countitem(982) < 1){
+goto V_materialsmissing;
+}
+else{
+delitem 4006,5;
+delitem 2214,1;
+delitem 2286,1;
+delitem 982,1;
+getitem 5568,1;
+
+next;
+mes .@vname$;	
+mes "Thanks for completing my quest. I hope to see you again for my other headgear quests.";
+mes "Bye.";
+close;
+}
+case 2:
+goto V_exit;
+}
+V_quest9:
+next;
+mes .@vname$;	
+mes "For this quest you will get a:";
+mes getitemname(5232) + ", Item ID: 5232";
+mes "The materials you need are:";
+mes "x1 " +  getitemname(7021);
+mes "x100 " +  getitemname(1055);
+mes "x10 " +  getitemname(1015);
+mes "x1 " +  getitemname(13047);
+mes "x100 " +  getitemname(7004);
+mes "Do you want to get this headgear?";
+switch(select("Yes","No")){
+case 1:
+if(countitem(7021) < 1 || countitem(1055) < 100 || countitem(1015) < 10 || countitem(13047) < 1 || countitem(7004) < 100){
+goto V_materialsmissing;
+}
+else{
+delitem 7021,1;
+delitem 1055,100;
+delitem 1015,10;
+delitem 13047,1;
+delitem 7004,100;
+getitem 5232,1;
+
+next;
+mes .@vname$;	
+mes "Thanks for completing my quest. I hope to see you again for my other headgear quests.";
+mes "Bye.";
+close;
+}
+case 2:
+goto V_exit;
+}
+V_quest10:
+next;
+mes .@vname$;	
+mes "For this quest you will get a:";
+mes getitemname(5359) + ", Item ID: 5359";
+mes "The materials you need are:";
+mes "x1 " +  getitemname(5163) + "[1]";
+mes "x200 " +  getitemname(7106);
+mes "x2 " +  getitemname(975);
+mes "x1 " +  getitemname(976);
+mes "x1 " +  getitemname(983);
+mes "x10 " +  getitemname(969);
+mes "Do you want to get this headgear?";
+switch(select("Yes","No")){
+case 1:
+if(countitem(5163) < 1 || countitem(7106) < 200 || countitem(975) < 2 || countitem(976) < 1 || countitem(983) < 1 || countitem(969) < 10){
+goto V_materialsmissing;
+}
+else{
+delitem 5163,1;
+delitem 7106,200;
+delitem 975,2;
+delitem 976,1;
+delitem 983,1;
+delitem 969,10;
+getitem 5359,1;
+
+next;
+mes .@vname$;	
+mes "Thanks for completing my quest. I hope to see you again for my other headgear quests.";
+mes "Bye.";
+close;
+}
+case 2:
+goto V_exit;
+}
+close;
+}
+}

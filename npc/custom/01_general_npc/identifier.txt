@@ -1,0 +1,107 @@
+//edit by Ridley
+
+-	script	identifier	-1,{
+OnWhisperGlobal:
+mes "[Identifier]";
+mes "Hello there!";
+mes "I can identify all your unidentified items.";
+mes "It's just "+@price+" Zeny each item.";
+next;
+menu	"Sure.",-,
+	"No thanks...",L_Bye;
+
+getinventorylist;
+set @identify, 0;
+set @price, 100;
+
+for(set @i, 0; @i < @inventorylist_count; set @i, @i + 1) {
+		if (@inventorylist_identify[@i] == 0) set @identify, @identify + 1;}
+
+if (@identify == 0) goto L_Nothing;
+
+mes "[Identifier]";
+mes "You've got "+@identify+" unidentified item(s) in your inventory.";
+mes "I'll identify them for "+(@identify * @price)+" Zeny.";
+
+mes "If you've got any ^00AA00Magnifiers^000000, I'll take those instead.";
+mes "Shall I start now?";
+next;
+menu	"Ok, let's go!",-,
+	"What a ripoff...",L_Bye;
+
+getinventorylist;
+set @identified, 0;
+
+for(set @i, 0; @i < @inventorylist_count; set @i, @i + 1) {
+	if (@inventorylist_identify[@i] == 0) {
+	if (countitem(611) > 0) delitem 611,1;
+	else if (Zeny < @price) goto L_NoZeny;
+	else set Zeny, Zeny - @price;
+	delitem2 @inventorylist_id[@i],1,0,0,0,0,0,0,0;
+	getitem @inventorylist_id[@i],1;
+	set @identified, @identified + 1;
+	}
+}
+
+mes "[Identifier]";
+mes "Well, I identified everything!";
+mes "I've identified a total of "+@identified+" items for you.";
+mes "Bye~";
+cutin "",255;
+close;
+
+L_Nothing:
+mes "[Identifier]";
+mes "You don't have any unidentified Items.";
+cutin "",255;
+close;
+
+L_NoZeny:
+mes "[Identifier]";
+mes "You don't have enough Zeny.";
+cutin "",255;
+close;
+
+L_Bye:
+mes "[Identifier]";
+mes "...";
+cutin "",255;
+close;
+
+}
+prontera,150,193,5	duplicate(identifier)	Identifier#1-36	429
+hugel,92,149,6	duplicate(identifier)	Identifier#1-1	429
+splendide,202,87,3	duplicate(identifier)	Identifier#1-2	429
+ayothaya,157,111,3	duplicate(identifier)	Identifier#1-3	429
+gonryun,167,113,3	duplicate(identifier)	Identifier#1-4	429
+moscovia,226,190,3	duplicate(identifier)	Identifier#1-5	429
+brasilis,191,222,5	duplicate(identifier)	Identifier#1-6	429
+morocc,156,99,3	duplicate(identifier)	Identifier#1-7	429
+dicastes01,192,197,6	duplicate(identifier)	Identifier#1-8	429
+geffen,116,62,1	duplicate(identifier)	Identifier#1-9	429
+umbala,95,162,5	duplicate(identifier)	Identifier#1-10	429
+payon,161,233,5	duplicate(identifier)	Identifier#1-11	429
+alberta,190,148,5	duplicate(identifier)	Identifier#1-12	429
+//alberta,122,59,4	duplicate(identifier)	Identifier#1-13	429
+aldebaran,147,122,5	duplicate(identifier)	Identifier#1-14	429
+izlude,131,119,5	duplicate(identifier)	Identifier#1-15	429
+xmas,143,130,5	duplicate(identifier)	Identifier#1-16	429
+comodo,203,146,4	duplicate(identifier)	Identifier#1-17	429
+amatsu,105,150,5	duplicate(identifier)	Identifier#1-18	429
+yuno,150,170,6	duplicate(identifier)	Identifier#1-19	429
+//niflheim,188,180,5	duplicate(identifier)	Identifier#1-20	429
+louyang,207,102,6	duplicate(identifier)	Identifier#1-21	429
+rachel,124,118,6	duplicate(identifier)	Identifier#1-22	429
+veins,209,127,4	duplicate(identifier)	Identifier#1-23	429
+lighthalzen,158,100,6	duplicate(identifier)	Identifier#1-24	429
+mid_camp,226,234,4	duplicate(identifier)	Identifier#1-25	429
+manuk,272,225,4	duplicate(identifier)	Identifier#1-26	429
+einbech,68,114,6	duplicate(identifier)	Identifier#1-27	429
+jawaii,214,295,4	duplicate(identifier)	Identifier#1-28	429
+moc_ruins,72,156,4	duplicate(identifier)	Identifier#1-29	429
+einbroch,72,206,4	duplicate(identifier)	Identifier#1-30	429
+dewata,193,227,3	duplicate(identifier)	Identifier#1-31	429
+malangdo,189,204,3	duplicate(identifier)	Identifier#1-32	429
+mora,101,117,3	duplicate(identifier)	Identifier#1-33	429
+mosk_fild01,96,101,3	duplicate(identifier)	Identifier#1-34	429
+pay_arche,58,139,3	duplicate(identifier)	Identifier#1-35	429

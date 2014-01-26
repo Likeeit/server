@@ -1,0 +1,275 @@
+// UVP 2
+prontera.gat,167,189,3	script	Ultimate PvP Warper	459,{
+	cutin "ep13_captin_edq",2;
+	if (.pvp_square$=="") donpcevent "Ultimate PVP warper::OnClock0000";
+ 
+	mes "[PvP Warper]";
+	mes "You want to test your combat skills in PvP?";
+	mes "Choose the PvP mode you wish to enter:";
+	mes "^00dd00@go pvp^000000 : PvP Square";
+	next;
+	switch(select("PVP Square(^CC7700Ranked^000000) ["+getmapusers("guild_vs3")+"/100]:Gladiator Arena(^CC7700Ranked^000000) ["+getmapusers("wglad")+"/100]:PVP Nightmare(^0000AAUnranked^000000) ["+getmapusers("pvp_n_3-5")+"/100]")) {
+
+	case 1:	// No debuff izlude PVP Square
+		if (getmapusers("guild_vs3") > 99) callsub S_full;
+		callsub S_payment;
+		warp "guild_vs3",0,0;
+		end;
+
+	case 2:	// No debuff PVP Square
+		if (getmapusers("wglad") > 99) callsub S_full;
+		if(BaseLevel < 90) {
+			mes "[PvP Warper]";
+			mes "Sorry, but you need to be at least level 90 to enter this room.";
+			cutin "ep13_captin_edq",255;
+			close;
+			end;
+		}
+		callsub S_payment;
+		sc_end SC_ALL;
+		warp "wglad",0,0;
+		end;
+
+
+//	case 3:	// Debuff PVP Square
+//		if (getmapusers(.pvp_square$) > 99) callsub S_full;
+//		callsub S_payment;
+//		warp .pvp_square$,0,0;
+//		sc_end SC_ALL;
+//		end;
+//
+//	case 4:	// PVP NoPotion
+//		if (getmapusers("pvp_n_4-5") > 99) callsub S_full;
+//		for( set .@i,0; .@i<getarraysize(.NoPotion_ids); set .@i,.@i+1 ) {
+//			if (countitem(.NoPotion_ids[.@i])) {
+//				mes "You can not bring potions in this pvp.";
+//				cutin "",255;
+//				close;
+//			}
+//		}
+//		callsub S_payment;
+//		warp "pvp_n_4-5",0,0;
+//		sc_end SC_ALL;
+//		end;
+//
+	case 3:	// PVP Nightmare
+		if (getmapusers("pvp_n_3-5") > 99) callsub S_full;
+		callsub S_payment;
+		warp "pvp_n_3-5",0,0;
+		sc_end SC_ALL;
+		end;
+		
+//	case 4:	// GvG Room
+//		if (getmapusers("pvp_y_8-5") > 99) callsub S_full;
+//		callsub S_payment;
+//		warp "pvp_y_8-5",0,0;
+//		end;
+//	case 6: // Baby PVP Room
+//		if (getmapusers("pvp_n_2-5") > 99) callsub S_full;
+//		if (class < 4023 || class > 4045) goto L_NotBaby;
+//			callsub S_payment;
+//				warp "pvp_n_7-5",0,0;
+//				end;
+}
+L_NotBaby:
+		mes "Only baby can enter this room";
+		close;	
+	
+S_full:
+	mes " ";
+	mes "I'm sorry, this arena is full.  Please try again later...";
+	cutin "",255;
+	close;
+S_payment:
+	if (Zeny < (0*BaseLevel + 0)) {
+		mes "You don't have enough zeny.";
+		mes "It costs "+(0*BaseLevel + 0)+" zeny for you to enter.";
+		cutin "",255;
+		close;
+	}
+	set Zeny, Zeny - (0*BaseLevel + 0);
+	return;
+ 
+OnInit:
+	OnTimer5000:
+	delwaitingroom;
+	if((getmapusers("guild_vs3") >= getmapusers("wglad")) && (getmapusers("guild_vs3") >= getmapusers("pvp_n_3-5"))){
+		waitingroom getmapusers("guild_vs3")+" player"+( getmapusers("guild_vs3") > 1 ? "s are":" is") +" in the PvP Square", 0;
+		goto Timer;
+		end;
+	}
+	else if((getmapusers("wglad") >= getmapusers("guild_vs3")) && (getmapusers("wglad") >= getmapusers("pvp_n_3-5"))){
+		waitingroom getmapusers("wglad")+" player"+( getmapusers("wglad") > 1 ? "s are":" is") +" in the Gladiator Arena", 0;
+		goto Timer;
+		end;
+	}
+	else {
+		waitingroom getmapusers("pvp_n_3-5")+" player"+( getmapusers("pvp_n_3-5") > 1 ? "s are":" is") +" in the PvP Nightmare", 0;
+		goto Timer;
+		end;
+	}
+	
+//	switch(rand(1,3)) 
+//Case 1:
+//Case 2:
+//	waitingroom getmapusers("pvp_y_1-2")+" player"+( getmapusers("pvp_n_4-5") > 1 ? "s":"") +" are in the Izlude PvP", 0;
+//	goto Timer;
+//	end;
+//	break;
+//Case 3:
+//	waitingroom getmapusers("pvp_n_3-5")+" player"+( getmapusers("pvp_n_3-5") > 1 ? "s":"") +" are in the PvP Nightmare", 0;
+//	goto Timer;
+//	end;
+//	break;
+
+Timer:
+	initnpctimer;
+
+OnClock0000:
+	// set the "PVP Square" map, based on day of the weeek
+	switch(gettime(4)) {
+	case 0:	// Sunday
+	case 1:	// Monday
+	case 2:	// Tuesday
+	case 3:	// Wednesday
+	case 4:	// Thursday
+	case 5:	// Friday
+	case 6: // Saturday
+		set .pvp_square$, "guild_vs3";
+		break;
+	}
+ 
+	// items not allowed in PVP NoPotion
+	setarray .NoPotion_ids[0], 601, 607, 608, 602, 501, 502, 503, 504, 505, 506, 507, 508, 509, 510, 511, 512, 513, 514, 515, 516, 517, 518, 519, 520, 521, 522, 523, 525, 526, 528, 529, 530, 531, 532, 533, 534, 535, 536, 537, 538, 539, 540, 541, 544, 545, 546, 547, 548, 549, 550, 551, 552, 553, 554, 555, 556, 557, 558, 559, 560, 561, 562, 563, 564, 565, 566, 567, 568, 569, 570, 571, 572, 573, 574, 575, 576, 577, 578, 579, 580, 581, 582, 583, 584, 585, 586, 587, 588, 589, 590, 591, 592, 593, 594, 595, 596, 597, 598, 599, 663, 669, 679, 680, 681, 682, 683, 684, 685, 11500, 11501, 11502, 11503, 11504, 11505, 11506, 11507, 11508, 11509, 11510, 11511, 11512, 11703, 11706, 11707, 11708, 11709, 11710, 11711, 11712, 12021, 12022, 12041, 12042, 12043, 12044, 12045, 12046, 12047, 12048, 12049, 12050, 12051, 12052, 12053, 12054, 12055, 12056, 12057, 12058, 12059, 12060, 12061, 12062, 12063, 12064, 12065, 12066, 12067, 12068, 12069, 12070, 12071, 12072, 12073, 12074, 12075, 12076, 12077, 12078, 12079, 12080, 12081, 12082, 12083, 12084, 12085, 12086, 12087, 12088, 12089, 12090, 12091, 12092, 12093, 12094, 12095, 12096, 12097, 12098, 12099, 12100, 12101, 12102, 12112, 12113, 12122, 12123, 12124, 12202, 12203, 12204, 12205, 12206, 12207, 12245;
+ 
+	// items not allowed in Non Donator PVP
+	setarray .NoDonator_ids[0], 2410, 1530;
+	end;
+	
+	// items not allowed in the Non BG PvP
+	setarray .NoBG_ids[0], 13036, 13037, 13411, 13410, 1183, 1184, 1425, 1482, 1632, 1633, 1634, 1635, 1543, 1542, 1380, 1379, 13305, 13306, 1739, 1738, 1279, 1280, 1924, 1923, 1978, 1977, 1574, 1575, 1824, 1823, 13108, 13171, 13172, 13173, 13174, 2538, 2539, 2540, 2435, 2436, 2437, 2376, 2377, 2378, 2379, 2380, 2381, 2382, 2720, 2721, 2722, 2723, 2724, 2725, 12269, 12270, 12271, 12272, 12273;
+}
+ 
+moscovia.gat,229,188,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#1	459
+//askydun.gat,96,113,3	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#2	459 // Kliwa //Czel: This map doesn't exist yet. I'm cleaning error logs at the moment.
+alberta.gat,118,62,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#3	459 // Kliwa
+aldebaran.gat,147,113,1	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#4	459 // Kliwa
+amatsu.gat,123,164,3	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#5	459 // Kliwa
+ayothaya.gat,155,121,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#6	459 // Kliwa
+comodo.gat,215,146,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#7	459 // Kliwa
+einbech.gat,86,109,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#8	459 // Taas Kaliwa
+einbroch.gat,174,172,5	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#9	459 // Taas Kaliwa
+geffen.gat,125,67,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#10	459
+gonryun.gat,152,122,5	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#11	459
+hugel.gat,102,142,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#12	459
+izlude.gat,132,120,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#13	459
+lighthalzen.gat,166,101,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#14	459
+louyang.gat,227,102,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#15	459
+xmas.gat,154,136,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#16	459
+morocc.gat,160,101,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#17	459
+payon.gat,165,238,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#18	459
+rachel,136,106,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#19 	459
+veins.gat,223,127,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#20	459
+yuno.gat,161,174,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#21	459
+umbala.gat,106,159,3	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#22	459
+poring_c02,139,81,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#23	459
+alberta.gat,186,148,5	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#24	459
+mid_camp.gat,220,246,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#25	459
+splendide.gat,194,91,6	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#26	459
+manuk.gat,282,216,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#27	459
+brasilis.gat,202,218,3	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#28	459
+dicastes01,187,182,6	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#29	459
+jawaii,200,295,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#30	459
+moc_ruins,76,162,4	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#31	459
+dewata,196,231,3	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#32	459
+malangdo,187,210,3	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#33	459
+mora,126,112,3	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#34	459
+pay_arche,42,127,3	duplicate(Ultimate PvP Warper)	Ultimate PvP Warper#35	459
+
+pvp_n_1-5,97,119,5	script	Broadcaster	459,{
+
+	mes "[Broadcaster]";
+	mes "What do you want to do?";
+	next;
+	if(select("Seek some PvP action","Leave") == 1) {
+		if(pvpdelay > gettimetick(2)) {
+		mes "[Broadcaster]";
+		mes "I am sorry, but I can't do that.";
+		dispbottom "Broadcaster :Your 1 minute cooldown time has not ended.";
+		close;
+		}
+		mes "[Broadcaster]";
+		mes "Ok, here goes!";
+		announce2 strcharinfo(0)+" is seeking some PvP action!",19;
+		set pvpdelay, gettimetick(2) + 60; // 86400 is one day in seconds.
+		dispbottom "Broadcaster : Please wait 1 minute till you broadcast again.";
+		close;
+	}
+	mes "[Broadcaster]";
+	mes "^00DD00Please Wait^000000... (^DD00005 Seconds^000000)";
+	sleep2 1000;
+	mes "... (^DD00004 Seconds^000000)";
+	sleep2 1000;
+	mes "... (^DD00003 Seconds^000000)";
+	sleep2 1000;
+	mes "... (^DD00002 Seconds^000000)";
+	sleep2 1000;
+	mes "... (^DD00001 Second^000000)";
+	sleep2 1000;
+	next;
+	warp "SavePoint",0,0;
+	end;
+}
+wglad,50,60,4	script	Broadcaster::Gladiatorbroadcaster#2	459,{
+	mes "[Broadcaster]";
+	mes "What do you want to do?";
+	next;
+	if(select("Challenge players","Leave") == 1) {
+		if(pvpdelay > gettimetick(2)) {
+		mes "[Broadcaster]";
+		mes "I am sorry, but I can't do that.";
+		dispbottom "Broadcaster :Your 1 minute cooldown time has not ended.";
+		close;
+		}
+		mes "[Broadcaster]";
+		mes "Ok, here goes!";
+		announce2 strcharinfo(0)+" thinks nobody can defeat "+ ((Sex == 0)?"her":"him")+" in the Gladiator Arena! "+((Sex == 0)?"She":"He")+"'s looking for a better challenger!",19;
+		set pvpdelay, gettimetick(2) + 60; // 86400 is one day in seconds.
+		dispbottom "Broadcaster : Please wait 1 minute till you broadcast again.";
+		close;
+	}
+	mes "[Broadcaster]";
+	mes "I am sorry, but you can't flee from the Arena.";
+	close;
+}
+
+//Broadcaster Duplicates
+guild_vs3.gat,69,70,5	duplicate(Broadcaster)	Broadcaster#1	459
+pvp_n_3-5.gat,97,119,5	duplicate(Broadcaster)	Broadcaster#3	459
+pvp_n_4-5.gat,97,119,5	duplicate(Broadcaster)	Broadcaster#4	459
+pvp_n_7-5.gat,97,119,5	duplicate(Broadcaster)	Broadcaster#7	459
+pvp_y_1-2.gat,127,119,4	duplicate(Broadcaster)	Broadcaster#9	459
+
+// Mapflags
+pvp_n_3-5	mapflag	pvp
+pvp_n_3-5	mapflag	nogo
+pvp_n_3-5	mapflag	noteleport
+pvp_n_3-5	mapflag	pvp_nightmaredrop	random,equip,300
+pvp_n_3-5	mapflag	allow_bg_items
+
+guild_vs3	mapflag	pvp
+guild_vs3	mapflag	nogo
+guild_vs3	mapflag	noteleport
+guild_vs3	mapflag	allow_bg_items
+guild_vs3	mapflag	pvp_noguild
+guild_vs3	mapflag	nowarp
+
+wglad	mapflag	pvp
+wglad	mapflag	nogo
+wglad	mapflag	noteleport
+wglad	mapflag	pvp_noguild
+wglad	mapflag	restricted	3
+wglad	mapflag	nocommand	50
+
+pvp_y_8-5	mapflag	gvg
+pvp_y_8-5	mapflag	allow_bg_items

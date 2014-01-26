@@ -1,0 +1,81 @@
+-	cashshop(#icp)	ICP Shop#normal	-1,6072:10
+
+new_5-2,82,114,5	script	ICP Shop	53,{
+	set .@name$, "[ICP Shop]";
+	mes .@name$;
+	mes "Instance Completion Points: ^0000FF"+#icp+"^000000";
+	mes "Welcome to the ICP shop.";
+	mes "How may I help you?";
+	menu "View Normal Shop",-,"View Special Shop",L_Special;
+
+	close2;
+	callshop "ICP Shop#normal";
+	end;
+
+	L_Special:
+	next;
+	mes .@name$;
+	mes "Instance Completion Points: ^0000FF"+#icp+"^000000";
+	mes "Here are some special items for sale,";
+	mes "these items are attached to your character and do not appear in your inventory.";
+	set .@chosen, select("Instance Storage Key - 30 ICP:Guild Buff Orb - 30 ICP");
+	next;
+	mes .@name$;
+	switch (.@chosen) {
+		case 1:
+			mes "This item allows you to use storage freely in a chosen instance.";
+			mes "Would you like to purchase this item?";
+			if (select("Yes:No") == 2)
+				close;
+			next;
+			mes .@name$;
+			mes "Please choose the instance which this item will be enabled.";
+			mes "^FF0000Red^000000 = already purchased";
+			set .@chosen2, select(((instance_storage&1)? "^FF0000":"")+"Party Survival Instance"+((instance_storage&1)? "^000000":""));
+			next;
+			mes .@name$;
+			if (.@chosen2 == 1 && instance_storage&1) {
+				mes "You already have an Instance Storage Key for that instance.";
+				close;
+			}
+			if (#icp < 30) {
+				mes "You have insufficient ICP.";
+				close;
+			}
+			set #icp, #icp - 30;
+			set instance_storage, instance_storage + 1;
+			mes "Successfully purchased!";
+			break;
+
+		case 2:
+			mes "This item allows you to receive guild buffs from any healer existing in a chosen instance.";
+			mes "Would you like to purchase this item?";
+			if (select("Yes:No") == 2)
+				close;
+			next;
+			mes .@name$;
+			mes "Please choose the instance which this item will be enabled.";
+			mes "^FF0000Red^000000 = already purchased";
+			set .@chosen2, select(((instance_gbuff&1)? "^FF0000":"")+"Party Survival Instance"+((instance_gbuff&1)? "^000000":""));
+			next;
+			mes .@name$;
+			if (.@chosen2 == 1 && instance_gbuff&1) {
+				mes "You already have a Guild Buff Orb for that instance.";
+				close;
+			}
+			if (#icp < 30) {
+				mes "You have insufficient ICP.";
+				close;
+			}
+			set #icp, #icp - 30;
+			set instance_gbuff, instance_gbuff + 1;
+			mes "Successfully purchased!";
+			break;
+
+		default:
+			break;
+	}
+	close;
+
+}
+

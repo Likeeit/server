@@ -1,0 +1,53 @@
+xmas,160,132,5	script	Ticket Machine	485,{
+	if (T_M_E != gettime(8)) {
+		set T_M_T, 0;
+	}
+	L_Intro:
+	set .@name$, "[Ticket Machine]";
+	mes .@name$;
+	mes "Hi, would you like to play the game?";
+	mes "It costs 100,000 Zeny and you may only play 10 rounds a day.";
+	menu "Yes!", -, "Explain the rules", L_Rules;
+
+	next;
+	if (T_M_T >= 10) {
+		mes .@name$;
+		mes "You've already played 5 rounds today.";
+		mes "Please come back tomorrow.";
+		close;
+	}
+	if (Zeny < 100000) {
+		mes .@name$;
+		mes "Not enough Zeny!";
+		close;
+	}
+	set Zeny, Zeny - 100000;
+	set T_M_T, T_M_T + 1;
+	set T_M_E, gettime(8);
+	set .@npcnumber, rand(1,10);
+	mes .@name$;
+	if (.@npcnumber == 1) {
+		mes "You won!";
+		mes "Here is your token.";
+		getitem .prize_id, 1;
+		close;
+	}
+	else {
+		mes "I'm sorry, you did not win.";
+		mes "Feel free to try your luck again.";
+		close;
+	}
+	
+
+
+	L_Rules:
+	next;
+	mes .@name$;
+	mes "Very simple, for 100,000 Zeny you have a 10% chance at winning 1 Christmas Token.";
+	next;
+	goto L_intro;
+
+	OnInit:
+	set .prize_id, 6092;
+	end;
+}

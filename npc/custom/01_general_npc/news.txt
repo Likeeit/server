@@ -1,0 +1,181 @@
+prontera,149,184,1	script	News Board	837,{
+P_STAFF:
+if ( getgmlevel() >= .gmacess ) {
+mes "[News Board]";
+mes "What would you like to do?";
+switch ( select ("Read Board:Post New Notice:Delete Post") )
+{
+  case 1:
+   next;
+   callsub P_PLAYER;
+  end;
+
+  case 2: //Post new
+   next;
+   mes "[News Board]";
+   mes "What kind of news?";
+   switch ( select("Announcements:Events:Others" ) )
+   {
+	case 1:
+	 set @type,1;
+	break;
+  
+	case 2:
+	 set @type,2;
+	break;
+  
+	case 3:
+	 set @type,3;
+	break;
+   }
+   next;
+  
+   mes "[News Board]";
+   mes "Enter the title:";
+   input @title$;
+  
+   next;
+   mes "[News Board]";
+   mes "Enter message:";
+   input @mes$[0];
+	if ( select ("I'm done:Add more") == 1 ) callsub POST_END;
+  
+   mes "- Enter second part of notice";
+   input @mes$[1];
+	if ( select ("I'm done:Add third part") == 1 ) callsub POST_END;
+  
+   mes "- Enter third part of notice";
+   input @mes$[2];
+	if ( select ("I'm done:Add fourth part") == 1 ) callsub POST_END;
+  
+   mes "- Enter fourth part of notice";
+   input @mes$[3];
+	if ( select ("I'm done:Add last part") == 1 ) callsub POST_END;
+  
+   mes "- Enter last part of notice";
+   input @mes$[4];
+  
+   POST_END:
+	next;
+	mes "[News Board]";
+	mes "Here's a preview:";
+	next;
+  
+	set .@poster$,strcharinfo(0);
+	set .@dateposted$,gettimestr("%Y-%m/%d %H:%M:%S",21);
+  
+	mes "[^FF0000" + @title$ + "^000000]";
+	mes "Posted by ^0033FF" + .@poster$ + "^000000";
+	mes "On ^0033FF" + .@dateposted$ + "^000000";
+	mes @mes$[0] + " " + @mes$[1] + " " + @mes$[2]+" " + @mes$[3] +" " + @mes$[4];
+	next;
+  
+	mes "[News Board]";
+	mes "Confirm?";
+	 if (select("Yes:No") == 2) { next; callsub P_STAFF; }
+	next;
+  
+	set .@ptitle$, escape_sql(@title$);
+	set .@pmes$[0], escape_sql(@mes$[0]);
+	set .@pmes$[1], escape_sql(@mes$[1]);
+	set .@pmes$[2], escape_sql(@mes$[2]);
+	set .@pmes$[3], escape_sql(@mes$[3]);
+	set .@pmes$[4], escape_sql(@mes$[4]);
+  
+	query_sql("INSERT INTO `news` (`poster`,`title`,`content`,`content2`,`content3`,`content4`,`content5`,`type`,`date`) VALUES ('" + .@poster$ + "','" + .@ptitle$ + "','" + .@pmes$[0] + "','" + .@pmes$[1] + "','" + .@pmes$[2] + "','" + .@pmes$[3] + "','" + .@pmes$[4] + "','" + @type + "','" + .@dateposted$ + "')");
+  
+	mes "[News Board]";
+	mes "New notice posted.";
+	if (.broadcast) {
+	 if ( @type == 1 ) announce .@poster$ + " placed a new Announcement. Check the News Board!",bc_all;
+	 if ( @type == 2 ) announce .@poster$ + " placed a new Event. Check the News Board!",bc_all;
+	 if ( @type == 3 ) announce .@poster$ + " placed a new Notice. Check the News Board!",bc_all;
+	}
+	deletearray @mes$[0],10;
+  close;
+
+  case 3: //Delete
+   next;
+   mes "[News Board]";
+   mes "Input the post ID:";
+  
+   input @did;
+  
+   query_sql "SELECT `poster`,`title`,`content`,`content2`,`content3`,`content4`,`content5`,`date` FROM `news` WHERE `id`='" + @did + "'",.@dposter$,.@dtitle$,.@dcontent$,.@dcontent2$,.@dcontent3$,.@dcontent4$,.@dcontent5$,.@ddate$;
+  
+   next;
+   if ( .@dtitle$ == "") { mes "[News Board]";  mes "This post doesn't exist!"; close; }
+  
+   mes "Post ID ^FF0000" + @did + "^000000 is:";
+   mes "------------------------------";
+   mes "[^FF0000"+.@dtitle$+"^000000]";
+   mes "Posted by ^0033FF"+.@dposter$+"^000000";
+   mes "Date: ^0033FF"+.@ddate$+"^000000";
+   mes .@dcontent$ + " " + .@dcontent2$ + " " + .@dcontent3$ + " " + .@dcontent4$ + " " + .@dcontent5$;
+   mes "------------------------------";
+  
+   next;
+   mes "[News Board]";
+   mes "Confirm?";
+  
+   if (select("Yes:No") == 2) { next; callsub P_STAFF; }
+  
+   query_sql "DELETE FROM `news` WHERE `id`='" + @did + "'";
+  
+   next;
+   mes "[News Board]";
+   mes "Post deleted.";
+  close;
+}
+}
+P_PLAYER:
+mes "[News Board]";
+mes "Wich news do you want to read?";
+switch ( select ("Announcements:Events:Others") )
+{
+  case 1:
+   set @type,1;
+  break;
+
+  case 2:
+   set @type,2;
+  break;
+
+  case 3:
+   set @type,3;
+  break;
+}
+next;
+if ( .pdesc ) { query_sql "SELECT `id`,`poster`,`title`,`content`,`content2`,`content3`,`content4`,`content5`,`date` FROM `news` WHERE `type`='" + @type + "' ORDER BY `id` DESC LIMIT " + .nlimit,.@pid,.@pposter$,.@ptitle$,.@pcontent$,.@pcontent2$,.@pcontent3$,.@pcontent4$,.@pcontent5$,.@pdate$; }
+else { query_sql "SELECT `id`,`poster`,`title`,`content`,`content2`,`content3`,`content4`,`content5`,`date` FROM `news` WHERE `type`='" + @type + "' LIMIT " + .nlimit,.@pid,.@pposter$,.@ptitle$,.@pcontent$,.@pcontent2$,.@pcontent3$,.@pcontent4$,.@pcontent5$,.@pdate$; }
+if (!.@pid) { mes "[News Board]"; mes "This section is empty."; close; }
+for( set .@n, 0; .@n < getarraysize( .@pid ); set .@n, .@n +1 )
+{
+mes "[^FF0000" + .@ptitle$[.@n] + "^000000]";
+mes "Posted by ^0033FF" + .@pposter$[.@n] + "^000000";
+mes "Date: ^0033FF" + .@pdate$[.@n] + "^000000";
+mes .@pcontent$[.@n] + " " + .@pcontent2$[.@n] + " " + .@pcontent3$[.@n] + " " + .@pcontent4$[.@n] + " " + .@pcontent5$[.@n];
+if ( getgmlevel() >= .gmacess ) {mes "ID of this post: ^FF0000"+.@pid[.@n]+"^000000";}
+mes "==============================";
+}
+next;
+if ( getgmlevel() >= .gmacess ) goto P_STAFF;
+else goto P_PLAYER;
+end;
+OnInit:
+/* ==================== Configurations ==================== */
+// GMs with this lvl will be able to post/delete news.
+// They also will be able to see the post ID.
+set .gmacess,30;
+// Do you want to print the news in descending order (Newer to older)? 1 = yes, 0 = no
+set .pdesc,1;
+// Maximum number of news you want to display ( up to 128 )
+set .nlimit,50;
+// Broadcast when news are posted? 1 = yes, 0 = no
+set .broadcast,1;
+
+/* ======================================================== */
+waitingroom "NEWS Board",0;
+query_sql("CREATE TABLE IF NOT EXISTS `news` (`id` INT(11) NOT NULL auto_increment,`poster` VARCHAR(20) NOT NULL,`title` VARCHAR(20) NOT NULL,`content` VARCHAR(100) NOT NULL,`content2` VARCHAR(100) NOT NULL,`content3` VARCHAR(100) NOT NULL,`content4` VARCHAR(100) NOT NULL,`content5` VARCHAR(100) NOT NULL,`type` INT(11) NOT NULL,`date` DATE NOT NULL, PRIMARY KEY(`id`)) ENGINE=MyISAM");
+end;
+}

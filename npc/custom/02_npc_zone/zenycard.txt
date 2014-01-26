@@ -1,0 +1,106 @@
+//This NPC trades GC for TGC and vice versa [Melli]
+job3_rune02,28,40,5	script	Zeny Exchanger	897,{
+cutin "heri1",2;
+
+
+mes "[Zeny Exchanger]";
+mes "You look like you carry a lot of zeny in your wallet.";
+mes "Would you like to keep them in the form of Zeny exchange cards?";
+next;
+switch(select("Convert zeny to exchange cards","Exchange cards for zeny.","Cancel")) {
+
+	case 1:
+	mes "[Zeny Exchanger]";
+	mes "Each Zeny exchange card is worth 100 million zeny.";
+	mes "Please select, how many zeny exchange cards you want to buy.";
+	next;
+	input $ZEC;
+	mes "[Zeny Exchanger]";
+	mes "So you want to buy "+$ZEC+" zeny exchange card worth "+$ZEC*100000000+" zeny?";
+	next;
+	switch(select("Yes","No")) {
+
+		case 1:
+		cutin "heri2",2;
+		if (zeny < 100000000) goto nozeny;
+		if (zeny < $ZEC*100000000) goto Failure;
+		mes "[Zeny Exchanger]";
+		mes "Here's your Zeny exchange card. Was nice doing business with you.";
+		set Zeny,zeny-$ZEC*100000000;
+		getitem 7227,$ZEC;
+		close2;
+		cutin "",255;
+		end;
+
+		case 2:
+		cutin "heri3",2;
+		mes "[Zeny Exchanger]";
+		mes "Don't go crying when your lose all that zeny in your journey.";
+		close2;
+		cutin "",255;
+		end;
+		}
+
+	Case 2:
+	mes "[Zeny Exchanger]";
+	mes "You can exchange each card for 100,000,000 zeny.";
+	mes "How many cards would you like to exchange?";
+	next;
+	input $ZEC;
+	mes "[Zeny Exchanger]";
+	mes "So you want to exchange "+$ZEC+" cards for "+$ZEC*100000000+" Zeny?";
+	next;
+	switch(select("Yes","No")) {
+
+		case 1:
+		cutin "heri2",2;
+		if (countitem(7227) < $ZEC) goto Failure;
+		mes "[Zeny Exchanger]";
+		if (Zeny + ($ZEC*100000000) > 1000000000) {
+			mes "Sorry, you can't carry this much Zeny!";
+			mes "Please store some of the Zeny you are carrying.";
+			close2;
+			cutin "",255;
+			end;
+		}
+		mes "Here's your Zeny. Was nice doing business with you.";
+		delitem 7227,$ZEC;
+		set Zeny,zeny+$ZEC*100000000;
+		close2;
+		cutin "",255;
+		end;
+
+		case 2:
+		cutin "heri3",2;
+		mes "[Zeny Exchanger]";
+		mes "Come back anytime if you change your mind.";
+		close2;
+		cutin "",255;
+		end;
+		}
+
+	Case 3:
+	cutin "heri3",2;
+	close2;
+	cutin "",255;
+	end;
+	}
+
+nozeny:
+
+	mes "[Zeny Exchanger]";
+	cutin "heri3",2;
+	mes "Sorry, but you don't have enough zeny to exchange.";
+	close2;
+	cutin "",255;
+	end;
+
+Failure:
+
+	mes "[Zeny Exchanger]";
+	cutin "heri3",2;
+	mes "ARE YOU TRYING TO FOOL ME??";
+	close2;
+	cutin "",255;
+	end;
+}

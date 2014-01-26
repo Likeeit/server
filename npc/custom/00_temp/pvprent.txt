@@ -1,0 +1,345 @@
+//===== eAthena Script ======================================
+//= Private MVP/Branch Room
+//===== By: ===============================================
+//= by ~AnnieRuru~
+//===== Current Version: ======================================
+//= 1.3
+//===== Compatible With: ===================================== 
+//= eAthena 11650 Trunk above or 11863 Stable above
+//===== Description: ========================================= 
+//= Player can rent DB Room for the player him/herself, for party or for guilds
+//===== Topic =================================================
+//= http://www.eathena.ws/board/index.php?showtopic=187654
+//===== Additional Comments: ================================== 
+//= 1.0 
+//= ---- break the tradition which a script only for a player, or only for a party.
+//=      now 1 room can be use for party and another room can use for guilds.
+//= ---- timeout feature to prevent player owns the room indefinitely,
+//=      by create a new account and sit/@at'ing inside overnight.
+//= ---- can disable mvp/boss summon via configuration and becomes a branch room script.
+//= ---- a double check to prevent players rent all the rooms for himself.
+//= 1.0a
+//= ---- fix a critial bug that the time count too fast -_-"
+//= 1.1
+//= ---- added item cost to rent or to summon
+//= ---- added a config to limit summoning per session
+//= ---- added flood control option
+//= 1.2
+//= ---- rewrite the waitingroom counter
+//= ---- optimize the script in a way can add custom summon group
+//= ---- add config to kill the monsters if the room just being left empty
+//= ---- add GM can kick room in use
+//= ---- add able to spawn in numbers
+//= ---- add limitspawn can configure to negative to limit spawn in that group instead of individual one
+//= 1.3
+//= ---- fix chatroom countdown issue due to rev13269
+//= ---- fix a bug if 2 people rent a room at same time, the later 1 will get the room
+//= ---- add a feature so the GM can know how long the room has rented or abandoned
+//= 1.4
+//= ---- update with new mvp and mini bosses
+//= ---- fix an exploit if server allow to use @mail, player can send item/zeny away to prevent item/zeny deletion when registering the room
+//= ---- players die inside DB Room shouldn't lose exp
+//========================================================
+-	script	PVP Rental Kafra	-1,{
+	goto L_Start;
+
+OnInit:
+	getmapxy .@map$, .@x, .@y, 1;
+	if ( .@map$ == "" ) {
+
+//	Config
+
+	// Time for rent a room IN MINUTES. When time out, players inside the room will kick out. Do Not set this as 0
+	set .timeout, 120;
+	// if the room left empty for # minutes, will be treated as give up the room. Do Not set this as 0
+	set .nobodygiveup, 10;
+	// rent cost
+	set .rentcost, 200000; // otherwise, zeny cost to rent a room
+	// If the room has left over monsters while nobody in the room and the room not give up yet, shall we kill monsters in empty room ?
+	set .killmonster, 0; // Default is yes
+	//	set respawn point when they leave the room. Obviously warp to the Private DB Room Warper npc
+	set .respawnmap$, "prontera"; // Note : "SavePoint" does NOT work
+	set .respawnx, 150;
+	set .respawny, 174;
+	// The minimum GM level can kick a room in use
+	set .gmlvlkick, 80;
+
+// Config end	
+		set .@i, 1;
+		while ( .@i <= 9 ) {
+			if ( .@menu[.@i] && getd(".group"+ .@i +"itemid") && getd(".group"+ .@i +"itemamount") ) {
+				if ( getitemname( getd(".group"+ .@i +"itemid") ) == "null" ) {
+					debugmes "PVP Rental: Group no. "+ .@i +" is using invalid item id.";
+				}
+			}
+			set .@i, .@i +1 ;
+		}
+		set .menu$, "Heal:Leave this room:Give up this room";
+	}
+	else {
+		sleep 1;
+		mapannounce .@map$, "Admin has refresh the server, please register the room again.", 1;
+		mapwarp .@map$, .respawnmap$, .respawnx, .respawny;
+	}
+	end;
+
+L_Start:
+	set .@dif, strnpcinfo(2);
+	if (gettimetick(2) - .starttime[.@dif] >= 600)
+		set .menu$, "Heal:Leave this room:Give up this room:Extend time limit";
+	if ( .remind[.@dif] == 0 ) {
+		set .remind[.@dif], 1;
+		initnpctimer;
+	}
+	mes "[PVP Rental Kafra]";
+	mes "Hi, what can I do for you ?";
+	next;
+	switch ( select(.menu$) ) {
+		case 1:
+			mes "[PVP Rental Kafra]";
+			if ( getmapmobs("this") > 0 ) {
+				mes "I cannot offer heal service when there are monsters around.";
+				close;
+			}
+			sc_end sc_stone;
+			sc_end sc_slowdown;
+			sc_end sc_freeze;
+			sc_end sc_sleep;
+			sc_end sc_curse;
+			sc_end sc_silence;
+			sc_end sc_confusion;
+			sc_end sc_blind;
+			sc_end sc_bleeding;
+			sc_end sc_decreaseagi;
+			sc_end sc_poison;
+			sc_end sc_hallucination;
+			sc_end sc_stripweapon;
+			sc_end sc_striparmor;
+			sc_end sc_striphelm;
+			sc_end sc_stripshield;
+			sc_end sc_changeundead;
+			sc_end sc_orcish;
+			sc_end sc_berserk;
+			sc_end sc_ske;
+			sc_end sc_swoo;
+			sc_end sc_ska;
+			percentheal 100,100;
+			specialeffect2 7;
+			mes "You have completely healed.";
+			close;
+
+		case 2:
+			mes "[PVP Rental Kafra]";
+			mes "Are you sure you want to leave this room ?";
+			mes "If this room left empty for more than "+ .nobodygiveup +" minutes, you lost ownership for this room.";
+			if ( select( "Yes:No") == 2 ) close;
+			warp .respawnmap$, .respawnx, .respawny;
+			end;
+		case 3:
+			mes "[PVP Rental Kafra]";
+			getmapxy .@map$, .@x, .@y, 0;
+			if ( getmapusers(.@map$) > 1 ) {
+				mes "There are still some players in this room. Make sure you are the last member in this room to use this option.";
+				close;
+			}
+			mes "Are you sure you want to give up this room ?";
+			mes "You will need to pay again to enter this room.";
+			next;
+			if ( select( "Yes:No" ) == 2 ) close;
+			warp .respawnmap$, .respawnx, .respawny;
+			set .remaintime[.@dif], -1;
+			end;
+		case 4:
+			mes "[PVP Rental Kafra]";
+			mes "It costs "+.rentcost+" Zeny to extend the time limit by 1 hour.";
+			mes "Do you still wish to proceed?";
+			next;
+			if (select("Yes:No") == 2)
+				close;
+			else if (Zeny < .rentcost) {
+				mes "[PVP Rental Kafra]";
+				mes "I'm sorry, you do not have enough Zeny.";
+				close;
+			}
+			set .starttime[.@dif], .starttime[.@dif] + 3600;
+			set .rentalreminder, 0;
+			close;
+	}
+	close;
+
+OnEnterMap:
+	set .@dif, strnpcinfo(2);
+	set .remind[.@dif], 0;
+	for ( set .@i, 1; .@i <= 9; set .@i, .@i +1 )
+		deletearray getd(".group"+ .@i +"limit"+ .@dif), getd(".group"+ .@i +"idsize");
+	set .nobodycounter[.@dif], 0;
+	getmapxy .@map$, .@x, .@y ,1;
+	set .starttime[.@dif], gettimetick(2);
+	do {
+		set .remaintime[.@dif], .timeout * 60 + .starttime[.@dif] - gettimetick(2);
+		set .@hour[.@dif], .remainTime[.@dif] / 3600 ;
+		set .@min[.@dif], .remainTime[.@dif] % 3600 / 60 ;
+		set .@sec[.@dif], .remainTime[.@dif] % 3600 % 60 ;
+		delwaitingroom strnpcinfo(0);
+		waitingroom "Time Left = "+( ( .@hour[.@dif] )?( .@hour[.@dif] +":"):"" )+( ( .@min[.@dif] < 10 )?"0"+ .@min[.@dif]: .@min[.@dif] )+":"+( ( .@sec[.@dif] < 10 )?"0"+ .@sec[.@dif]: .@sec[.@dif] ), 0;
+		if ( getmapusers(.@map$) )
+			set .nobodycounter[.@dif], 0;
+		else {
+			set .nobodycounter[.@dif], .nobodycounter[.@dif] +1 ;
+			if ( .nobodycounter[.@dif] > .nobodygiveup * 60 ) break;
+		}
+		if ( .remaintime[.@dif] < 600 ){
+			if (.rentalreminder == 0 ){
+				announce "Please don't forget to renew your rental period if you don't want to lose your room.",bc_self;
+			}
+			set .rentalreminder, 1;
+		}
+		sleep 995;
+	} while ( .remaintime[.@dif] > 1 );
+	set .remaintime[.@dif], 0;
+	set .rentalreminder, 0;
+	delwaitingroom "PVP Rental Kafra#"+ .@dif;
+	mapwarp .@map$, .respawnmap$, .respawnx, .respawny;
+	end;
+
+OnTimer100:
+	stopnpctimer;
+	set .rentalreminder, 0;
+	npctalk "Hi ~ the bubble above my head is the countdown for using this room.";
+	sleep 2000;
+	npctalk "Sometimes, I can skip for about 1 second in the countdown.";
+	sleep 3000;
+	npctalk "That is because the server is experiencing some minor lag issues.";
+	sleep 3000;
+	npctalk "Good luck, you have 2 hours to enjoy your rental PvP Room.";
+	sleep 3000;
+	npctalk "Btw, You can renew your rental time by 1 hour through talking with me.";
+	end;
+}
+
+prt_in,35,95,5	script	PVP Rental	733,{
+	mes "[PVP Rental]";
+	mes "Please select a Private Room.";
+	mes "The cost to rent a room for 2 hours is 200,000 zeny";
+		
+	for ( set .@i, 1; .@i <= 8; set .@i, .@i +1 ) {
+		if ( getvariableofnpc(.remaintime[.@i],"PVP Rental Kafra") ) {
+			switch ( .type[.@i] ) {
+				case 1: set .@color$, "^EE8800"; break;
+				case 2: set .@color$, "^70CC11"; break;
+				case 3: set .@color$, "^0000FF"; break;
+				default: set .@color$, "^000000";
+			}
+			mes "Room #"+ .@i +" = "+ .@color$ + .whoinuse$[.@i] +"^000000";
+		}
+	}
+	next;
+	set .@room, select("PVP Rental Room 1 ["+ getmapusers("pvp_y_1-1") +"]",
+		"PVP Rental Room 2 ["+ getmapusers("pvp_y_1-2") +"]",
+		"PVP Rental Room 3 ["+ getmapusers("pvp_y_1-3") +"]",
+		"PVP Rental Room 4 ["+ getmapusers("pvp_y_1-4") +"]",
+		"PVP Rental Room 5 ["+ getmapusers("pvp_y_1-5") +"]",
+	if ( getvariableofnpc(.remaintime[.@room],"PVP Rental Kafra") ) {
+		if ( .inuseid[.@room] == getcharid(.type[.@room]) ) {
+			if ( getvariableofnpc(.killmonster,"PVP Rental Kafra") && getmapusers("pvp_y_1-"+ .@room) == 0 )
+				killmonsterall "pvp_y_1-"+ .@room;
+			warp "pvp_y_1-"+ .@room, 0,0;
+			end;
+		} else {
+			mes "[PVP Rental]";
+			switch ( .type[.@room] ) {
+				case 1: set .@color$, "^EE8800Party "; break;
+				case 2: set .@color$, "^70CC11Guild "; break;
+				case 3: set .@color$, "^0000FFPlayer ";
+			}
+			mes "This room is reserved for ";
+			mes .@color$ + .whoinuse$[.@room] +"^000000 .";
+			if ( getgmlevel() < getvariableofnpc(.gmlvlkick,"PVP Rental Kafra") ) {
+				mes "Please select another.";
+				close;
+			}
+			mes " ";
+			mes "Currently there are "+ getmapusers("pvp_y_1-"+ .@room) +" players";
+			mes "in that room.";
+			set .@remaintime, getvariableofnpc(.remaintime[.@room],"PVP Rental Kafra");
+			mes "It still has "+( .@remaintime /60 )+"mn "+( .@remaintime %60 )+"s left.";
+			set .@nobodycounter, getvariableofnpc(.nobodycounter[.@room],"PVP Rental Kafra");
+			if ( .@nobodycounter )
+				mes "And have left empty for "+( .@nobodycounter /60 )+"mn "+( .@nobodycounter %60 )+"s.";
+			mes "Kick them ?";
+			next;
+			if ( select ( "No:Yes" ) == 1 ) close;
+			set getvariableofnpc(.remaintime[.@room],"PVP Rental Kafra"), -1;
+			mes "[PVP Rental]";
+			mes "Room#"+ .@room +" is empty now.";
+			close;
+		}
+	}
+	mes "[PVP Rental]";
+	if ( zeny < 200000){ mes "You don't have enough zeny to rent a room.";
+				close;
+		}
+	mes "You reserve this room for ...";
+	next;
+	set .@type, select("For my party members", "For my guild members", "For personal account use" );
+	if ( getcharid(.@type) == 0 ) {
+		mes "[PVP Rental]";
+		mes "You do not own a "+( (.@type == 1)?"Party":"Guild" )+".";
+		close;
+	}
+	else if ( getvariableofnpc(.remaintime[.@room],"PVP Rental Kafra") ) {
+		mes "[PVP Rental]";
+		mes "I'm sorry, somebody else has already registered this room faster than you.";
+		close;
+	}
+	for ( set .@i, 1; .@i <= 8; set .@i, .@i +1 ) {
+		if ( getvariableofnpc(.remaintime[.@i],"PVP Rental Kafra") && .@type == .type[.@i] && getcharid(.@type) == .inuseid[.@i] ) {
+			mes "[PVP Rental]";
+			mes "You already rented Room#"+ .@i +". Use that room instead.";
+			close;
+		}
+	}
+	set .type[.@room], .@type;
+	set .inuseid[.@room], getcharid(.@type);
+	set .whoinuse$[.@room], strcharinfo( (.@type == 3)?0:.@type );
+	if ( zeny < getvariableofnpc(.rentcost, "PVP Rental Kafra") ) end;
+	set zeny, zeny - 200000;
+	
+	warp "pvp_y_1-"+ .@room, 0,0;
+	killmonsterall "pvp_y_1-"+ .@room;
+	donpcevent "PVP Rental Kafra#"+ .@room +"::OnEnterMap";
+	end;
+}
+
+pvp_y_1-1,155,192,4	duplicate(PVP Rental Kafra)	PVP Rental Kafra#1	116
+pvp_y_1-2,127,118,4	duplicate(PVP Rental Kafra)	PVP Rental Kafra#2	116
+pvp_y_1-3,156,234,4	duplicate(PVP Rental Kafra)	PVP Rental Kafra#3	116
+pvp_y_1-4,112,60,4	duplicate(PVP Rental Kafra)	PVP Rental Kafra#4	116
+pvp_y_1-5,159,115,4	duplicate(PVP Rental Kafra)	PVP Rental Kafra#5	116
+
+
+pvp_y_1-1	mapflag	nowarpto
+pvp_y_1-2	mapflag	nowarpto
+pvp_y_1-3	mapflag	nowarpto
+pvp_y_1-4	mapflag	nowarpto
+pvp_y_1-5	mapflag	nowarpto
+pvp_y_1-1	mapflag	nomemo
+pvp_y_1-2	mapflag	nomemo
+pvp_y_1-3	mapflag	nomemo
+pvp_y_1-4	mapflag	nomemo
+pvp_y_1-5	mapflag	nomemo
+pvp_y_1-1	mapflag	noteleport
+pvp_y_1-2	mapflag	noteleport
+pvp_y_1-3	mapflag	noteleport
+pvp_y_1-4	mapflag	noteleport
+pvp_y_1-5	mapflag	noteleport
+pvp_y_1-1	mapflag	nosave	SavePoint
+pvp_y_1-2	mapflag	nosave	SavePoint
+pvp_y_1-3	mapflag	nosave	SavePoint
+pvp_y_1-4	mapflag	nosave	SavePoint
+pvp_y_1-5	mapflag	nosave	SavePoint
+pvp_y_1-1	mapflag	nopenalty
+pvp_y_1-2	mapflag	nopenalty
+pvp_y_1-3	mapflag	nopenalty
+pvp_y_1-4	mapflag	nopenalty
+pvp_y_1-5	mapflag	nopenalty

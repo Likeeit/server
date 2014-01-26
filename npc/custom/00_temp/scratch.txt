@@ -1,0 +1,137 @@
+prontera.gat,155,150,4	script	Lottery Scratch Tickets	85,{
+	setarray @scratch_price,  717,//Phreeoni price: currently blue gemstones
+				  1000,//Dark Snake Lord price: currently star crumps
+				  985,//Baphomet price: currently Elunium
+				  969,//Golden Thiefbug price: currently Gold
+				  989,//Dark Lord price: currently Emperium Anvil
+				  rand(7073,7092); // Thanatos price: currenly a random item for godlike equipment
+	setarray @scratch_amount, 10,
+				   5,
+				   3,
+				   2,
+				   1,
+				   1;
+	setarray @scratch_sign$,  "Phr",
+				  "DSL",
+				  "Bap",
+				  "GTB",
+				  "DaL",
+				  "Tha";
+	setarray @scratch_chance, 2650, // Phr: 26,5%
+				  2250, // DSL: 22,5%
+				  1850, // Bap: 18,5%
+				  1450, // GTB: 14,5%
+				  1050, // DaL: 10,5%
+				   750; // Tha:  7,5%
+
+	for(set .@a, 0; .@a<getarraysize(@scratch_chance);set .@a, .@a+1)
+	{
+		for( set .@b, .@a+1; .@b<getarraysize(@scratch_chance); set .@b, .@b+1)
+		{
+			set @scratch_chance[.@a], @scratch_chance[.@a]+@scratch_chance[.@b];
+		}
+	}
+
+	cleararray @slot$, "", 9;
+	set .@payment, 1000;
+
+	function Slotbelegung;
+	function checkRow;
+	function restore;
+
+	set @menu, 0;
+
+	while(@menu!=1)
+	{
+		mes "[Lottery Scratch Tickets]";
+		mes "Hi do want to buy Lottery Scratch Tickets?";
+		mes "Only "+.@payment+" zeny";
+		mes "The best price is an item for mixing godlike equip";
+
+		if(select("Give me one ^^:What does i need to win:No I hold my money") > 1)
+		{
+			if(@menu&1)
+			{		
+				mes "Ok have a lucky day";
+				close;
+			}
+			else
+			{
+				mes "You need 3 same Objekts in a slot";
+				mes "[Phr] ";
+				mes "[DSL] ";
+				mes "[Bap] ";
+				mes "[GTB] ";
+				mes "[DaL] ";
+				mes "[Tha] ";
+				next;
+			}
+		}
+	}
+	setarray .@row1, 0, 1, 2;
+	setarray .@row2, 0, 3, 6;
+	setarray .@row3, 0, 4, 8;
+	setarray .@row4, 1, 4, 7;
+	setarray .@row5, 6, 4, 2;
+	setarray .@row6, 2, 5, 8;
+	setarray .@row7, 3, 4, 5;
+	setarray .@row8, 6, 7, 8;
+
+	set .@slots, 8;
+
+	set zeny, zeny -.@payment;
+	mes "Here my friend ^^";
+	for(set .@a, 0;; set .@a, .@a+1)
+	{
+		mes "["+@slot$[0]+"] ["+@slot$[1]+"] ["+@slot$[2]+"]";
+		mes "["+@slot$[3]+"] ["+@slot$[4]+"] ["+@slot$[5]+"]";
+		mes "["+@slot$[6]+"] ["+@slot$[7]+"] ["+@slot$[8]+"]";
+		next;
+		if(.@a > 8) break;
+		Slotbelegung(.@a);
+	}
+
+	for(set .@a, 0; .@a<.@slots;set .@a,.@a+1)
+	{
+		set .@win, .@win+checkRow(getd(".@row"+(.@a+1)+"[0]"),getd(".@row"+(.@a+1)+"[1]"),getd(".@row"+(.@a+1)+"[2]"));
+	}
+	if (.@win)
+	{
+		next;
+		mes "You got your prizes now go.";
+		close;
+	}
+	mes "Sorry, but you didn't win anything.";
+	close;
+
+function Slotbelegung {
+	set .@rand, rand(1,10000);
+	for(set .@b, 0; .@b<getarraysize(@scratch_sign$)-1;set .@b, .@b+1)
+	{
+		if(@scratch_chance[(getarraysize(@scratch_sign$)-1-.@b)] >= .@rand) break;
+	}
+	set @slot$[getarg(0)], @scratch_sign$[(getarraysize(@scratch_sign$)-1-.@b)];
+}
+
+function checkRow {
+	function Win;
+	if(@slot$[getarg(0)] == @slot$[getarg(1)] && @slot$[getarg(0)] == @slot$[getarg(2)])
+	{
+		Win(@slot$[getarg(0)]);
+		return 1;
+	}
+	return 0;
+}
+
+function Win {
+	for(set .@c,0; .@c<getarraysize(@scratch_sign$); set .@c,.@c+1)
+	{
+		if(getarg(0) == @scratch_sign$[.@c] )
+		{
+			mes "You got 3 "+@scratch_sign$[.@c]+"!";
+			getitem @scratch_price[.@c],@scratch_amount[.@c];
+		}
+	}
+}
+
+}

@@ -1,0 +1,413 @@
+quiz_02,141,350,3	script	Hat Maker	832,{
+function Add; function Chk; function Slot; function A_An;
+mes "[Hat Maker]";
+mes "Hi there, would you like to make a hat?";
+mes "I know how to make alot of hats.";
+mes "Most you wouldnt even come across without me.";
+mes "Please refer to forums/Guides and Quests
+
+	if(.Shops$ != "") set .@i,1;
+	else {
+		set .@menu$,"";
+		for(set .@i,1; .@i<=getarraysize(.Shops$); set .@i,.@i+1)
+			set .@menu$, .@menu$+.Shops$[.@i]+":";
+		set .@i, select(.@menu$); }
+	dispbottom "Select one item at a time.";
+	callshop "qshop"+.@i,1;
+	npcshopattach "qshop"+.@i;
+	end;
+
+function Add {
+	for(set .@n,5; 1; set .@n,.@n+2)
+		if (!getarg(.@n,0)) break;
+	for(set .@i,2; .@i<.@n; set .@i,.@i+1)
+		set getd(".q_"+getarg(1)+"["+(.@i-2)+"]"), getarg(.@i);
+	npcshopadditem "qshop"+getarg(0),getarg(1),((.ShowZeny)?getarg(3):0);
+	return; }
+function Chk {
+	if (getarg(0)<getarg(1)) { set @qf,1; return "^FF0000"; }
+	else return "^00FF00"; }
+function Slot {
+	set .@s$,getitemname(getarg(0));
+	switch(.ShowSlot){
+		case 1: if (!getitemslots(getarg(0))) return .@s$;
+		case 2: if (getiteminfo(getarg(0),11)>0) return .@s$+" ["+getitemslots(getarg(0))+"]";
+		default: return .@s$; } }
+function A_An {
+	setarray .@A$[0],"a","e","i","o","u";
+	set .@B$, "_"+getarg(0);
+	for(set .@i,0; .@i<5; set .@i,.@i+1)
+		if (compare(.@B$,"_"+.@A$[.@i])) return "an "+getarg(0);
+	return "a "+getarg(0); }
+
+OnBuyItem:
+	set .@q[0],@bought_nameid;
+	copyarray .@q[1],getd(".q_"+@bought_nameid+"[0]"),getarraysize(getd(".q_"+@bought_nameid+"[0]"));
+	if (!.@q[1]) { message strcharinfo(0),"An error has occurred."; end; }
+	mes "[Hat Maker]";
+	mes "Reward: ^0055FF"+((.@q[1]>1)?.@q[1]+"x ":"")+Slot(.@q[0])+"^000000";
+	mes "Requirements:";
+	if (.@q[2]) mes " > "+Chk(Zeny,.@q[2])+.@q[2]+" Zeny^000000";
+	if (.@q[3]) mes " > "+Chk(getd(.Points$[0]),.@q[3])+.@q[3]+" "+.Points$[1]+" ("+getd(.Points$[0])+"/"+.@q[3]+")^000000";
+	if (.@q[4]) for(set .@i,4; .@i<getarraysize(.@q); set .@i,.@i+2)
+		mes " > "+Chk(countitem(.@q[.@i]),.@q[.@i+1])+((.DisplayID)?"{"+.@q[.@i]+"} ":"")+Slot(.@q[.@i])+" ("+countitem(.@q[.@i])+"/"+.@q[.@i+1]+")^000000";
+	if (@qf) { set @qf,0; close; }
+	next;
+	if (!checkweight(.@q[0],.@q[1])) {
+		mes "[Hat Maker]";
+		mes "^FF0000You need "+(((.@q[1]*getiteminfo(.@q[0],6))+Weight-MaxWeight)/10)+" additional weight capacity to complete this trade.^000000";
+		close; }
+	set @qe1, getiteminfo(.@q[0],5); set @qe2, getiteminfo(.@q[0],11);
+	while(1){
+		switch(select(" ~ Purchase ^0055FF"+getitemname(.@q[0])+"^000000:")) {
+			case 1:
+				if (.@q[2]) set Zeny, Zeny-.@q[2];
+				if (.@q[3]) setd .Points$[0], getd(.Points$[0])-.@q[3];
+				if (.@q[4]) for(set .@i,4; .@i<getarraysize(.@q); set .@i,.@i+2)
+					delitem .@q[.@i],.@q[.@i+1];
+				getitem .@q[0],.@q[1];
+				if (.Announce) announce strcharinfo(0)+" has created "+A_An(getitemname(.@q[0]))+"!",0;
+				specialeffect2 699;
+				close; }}
+
+OnInit:
+// --------------------- Config ---------------------
+// Custom points, if needed: "<variable>","<name to display>"
+	setarray .Points$[0],"#CASHPOINTS","Cash Points";
+
+	set .Announce,0;	// Announce quest completion? (1: yes / 0: no)
+	set .ShowSlot,1;	// Show item slots? (2: all equipment / 1: if slots > 0 / 0: never)
+	set .DisplayID,1;	// Show item IDs? (1: yes / 0: no)
+	set .ShowZeny,0;	// Show Zeny cost, if any? (1: yes / 0: no)
+
+// Shop categories, if needed: "<Shop 1>","<Shop 2>"{,...};
+// Duplicate dummy data for any additional shops (bottom of script).
+// If no categories, use the second line instead (remove //).
+
+	set .Shops$[0],"#",
+	set .Shops$[1],"A",
+	set .Shops$[2],"B",
+	set .Shops$[3],"C",
+	set .Shops$[4],"D",
+	set .Shops$[5],"E",
+	set .Shops$[6],"F",
+	set .Shops$[7],"G",
+	set .Shops$[8],"H",
+//	set .Shops$[9],"I",
+	set .Shops$[10],"J",
+	set .Shops$[11],"K",
+	set .Shops$[12],"L",
+	set .Shops$[13],"M",
+	set .Shops$[14],"N",
+//	set .Shops$[15],"O",
+	set .Shops$[16],"P",
+//	set .Shops$[17],"Q",
+	set .Shops$[18],"R",
+	set .Shops$[19],"S",
+	set .Shops$[20],"T",
+//	set .Shops$[21],"U",
+	set .Shops$[22],"V",
+	set .Shops$[23],"W",
+//	set .Shops$[24],"X",
+	set .Shops$[25],"Y",
+//	set .Shops$[26],"Z"
+	;
+
+// Add(<shop number>,<reward ID>,<reward amount>,<Zeny cost>,<point cost>,
+// <required item ID>,<required item amount>{,...});
+// Shop number corresponds with order above (default is 1).
+// Note: Do NOT use a reward item more than once!
+
+//===== # shops # 0 =====//		
+	//	4 leaf clover in mouth R
+Add(0,5596,1,4000000,0,705,100,706,4,2270,1);
+
+//===== A shops # 1 =====//	
+	//	Angeling Hairpin
+Add(1,5153,1,5000000,0,5084,1);
+	//	Angeling Hat
+Add(1,5132,1,4000000,0,5170,1,5074,1);
+	//	Aquarius Crown
+Add(1,5513,1,5000000,0,2235,1,995,50,7446,50);
+	//	Aquarius Diadem
+Add(1,5512,1,5000000,0,5124,1,995,50,7446,50);
+	//	Aries Crown
+Add(1,5546,1,5000000,0,2235,1,994,50,730,20);
+	//	Aries Diadem
+Add(1,5545,1,5000000,0,5124,1,994,50,730,20);
+	//	Asara Fairy Hat
+Add(1,5505,1,3000000,0,7568,100,982,2,1022,100,1038,50,671,1);
+	//	Autumn Leaves
+Add(1,5270,1,5000000,0,7198,200,706,2);
+
+//===== B shops # 2 =====//	
+	//	Baby Chick
+Add(2,5283,1,4000000,0,916,300,7063,25,4117,1);
+	//	Bandit hat
+Add(2,5491,1,6000000,0,2221,1,2336,1,724,25);
+	//	Baseball Cap
+Add(2,5147,1,2000000,0,2227,1,978,1,1057,100);
+	//	Bell Ribbon
+Add(2,5382,1,5000000,0,969,5,10016,2,5083,1);
+	//	Bird Nest
+Add(2,5129,1,5000000,0,604,100,916,200);
+	//	Black Tea Kochadaden Hat
+Add(2,5427,1,2000000,0,6021,100,7567,100,2221,1,983,5,981,5,4127,1);
+	//	Blank Eyes
+Add(2,5102,1,2000000,0,7263,125,2276,1,2239,2,982,5);
+	//	Blue Beanie
+Add(2,5236,1,0,0,5076,1,978,5);
+	//	Bride's Flower Crown
+Add(2,5436,1,2000000,0,2207,50,2269,1,2282,1);
+	//	Bunny Top Hat
+Add(2,5378,1,5000000,0,2214,1,5045,1,975,1,740,100);
+
+//===== C shops # 3 =====//	
+	//	Camp Fire Hat
+Add(3,5414,1,2000000,0,7098,50,604,50,1019,50,994,20,671,1);
+	//	Cancer Crown
+Add(3,5582,1,5000000,0,2235,1,991,100,7446,50);
+	//	Cancer Diadem
+Add(3,5581,1,5000000,0,5124,1,991,100,7446,50);
+	//	Captain's Hat
+Add(3,5184,1,4000000,0,5120,5,995,50,983,1);
+	//	Carmen Miranda's Hat
+Add(3,5307,1,2000000,0,513,100,514,100,2226,1);
+	//	Close Helmet
+Add(3,5131,1,5000000,0,7095,50,6090,100,999,100,2228,1);
+	//	Crescent Moon Helm
+Add(3,5142,1,3000000,0,5172,1,1234,1);
+	//	Cyclops Eye
+Add(3,5135,1,2000000,0,5104,1,969,1,975,1,980,5,999,250);
+
+//===== D shops # 4 =====//	
+	//	Dice Hat
+Add(4,5496,1,2000000,0,706,50,617,50,671,5);
+	//	Dokebi Hat
+Add(4,5429,1,1000000,0,1021,300,7268,1);
+	//	Dokebi Wig
+Add(4,5258,1,2000000,0,1021,100,978,1,976,1,975,1,10005,1,671,1);
+	//	Marvelous Wig
+Add(4,5298,1,2000000,0,1021,100,981,1,982,1,978,1,10005,1,671,1);
+	//	Drooping Morroc Minion
+Add(4,5671,1,2000000,0,2536,1,7799,15,7157,10,7340,10,7511,5);
+	//	Drooping Ninetail
+Add(4,5252,1,5000000,0,976,1,1022,200,754,5);
+
+//===== E shops # 5 =====//	
+	//	Elephant Hat
+Add(5,5259,1,4000000,0,702,100,919,200,6022,1,978,1,671,2);
+	//	Emperor's Laurel Crown
+Add(5,5533,1,7000000,0,7298,200,5165,1);
+	//	Evil Snake Lord Hat
+Add(5,5364,1,5000000,0,5347,1,975,1,982,1,983,1,7169,1);
+	//	Executioner Hat
+Add(5,5304,1,3000000,0,7017,5,2288,1,983,5);
+
+//===== F shops # 6 =====//	
+	//	Fantastic Wig
+Add(6,5276,1,2000000,0,1021,100,975,1,982,1,978,1,10005,1,671,1);
+	//	Fish Head Hat
+Add(6,5380,1,3000000,0,1054,10,1023,50,579,100,1249,1);
+	//	Fish In Mouth
+Add(6,5403,1,5000000,0,579,100,1023,100,624,50,671,5);
+	//	Fisherman's Hat
+Add(6,5317,1,5000000,0,5120,2,976,5,1059,50);
+	//	Flying Angel
+Add(6,5210,1,9000000,0,671,5,2254,1,7441,100);
+	//	Frog Hat
+Add(6,5447,1,2000000,0,918,200,1061,50);
+	//	Frozen Twin Pompom
+Add(6,5390,1,2000000,0,2236,2,978,1,1034,50,995,20);
+
+//===== G shops # 7 =====//	
+	//	Gangster Scarf
+Add(7,5361,1,5000000,0,5096,1,2265,1,6091,1,7566,1,975,5,916,200,7063,20);
+	//	Gemini Crown
+Add(7,5570,1,5000000,0,2235,1,996,50,7445,50);
+	//	Gemini Diadem
+Add(7,5569,1,5000000,0,5124,1,996,50,7445,50);
+	//	Green Sheila Hairnet
+Add(7,5785,1,5000000,0,5213,1,979,4);
+	//	Gray Beanie
+Add(7,5235,1,0,0,5076,1,975,2,976,2,979,2);
+
+//===== H shops # 8 =====//	
+	//	Happy Wig
+Add(8,5273,1,2000000,0,1021,100,975,1,982,1,979,1,10005,1,671,1);
+	//	Hibiscus
+Add(8,5139,1,2000000,0,748,100,5061,1);
+	//	Holy Marcher Hat
+Add(8,5225,1,2000000,0,2261,1,978,1,7063,50,983,1);
+	//	Hunter Hat
+Add(8,5383,1,5000000,0,979,1,7445,150,1059,100);
+
+//===== I shops # 9 =====//
+
+//===== J shops #10 =====//	
+	//	Judge Cap
+Add(10,5371,1,3000000,0,7445,7,7446,7,7447,7,7448,7,945,100,983,1,733,5);
+
+//===== K shops #11 =====//	
+	//	Kafra Band
+Add(11,5020,1,5000000,0,2258,1,2210,1,7063,10);
+	//	Kawaii Ribbon
+Add(11,5140,1,5000000,0,2250,1,2244,1,10007,1);
+
+//===== L shops #12 =====//	
+	//	Legionnaire Hat
+Add(12,5418,1,5000000,0,5016,1,1098,200,975,5,1004,10);
+	//	Leo Crown
+Add(12,5588,1,5000000,0,2235,1,994,50,7446,100);
+	//	Leo Diadem
+Add(12,5589,1,5000000,0,5124,1,994,50,7446,200);
+	//	Libra Crown
+Add(12,5662,1,5000000,0,2235,1,6075,50,7445,200);
+	//	Libra Diadem
+Add(12,5663,1,5000000,0,5124,1,6075,75,7445,100);
+	//	Linguistic Book Hat
+Add(12,5422,1,2000000,0,1550,2,1006,5);
+	//	Lion Mask
+Add(12,5130,1,2000000,0,1048,100,7564,150,517,50);
+	//	Little Angel Doll
+Add(12,5324,1,10000000,0,5671,1,2285,1,4316,3,4394,3,978,5,982,5,7212,100,7268,100,754,10);
+	//	Love Daddy Hat
+Add(12,5489,1,3000000,0,994,100,976,1,5016,1);
+	//	Luxurious Wedding Veil
+Add(12,5562,1,5000000,0,2206,1,1059,200,7751,100);
+
+//===== M shops #13 =====//	
+	//	Magnolia Hat
+Add(13,5365,1,1500000,0,574,150,7031,150);
+	//	Maiden's Twin Ribbon
+Add(13,5187,1,7000000,0,5085,1,7166,250);
+	//	Mischievous Fairy
+Add(13,5402,1,4000000,0,2286,1,6395,25);
+
+//===== N shops #14 =====//	
+	//	Neck Tie
+Add(14,5442,1,5000000,0,978,2,7166,100);
+	//	Neko Mimi
+Add(14,5099,1,5000000,0,7267,300,7171,300,949,100);
+	//	Note Headphones	
+Add(14,5151,1,5000000,0,5001,1,978,1,991,200);
+
+//===== O shops #15 =====//
+
+//===== P shops #16 =====//	
+	//	Parade Hat
+Add(16,5468,1,5000000,0,1059,300,5172,2,2244,1);
+	//	Peacock Feather
+Add(16,5519,1,1000000,0,7115,200,2229,1,7441,25,7440,25);
+	//	Peco-Peco Ears
+Add(16,5358,1,1000000,0,5074,1,7101,150);
+	//	Pink Beanie
+Add(16,5237,1,0,0,5076,1,981,5);
+	//	Pisces Crown
+Add(16,5515,1,5000000,0,2235,1,1023,200,991,100);
+	//	Pisces Diadem
+Add(16,5514,1,5000000,0,5124,1,1023,200,991,100);
+	//	Poporing Hat
+Add(16,5352,1,1000000,0,5035,1,979,1,938,100);
+	//	Puppy Hat
+Add(16,5182,1,5000000,0,5008,1,5118,1,1060,100);
+
+//===== Q shops #17 =====//	
+
+//===== R shops #18 =====//	
+	//	Rasta Wig
+Add(18,5571,1,5000000,0,983,5,7152,100);
+	//	Red Comb
+Add(18,5444,1,5000000,0,975,5,999,100);
+	//	Red Glasses
+Add(18,5288,1,2000000,0,2276,1,998,100,718,2);
+	//	Red Wing Hat
+Add(18,5690,1,4000000,0,5172,1,2254,1,975,1,7166,120);
+	//	Rideword Hat
+Add(18,5208,1,2000000,0,1550,1,1556,1,4185,1);
+	//	RJC Katyusha Flower
+Add(18,5547,1,8000000,0,7510,2,975,1,2210,1);
+
+//===== S shops #19 =====//	
+	//	Sakura Milk Tea Hat
+Add(19,5524,1,5000000,0,2227,1,7567,100);
+	//	Sakura Mist Hat
+Add(19,5523,1,7000000,0,710,50,5123,1,2614,1);
+	//	Sales Banner
+Add(19,5100,1,1000000,0,2272,1,7451,1,983,1);
+	//	Scorpio Crown
+Add(19,5676,1,5000000,0,2235,1,993,100,7448,100,904,100);
+	//	Scoripio Diadem
+Add(19,5677,1,5000000,0,5124,1,993,100,7448,200,904,100);
+	//	Scuba Mask
+Add(19,5397,1,5000000,0,7325,5,2205,1,7355,1);
+	//	Sigrun's Wings
+Add(19,5592,1,6000000,0,7441,100,5074,1);
+	//	Shaman Hat
+Add(19,5665,1,10000000,0,2255,1,5045,1,975,1);
+	//	Shaman's Coif
+Add(19,5479,1,5000000,0,1059,50,5665,1);
+	//	Sheila Hairnet
+Add(19,5213,1,4000000,0,949,100,7063,10,2210,1,1059,70);
+	//	Shiny Wig
+Add(19,5274,1,2000000,0,1021,100,980,2,982,1,10005,1,671,1);
+	//	Sloth Hat
+Add(19,5761,1,5000000,0,754,1,2213,1,919,200);
+	//	Solar Hat
+Add(19,5450,1,5000000,0,724,10,7938,25);
+	//	Soul Ring
+Add(19,5257,1,5000000,0,2254,1,2282,1,7064,100,969,5);
+
+//===== T shops #20 =====//	
+	//	Taurus Crown
+Add(20,5550,1,5000000,0,2235,1,997,50,7106,100,7448,200,5066,1);
+	//	Taurus Diadem
+Add(20,5549,1,5000000,0,5124,1,997,50,7106,100,7448,200,5072,1);
+	//	Tiger Mask
+Add(20,5098,1,3000000,0,1029,10,2297,1,7267,50);
+	//	Tiraya Bonnet
+Add(20,5395,1,5000000,0,983,5,978,5,5045,1,981,5);
+	//	Twin Pompom by JB
+Add(20,5384,1,2000000,0,5390,1,975,1);
+
+//===== U shops #21 =====//
+
+//===== V shops #22 =====//
+	//	Valkyrie Feather Band
+Add(22,5256,1,5000000,0,7510,1,2210,1,7063,50);
+	//	Virgo Crown
+Add(22,5598,1,5000000,0,2235,1,997,50,726,50,1049,200);
+	// Virgo Diadem
+Add(22,5599,1,5000000,0,5124,1,997,50,726,50,1049,100);
+
+//===== W shops #23 =====//
+	//	Wanderer's Sakkat
+Add(23,5579,1,9000000,0,7446,100,6089,100,2280,1);
+	//	Wandering Wolf Hat
+Add(23,5498,1,9000000,0,7030,400,626,5,5075,1);
+	//	Whikebine's Black Cat Ears
+Add(23,5360,1,1000000,0,5057,1,7206,100);
+	//	Whisper Mask
+Add(23,5294,1,3000000,0,7019,1,7567,50);
+	//	White Petal
+Add(23,5206,1,3000000,0,2269,1,982,1,2207,10);
+
+//===== X shops #24 =====//
+
+//===== Y shops #25 =====//
+	//	Yellow Sheila Hairnet
+Add(25,5783,1,5000000,0,976,3,5213,1,980,1);
+	//	Yoyo Hat
+Add(25,5385,1,2000000,0,753,1,4044,1);
+
+//===== Z shops #26 =====//
+
+	
+// --------------------------------------------------
+	for(set .@i,1; .@i<=getarraysize(.Shops$); set .@i,.@i+1)
+		npcshopdelitem "qshop"+.@i,909;
+	end;
+}
+
+// -------- Dummy data (duplicate as needed) --------
+-	shop	qshop1	-1,909:-1

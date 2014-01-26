@@ -1,0 +1,88 @@
+xmas,159,133,5	script	Mini Roulette	485,{
+	L_Intro:
+	set .@name$, "[Mini Roulette]";
+	mes .@name$;
+	mes "Hello, would you like to play Mini Roulette?";
+	menu "Yes", -, "Explain the rules", L_Rules;
+
+	next;
+	mes .@name$;
+	mes "Enter how many tokens you wish to bet. (0 to cancel)";
+	input(.@bet,0,.max_bet);
+	if (.@bet == 0)
+		close;
+	next;
+	mes .@name$;
+	if (countitem(.token_id) < .@bet) {
+		mes "You don't have enough tokens to place this bet!";
+		close;
+	}
+	delitem .token_id, .@bet;
+	set .@number, rand(1,10);
+	mes "Bet: ^FF0000"+.@bet+"^000000 tokens";
+	mes "";
+	mes "Make your guess.";
+	switch(select("Even:Odd:Enter Number")) {
+		case 1:
+			if (.@number%2 == 0)
+				set .@correct, 1;
+			else
+				set .@correct, 0;
+			break;
+
+		case 2:
+			if (.@number%2 == 0)
+				set .@correct, 0;
+			else
+				set .@correct, 1;
+			break;
+
+		case 3:
+			input(.@guess,1,10);
+			if (.@guess == .@number)
+				set .@correct, 1;
+			else
+				set .@correct, 0;
+			break;
+	}
+	next;
+	mes .@name$;
+	if (.@correct) {
+		if (.@guess)
+			set .@winnings, .@bet * 5;
+		else
+			set .@winnings, .@bet * 2;
+		mes "The number was "+.@number+".";
+		mes "You guessed ^00FF00correctly^000000!";
+		next;
+		mes .@name$;
+		mes "You won ^0000FF"+.@winnings+"^000000 tokens!";
+		mes "Don't spend it all at one place :)";
+		getitem .token_id, .@winnings;
+		close;
+	}
+	else {
+		mes "The number was "+.@number+".";
+		mes "You guessed ^FF0000incorrectly^000000!";
+		mes "Try again next time!";
+		close;
+	}
+
+	L_Rules:
+	next;
+	mes .@name$;
+	mes "To start playing you must place a bet in Christmas Tokens.";
+	mes "I will then choose a random number between 1 and 10 (inclusive).";
+	mes "You will then make a guess, you can guess whether it's odd/even or guess the exact number.";
+	next;
+	mes .@name$;
+	mes "If you are correct on it being odd/even you will win 2x of your bet in tokens.";
+	mes "If you are correct on the exact number, you will win 5x of your bet in tokens.";
+	next;
+	goto L_Intro;
+
+	OnInit:
+	set .max_bet, 99;
+	set .token_id, 6092;
+	end;
+}

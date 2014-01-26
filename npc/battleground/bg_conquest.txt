@@ -1,0 +1,7 @@
+-	script	Conquest2	-1,{
+	end;
+OnInit:
+OnWhisperGlobal:
+	set .Index,1;
+	end;
+}

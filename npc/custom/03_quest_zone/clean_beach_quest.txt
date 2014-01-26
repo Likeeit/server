@@ -1,0 +1,285 @@
+// Clean Up The Beach quest
+// Have no idea how close this is to official
+
+comodo,158,149,4	script	Beach Manager	845,{
+	set .@name$, "[Beach Manager]";
+	if (!beach_clean) {
+		mes .@name$;
+		mes "You may have noticed that Comodo Beach is becoming more and more polluted.";
+		mes "The recent influx of tourists has led to this.";
+		next;
+		mes .@name$;
+		mes "We'd be alright if we had the manpower to keep the beach clean,";
+		mes "but sadly we don't.";
+		menu "I can lend a hand",-,"Sorry, wish I could help!", L_Leave;
+
+		next;
+		mes .@name$;
+		mes "Really? That's great!";
+		mes "First off, we need to make some brooms.";
+		next;
+		mes .@name$;
+		mes "Bring me these items and I'll make you some brooms.";
+		mes "120 Tough Vines";
+		mes "4 Aloe Leaflet";
+		mes "4 Soft Blade of Grass";
+		set beach_clean, 1;
+		close;
+	}
+	if (beach_clean == 1) {
+		mes .@name$;
+		if (countitem(7197) < 120 || countitem(521) < 4 || countitem(7194) < 4) {
+			mes "You haven't brought the items we need!";
+			mes "In case you've forgotten, we need:";
+			mes "120 Tough Vines";
+			mes "4 Aloe Leaflet";
+			mes "4 Soft Blade of Grass";
+			close;			
+		}
+		else {
+			delitem 7197, 120;
+			delitem 521, 4;
+			delitem 7194, 4;
+			mes "Awesome, you brought the items!";
+			mes "I will start making the brooms now.";
+			next;
+			mes .@name$;
+			mes "Halfway there...";
+			next;
+			mes .@name$;
+			mes "Nearly done, hold on.";
+			next;
+			mes .@name$;
+			mes "Finished!";
+			getitem 7630, 20;
+			set beach_clean, 2;
+			next;
+			mes .@name$;
+			mes "Now that you have some brooms, you can head over to the beach and search for ^0000FFBeach Trash^000000 to clean up.";
+			mes "Cleaning up a pile of trash will wear out a broom,";
+			mes "you'll also get varying amounts of ^0000FFTrash Debris^000000 from each pile.";
+			next;
+			mes .@name$;
+			mes "Once you have 20 ^0000FFTrash Debris^000000 come back to me for a special reward!";
+			close;
+		}
+	}
+	if (beach_clean == 2) {
+		mes .@name$;
+		if (countitem(7631) < 20) {
+			mes "I really appreciate all the hard work you're doing.";
+			if (countitem(7631) > 0) {
+				mes "It looks like you already have "+countitem(7631)+" ^0000FFTrash Debris^000000.";
+			}
+			mes "Remember to come back when you've got 20 ^0000FFTrash Debris^000000 to get your reward!";
+			if (select("Okay!:I need more brooms") == 1)
+				close;
+			next;
+			mes .@name$;
+			if (countitem(7197) < 120 || countitem(521) < 4 || countitem(7194) < 4) {
+				mes "You haven't brought the items we need!";
+				mes "In case you've forgotten, we need:";
+				mes "120 Tough Vines";
+				mes "4 Aloe Leaflet";
+				mes "4 Soft Blade of Grass";
+				close;			
+			}
+			else {
+				delitem 7197, 120;
+				delitem 521, 4;
+				delitem 7194, 4;
+				getitem 7630, 20;
+				mes "Here you go!";
+				close;
+			}
+		}
+		else {
+			delitem 7631, 20;
+			set beach_clean, 3;
+			set beach_clean_cd, gettimetick(2)+(3600*24);
+			mes "Awesome!";
+			mes "You managed to get 20 ^0000FFTrash Debris^000000.";
+			mes "Now... let me see what goodies I have for you.";
+			next;
+			switch(rand(1,10)) {
+				case 1:
+				case 2:
+				case 3:
+					getitem 12063, 3;
+					getexp 50000,0;
+					break;
+				case 4:
+				case 5:
+				case 6:
+					getitem 12063, 6;
+					getexp 150000,0;
+					break;
+				case 7:
+				case 8:
+					getitem 12063, 9;
+					getexp 250000,0;
+					break;
+				case 9:
+					getitem 2441, 1;
+					getexp 150000,0;
+					break;
+				case 10:
+					getitem 2546, 1;
+					getexp 250000,0;
+					break;					
+			}
+			mes .@name$;
+			mes "There you go!";
+			mes "The beach looks pretty clean today, but I might need some more help tomorrow.";
+			mes "Enjoy your reward!";
+			close;
+		}
+	}
+	if (beach_clean == 3) { // Done the quest once already, go into repeatable mode.
+		mes .@name$;
+		if (gettimetick(2) > beach_clean_cd) {
+			mes "The beach is a total mess again!";
+			mes "Care to lend a hand?";
+			if (select("Sure!:No thanks") == 2) {
+				close;
+			}
+			set beach_clean, 4;
+			next;
+			mes .@name$;
+			mes "Great!";
+			mes "As usual, I will need you to get me 20 ^0000FFTrash Debris^000000 from trash piles along the beach.";
+			mes "Oh, you'll probably need some more brooms.";
+			if (select("Nope, I've got plenty:Yeah, I do") == 1) {
+				next;
+				mes .@name$;
+				mes "Ok, come back when you're done for your reward.";
+				close;
+				
+			}
+			next;
+			mes .@name$;
+			mes "Alright, as usual I'm going to need the following items:";
+			mes "120 Tough Vines";
+			mes "4 Aloe Leaflet";
+			mes "4 Soft Blade of Grass";
+			next;
+			mes .@name$;
+			mes "Come back when you have them!";
+			close;
+		}
+		else {
+			mes "The beach doesn't require any cleaning today.";
+			mes "Perhaps later.";
+			close;
+		}
+	}
+	if (beach_clean == 4) {
+		mes .@name$;
+		mes "How can I help you?";
+		if (select("Make brooms:I've finished cleaning") == 1) {
+			next;
+			mes .@name$;
+			if (countitem(7197) < 120 || countitem(521) < 4 || countitem(7194) < 4) {
+				mes "You haven't brought the items we need!";
+				mes "In case you've forgotten, we need:";
+				mes "120 Tough Vines";
+				mes "4 Aloe Leaflet";
+				mes "4 Soft Blade of Grass";
+				close;			
+			}
+			else {
+				delitem 7197, 120;
+				delitem 521, 4;
+				delitem 7194, 4;
+				getitem 7630, 20;
+				mes "Here you go!";
+				close;
+			}
+		}
+		next;
+		mes .@name$;
+		if (countitem(7631) < 20) {
+			mes "You haven't gotten 20 ^0000FFTrash Debris^000000 yet.";
+			close;
+		}
+		else {
+			delitem 7631, 20;
+			set beach_clean, 3;
+			mes "Nice job.";
+			mes "The beach looks cleaner than ever before!";
+			next;
+			switch(rand(1,10)) {
+				case 1:
+				case 2:
+				case 3:
+					getitem 12063, 3;
+					getexp 50000,0;
+					break;
+				case 4:
+				case 5:
+				case 6:
+					getitem 12063, 6;
+					getexp 150000,0;
+					break;
+				case 7:
+				case 8:
+					getitem 12063, 9;
+					getexp 250000,0;
+					break;
+				case 9:
+					getitem 2441, 1;
+					getexp 150000,0;
+					break;
+				case 10:
+					getitem 2546, 1;
+					getexp 250000,0;
+					break;					
+			}
+			mes .@name$;
+			mes "Here's your reward for all your hard work.";
+			close;
+		}
+	}
+
+	L_Leave:
+	next;
+	mes .@name$;
+	mes "Didn't expect much, cleaning is a tiresome job.";
+	close;
+}
+
+-	script	Beach Trash	-1,{
+	if (countitem(7630) < 1)
+		end;
+	delitem 7630, 1;
+	getitem 7631, 1;
+	initnpctimer;
+	disablenpc strnpcinfo(0);
+	end;
+	
+	OnTimer300000:
+	enablenpc strnpcinfo(0);
+	stopnpctimer;
+	end;
+}
+
+comodo,219,118,5	duplicate(Beach Trash)	Beach Trash#1	844
+comodo,246,130,5	duplicate(Beach Trash)	Beach Trash#2	844
+comodo,162,136,5	duplicate(Beach Trash)	Beach Trash#3	844
+comodo,138,163,5	duplicate(Beach Trash)	Beach Trash#4	844
+comodo,99,183,5	duplicate(Beach Trash)	Beach Trash#5	844
+comodo,80,211,5	duplicate(Beach Trash)	Beach Trash#6	844
+comodo,50,220,5	duplicate(Beach Trash)	Beach Trash#7	844
+comodo,62,236,5	duplicate(Beach Trash)	Beach Trash#8	844
+comodo,102,258,5	duplicate(Beach Trash)	Beach Trash#9	844
+comodo,93,264,5	duplicate(Beach Trash)	Beach Trash#10	844
+comodo,121,248,5	duplicate(Beach Trash)	Beach Trash#11	844
+comodo,109,227,5	duplicate(Beach Trash)	Beach Trash#12	844
+comodo,99,231,5	duplicate(Beach Trash)	Beach Trash#13	844
+comodo,196,121,5	duplicate(Beach Trash)	Beach Trash#14	844
+comodo,249,169,5	duplicate(Beach Trash)	Beach Trash#15	844
+comodo,274,209,5	duplicate(Beach Trash)	Beach Trash#16	844
+comodo,238,223,5	duplicate(Beach Trash)	Beach Trash#17	844
+comodo,237,255,5	duplicate(Beach Trash)	Beach Trash#18	844
+comodo,240,278,5	duplicate(Beach Trash)	Beach Trash#19	844
+comodo,266,283,5	duplicate(Beach Trash)	Beach Trash#20	844

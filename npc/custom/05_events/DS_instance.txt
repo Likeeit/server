@@ -1,0 +1,437 @@
+// Instanced DS
+
+new_5-2,93,112,5	script	Devil Square Guardian::dsinstance	459,{
+	mes "[Devil Square Guardian]";
+	mes "Welcome to the ^FF0000Devil Square Party^000000's entrance.";
+	mes "If you failed to survive this ordeal, the door will be closed. You will have to wait for it to open if you want to try again.";
+	next;
+	menu "Enter",-,"Register",L_register,"Info",L_info,"Cancel",L_cancel;
+	mes "[Devil Square Guardian]";
+	if (!getcharid(1) || $@DS_Instance_Data[0] != getcharid(1)) {
+		mes "The Devil Square Instance doesn't belong to your party.";
+		close;
+	}
+	if (#ds_instance_time + (3600*24) > gettimetick(2) && checkquest(.quest_id[$@DS_Instance_Data[9]], PLAYTIME) != 0) { // ds cooldown not over and not in the same instance as registered
+		mes "The 24 hour cooldown period on your account has not expired.";
+		// Calculate remaining time on cooldown.
+		set .@time_left, ((#ds_instance_time+(3600*24))-gettimetick(2));
+		set .@hr, .@time_left/3600;
+		set .@mn, (.@time_left-(.@hr*3600))/60;
+		set .@sec, (.@time_left-(.@mn*60))-(.@hr*3600);
+		if (.@sec < 0) set .@sec, 0;
+		mes "There is "+.@hr+" hour(s), "+.@mn+" min(s) and "+.@sec+" second(s) left.";
+		close;
+	}
+	if (getmapusers(.map_name$) >= 10) {
+		mes "There are already 10 players participating in Devil Square.";
+		mes "You may only enter if someone leaves.";
+		close;
+	}
+	if (checkquest(.quest_id[$@DS_Instance_Data[9]], PLAYTIME) == 2) {
+		completequest(.quest_id[$@DS_Instance_Data[9]]);
+		set #ds_instance_time, gettimetick(2);
+	}
+	else if (checkquest(.quest_id[$@DS_Instance_Data[9]], PLAYTIME) == 0 && ds_instance == instance_id(1)) { // make sure same instance, thus compare ids.
+		mes "If you wish to rejoin, it will either cost your party leader 1 prepaid rejoin, or 1 Silver Coin from you.";
+		mes "How would you like to pay for this rejoin?";
+		switch(select("My party leader will pay for it:I will pay for it:Nevermind")) {
+			case 1:
+				if ($@DS_Instance_Data[1] < 1) {
+					mes "Your party leader has no more rejoins left.";
+					close;	
+				}
+				set $@DS_Instance_Data[1], $@DS_Instance_Data[1] - 1;
+				break;
+			case 2:
+				mes "Are you sure you wish to spend 1 Silver Coin?";
+				if (select("Yes:No") == 2) close;
+				if (countitem(.silvercoin_id) < 1) {
+					next;
+					mes "You don't have any Silver Coins.";
+					close;
+				}
+				delitem .silvercoin_id, 1;
+				break;
+			case 3:
+				goto L_cancel;
+				break;
+			default:
+				close;
+		}
+	}
+	else {
+		set #ds_instance_time, gettimetick(2);
+		setquest(.quest_id[$@DS_Instance_Data[9]]);
+	}
+	warp .map_name$,183,182;
+	close;
+	end;
+
+L_register:
+	mes "[Devil Square Guardian]";
+	if ($@DS_Instance_Data[0] && $@DS_Instance_Data[8] > gettimetick(2)) {
+		mes "Someone has already reserved the Devil Square Party.";
+		// Calculate remaining time.
+		set .@time_left, ($@DS_Instance_Data[8]-gettimetick(2));
+		set .@hr, .@time_left/3600;
+		set .@mn, (.@time_left-(.@hr*3600))/60;
+		set .@sec, (.@time_left-(.@mn*60))-(.@hr*3600);
+		if (.@sec < 0) set .@sec, 0;
+		mes "There is "+.@hr+" hour(s), "+.@mn+" min(s) and "+.@sec+" second(s) left until their instance expires.";
+		close;
+	}
+	mes "In order to register, you need a minimum of 5 members in your party.";
+	mes "Also, it costs 10 million Zeny to create a DS Party. Would you like to proceed?";
+	if (select("Yes:No") == 2) close;
+	next;
+	mes "[Devil Square Guardian]";
+	mes "Alright then, I will now check if you meet the requirements, and if so, deduct the fee from your account.";
+	next;
+	getpartymember(getcharid(1));
+	mes "[Devil Square Guardian]";
+	if (getpartyleader(getcharid(1), 2) != getcharid(0)) {
+		mes "You are not the party leader. You must be the party leader in order to register for the Devil Square Party.";
+		close;
+	}
+	if ( $@partymembercount < 5) {
+		mes "Your party doesn't meet the necessary requirements. Please check that you have 5 members online and try again.";
+		close;
+	}
+	if (Zeny < 10000000) {
+		mes "I'm sorry, you don't seem to have sufficient Zeny. Please come back when you have 10 million Zeny.";
+		close;
+	}
+	set Zeny, Zeny - 10000000;
+	set $@DS_Instance_Data[0], getcharid(1);
+	mes "Payment has been made successfully.";
+	mes "Now, let's proceed with configuring your Devil Square Party.";
+	next;
+	mes "[Devil Square Guardian]";
+	mes "How many gold coins would you like to spend on rejoin? Rejoins allow you and your party members to rejoin the instance if they leave.";
+	mes "1 Gold Coin = 10 rejoins.";
+	input(.@rejoins,0,10);
+	while (countitem(.goldcoin_id) < .@rejoins) {
+		next;
+		mes "[Devil Square Guardian]";
+		mes "You don't have enough Gold Coins. Please change the amount of Gold Coins you wish to spend.";
+		input(.@rejoins,0,10);
+	}
+	delitem .goldcoin_id, .@rejoins;
+	next;
+	mes "[Devil Square Guardian]";
+	mes "You have chosen to purchase "+(.@rejoins*10)+" rejoins for "+.@rejoins+" Gold Coin(s).";
+	mes "We will now configure the drop rate settings. The default drop rates are as follows:";
+	next;
+	mes "[Devil Square Guardian]";
+	mes "Combat Knife: 0.05%";
+	mes "Ice Pick [1]: 0.05%";
+	mes "Diabolus Robe: 0.05%";
+	mes "Proxy Skin Fragment: 0.05%";
+	mes "Diabolus Boots: 0.05%";
+	mes "";
+	mes "You can increase the drop rates individually to 1%, 2%, or 3%. This process costs 1 Silver Coin each time.";
+	next;
+	L_Drop_Rate_Setting:
+	mes "[Devil Square Guardian]";
+	mes "Select the item drop rate that you wish to modify.";
+	setarray .@drop_name_list$[0], "Combat Knife", "Ice Pick", "Diabolus Robe", "Proxy Skin Fragment", "Diabolus Boots";
+	set .@chosen, select(.@drop_name_list$[0], .@drop_name_list$[1], .@drop_name_list$[2], .@drop_name_list$[3], .@drop_name_list$[4], "Proceed to next step");
+	if (.@chosen == 6) goto L_Bonus_Setting;
+	set .@value, select("1%","2%","3%","Cancel");
+	next;
+	if (.@value == 4) goto L_Drop_Rate_Setting;
+	mes "[Devil Square Guardian]";
+	mes "You wish to change the drop rate of "+.@drop_name_list$[.@chosen-1]+" to "+.@value+"%?";
+	mes "This change will cost you 1 Silver Coin. Do you wish to confirm this change?";
+	if (select("Yes:No") == 1) {
+		if (countitem(.silvercoin_id) < 1) {
+			mes "You don't have enough Silver Coins.";
+		}
+		else {
+			delitem .silvercoin_id, 1;
+			set .@drop_rates[.@chosen-1], .@value;
+			mes "Successfully change the drop rate of "+.@drop_name_list$[.@chosen-1]+" to "+.@value+"%.";
+		}
+	}
+	next;
+	goto L_Drop_Rate_Setting;
+	L_Bonus_Setting:
+	next;
+	mes "[Devil Square Guardian]";
+	mes "Now we will configure bonus challenges.";
+	mes "You can choose to summon a Pori Pori in the first round for 50 Gold Coins.";
+	mes "You can also pay another 150 Gold Coins to have a Naght Sieger summoned in the second round.";
+	mes "Alternatively, you can summon both in round 3 for a price of 175 Gold Coins.";
+	setarray .@bonus_costs[0], 50, 150, 200, 175;
+	set .@bonus, select("Pori Pori Round 1 - 50 GC", "Naght Sieger Round 2 - 150 GC", "Pori Pori Round 1, Naght Sieger Round 2 - 200 GC", "Both at Round 3 - 175 GC", "None");
+	while (countitem(.goldcoin_id) < .@bonus_costs[.@bonus-1]) {
+		next;
+		mes "[Devil Square Guardian]";
+		mes "You don't have enough Gold Coins for that option.";
+		set .@bonus, select("Pori Pori Round 1 - 50 GC", "Naght Sieger Round 2 - 150 GC", "Pori Pori Round 1, Naght Sieger Round 2 - 200 GC", "Both at Round 3 - 175 GC", "None");
+	}
+	delitem .goldcoin_id, .@bonus_costs[.@bonus-1];
+	next;
+	mes "[Devil Square Guardian]";
+	mes "Finally, it's time to set the time limit for the instance.";
+	mes "The default time limit you have is 1 hour. However, you can extend this to up to 3 hours.";
+	mes "The cost per additional hour is 1 Gold Coin. Please select a time limit below.";
+	set .@time_limit, select("1 Hour - Free", "2 Hours - 1 GC", "3 Hours - 2 GC");
+	while (countitem(.goldcoin_id) < .@time_limit-1) {
+		next;
+		mes "[Devil Square Guardian]";
+		mes "You don't have enough Gold Coins for that option.";
+		set .@time_limit, select("1 Hour - Free", "2 Hours - 1 GC", "3 Hours - 2 GC");
+	}
+	delitem .goldcoin_id, .@time_limit-1;
+	next;
+	mes "[Devil Square Guardian]";
+	mes "Configuration for your instance is now complete.";
+	mes "I will now generate the instance for you and your party will be able to enter.";
+	set $@DS_Instance_Data[1], .@rejoins;
+	for (set .@i, 2; .@i < 7; set .@i, .@i + 1) {
+		set $@DS_Instance_Data[.@i], .@drop_rates[.@i-2];
+	}
+	set $@DS_Instance_Data[7], .@bonus;
+	set $@DS_Instance_Data[8], gettimetick(2)+(.@time_limit*3600);
+	set $@DS_instance_Data[9], .@time_limit;
+	donpcevent "DS_HiddenNpc2::OnStartDS";
+	disablenpc "Exit#DS2";
+	close;	
+	
+
+L_error:
+	mes "[Devil Square Guardian]";
+	mes "You have not registered for this instance of Devil Square.";
+	close;
+
+L_req:
+	mes "[Devil Square Guardian]";
+	mes "Minimum base level required to enter is 90";
+	mes "The registration fee is 20,000z";
+	mes "Make sure you fullfill both requirements if you want to enter.";
+	close;
+
+L_toomany:
+	mes "[Devil Square Guardian]";
+	mes "I'm sorry, but Devil Square is FULL";
+	mes "The maxmimum amount of challengers that can enter is 10 players.";
+	close;
+
+L_info:
+	mes "[Devil Square Guardian]";
+	mes "There are 3 levels in which you will encounter several monsters.";
+	mes "In every level that you reach, the monster count will increase. Stronger monsters will also appear depending on the level.";
+	mes "If you successfully cleared all 3 levels, you'll be rewarded with Gold Coins and other items!!";
+	mes "The maximum amount of challengers that can enter are 10 players.";
+	close;
+
+L_cancel:
+	mes "[Devil Square Guardian]";
+	mes "See you!";
+	close;
+
+// Configuration
+OnInit:
+set .map_name$, "ordeal_2-1";
+set .goldcoin_id, 671;
+set .silvercoin_id, 675;
+set .public_max, 5;
+setarray .quest_id[0], 12400, 12401, 12402;
+end;
+
+}
+
+ordeal_2-1,0,0,0	script	DS_HiddenNpc2	-1,{
+
+OnInit:
+	set .map_name$, "ordeal_2-1";
+	set .pori_id, 505;
+	set .ns_id, 506;
+	end;
+
+Ondevildead:
+	set .mob2,.mob2 - 1;
+	if(.mob2 == 25) mapannounce .map_name$,"Devil Square : 25 mobs to enter the 2nd round",0;
+	if(.mob2 == 5) mapannounce .map_name$,"Devil Square : 5 mobs to enter 2nd round",0;
+	if(.mob2 == 0) { 
+		mapannounce .map_name$,"Devil Square : You have cleared this stage. Prepare yourself for the next stage in....",0;
+		sleep2 500;
+		mapannounce .map_name$,"Devil Square : 5",0;
+		sleep2 5000;
+		mapannounce .map_name$,"Devil Square : 4",0;
+		sleep2 4000;
+		mapannounce .map_name$,"Devil Square : 3",0;
+		sleep2 3000;
+		mapannounce .map_name$,"Devil Square : 2",0;
+		sleep2 2000;
+		mapannounce .map_name$,"Devil Square : 1...",0;
+		sleep2 1000;
+		mapannounce .map_name$,"Devil Square : Next Stage!",0;
+		sleep2 1000;
+		goto Ondevil2;
+	}
+	end;
+
+Ondevil2:
+	set .mob2,95;
+	areamonster .map_name$,183,182,246,244,"[DS] DARK ILLUSION",1302,20,"DS_HiddenNpc2::Ondevildead2";
+	areamonster .map_name$,183,182,246,244,"[DS] SKOGUL",1761,10,"DS_HiddenNpc2::Ondevildead2";
+	areamonster .map_name$,183,182,246,244,"[DS] MARIONETTE",1143,15,"DS_HiddenNpc2::Ondevildead2";
+	areamonster .map_name$,183,182,246,244,"[DS] INJUSTICE",1257,15,"DS_HiddenNpc2::Ondevildead2";
+	areamonster .map_name$,183,182,246,244,"[DS] Salamander",1831,10,"DS_HiddenNpc2::Ondevildead2";
+	for (set .@x, 2; .@x < 7; set .@x, .@x + 1) {
+		if ($@DS_Instance_Data[.@i]) {
+			areamonster .map_name$,183,182,246,244,"[DS] Salamander",1831,($@DS_Instance_Data[.@i]*5),"DS_HiddenNpc2::Ondevildead2";
+			set .mob2, .mob2 + ($@DS_Instance_Data[.@i]*5);
+		}
+	}
+	areamonster .map_name$,183,182,246,244,"[DS] FLAME SKULL",1869,25,"DS_HiddenNpc2::Ondevildead2";
+	if ($@DS_Instance_Data[7] == 2 || $@DS_Instance_Data[7] == 3) {
+		areamonster .map_name$,183,182,246,244,"[DS] Naght Sieger",.ns_id,1;
+	}
+	end;
+
+Ondevildead2:
+	set .mob2,.mob2 - 1;
+	if(.mob2 == 25) mapannounce .map_name$,"Devil Square : 25 mobs left to enter the 3rd round",0;
+	if(.mob2 == 5) mapannounce .map_name$,"Devil Square : 5 mobs left to enter the 3rd round",0;
+	if(.mob2 == 0) {
+		mapannounce .map_name$,"Devil Square : You're now at the last stage... The final battle will begin in...",0;
+		sleep2 500;
+		mapannounce .map_name$,"Devil Square : 5",0;
+		sleep2 5000;
+		mapannounce .map_name$,"Devil Square : 4",0;
+		sleep2 4000;
+		mapannounce .map_name$,"Devil Square : 3",0;
+		sleep2 3000;
+		mapannounce .map_name$,"Devil Square : 2",0;
+		sleep2 2000;
+		mapannounce .map_name$,"Devil Square : 1...",0;
+		sleep2 1000;
+		mapannounce .map_name$,"Devil Square : Final stage!",0;
+		sleep2 1000;
+		goto Ondevil3;
+	}
+	end;
+
+Ondevil3:
+	set .mob2,91;
+	areamonster .map_name$,183,182,246,244,"[DS] Salamander",1831,25,"DS_HiddenNpc2::Ondevildead3";
+	areamonster .map_name$,183,182,246,244,"[DS] Bow Guardian",1830,20,"DS_HiddenNpc2::Ondevildead3";
+	areamonster .map_name$,183,182,246,244,"[DS] DARK ILLUSION",1302,25,"DS_HiddenNpc2::Ondevildead3";
+	areamonster .map_name$,183,182,246,244,"[DS] FLAME SKULL",1869,15,"DS_HiddenNpc2::Ondevildead3";
+	areamonster .map_name$,183,182,246,244,"[DS] PIAMETTE",1947,5,"DS_HiddenNpc2::Ondevildead3";
+	areamonster .map_name$,183,182,246,244,"[DS] FINAL BOSS",2008,1,"DS_HiddenNpc2::Ondevildead3";
+	for (set .@x, 2; .@x < 7; set .@x, .@x + 1) {
+		if ($@DS_Instance_Data[.@i]) {
+			areamonster .map_name$,183,182,246,244,"[DS] Bow Guardian",1830,($@DS_Instance_Data[.@i]*5),"DS_HiddenNpc2::Ondevildead3";
+			set .mob2, .mob2 + ($@DS_Instance_Data[.@i]*5);
+		}
+	}
+	if ($@DS_Instance_Data[7] == 4) {
+		areamonster .map_name$,183,182,246,244,"[DS] Naght Sieger",.ns_id,1;
+		areamonster .map_name$,183,182,246,244,"[DS] Pori Pori",.pori_id,1;
+	}
+	end;
+
+Ondevildead3:
+	set .mob2,.mob2 - 1;
+	if(.mob2 == 15) mapannounce .map_name$,"Devil Square : 15 mobs left till victory!",0;
+	if(.mob2 == 5) mapannounce .map_name$,"Devil Square : 5 mobs left till victory!",0;
+	if(.mob2 == 0) {
+		sleep 3000;
+		announce "Devil Square : Congratulations to all the players who have completed the challenge!",0;
+		goto Ondevil4;
+	}
+	end;
+
+Ondevil4:
+	callsub S_Clear;
+	if (.mob2 == 0) enablenpc "Exit#DS2";
+	mapannounce .map_name$,"The Exit NPC will disappear in 30 seconds. Make sure you exit through it to receive a prize.",0;
+	sleep 30000;
+	disablenpc "Exit#DS2";
+	end;
+
+OnStartDS:
+	set .mob2, 90;
+	initnpctimer;
+	mapwarp .map_name$, "prontera", 150, 150;
+	areamonster .map_name$,183,182,246,244,"[DS] SOLDIER SKELETON",1028,10,"DS_HiddenNpc2::Ondevildead";
+	areamonster .map_name$,183,182,246,244,"[DS] Bow Guardian",1830,10,"DS_HiddenNpc2::Ondevildead";
+	areamonster .map_name$,183,182,246,244,"[DS] FLAME SKULL",1869,15,"DS_HiddenNpc2::Ondevildead";
+	areamonster .map_name$,183,182,246,244,"[DS] ARCHER SKELETON",1016,20,"DS_HiddenNpc2::Ondevildead";
+	areamonster .map_name$,183,182,246,244,"[DS] MINOROUS",1149,15,"DS_HiddenNpc2::Ondevildead";
+	areamonster .map_name$,183,182,246,244,"[DS] NIGHTMARE",1061,20,"DS_HiddenNpc2::Ondevildead";
+	for (set .@x, 2; .@x < 7; set .@x, .@x + 1) {
+		if ($@DS_Instance_Data[.@i]) {
+			areamonster .map_name$,183,182,246,244,"[DS] Sword Guardian",1829,($@DS_Instance_Data[.@i]*5),"DS_HiddenNpc2::Ondevildead";
+			set .mob2, .mob2 + ($@DS_Instance_Data[.@i]*5);
+		}
+	}
+	if ($@DS_Instance_Data[7] == 1 || $@DS_Instance_Data[7] == 3) {
+		areamonster .map_name$,183,182,246,244,"[DS] Pori Pori",.pori_id,1;
+	}
+	end;
+
+OnTimer30000:
+	if ($@DS_Instance_Data[0] && gettimetick(2) >= $@DS_Instance_Data[8]) {
+		callsub S_Clear;
+		disablenpc "Exit#DS2";
+		mapannounce .map_name$,"The Devil Square is now closed",0;
+		killmonsterall .map_name$;
+		stopnpctimer;
+		end;
+	}
+	else
+	if (getmapusers(.map_name$) == 0) {
+		callsub S_Clear;
+		killmonsterall .map_name$;
+		stopnpctimer;
+		end;
+	} else {
+		mapannounce .map_name$,getmapusers(.map_name$) +" player" + ((getmapusers(.map_name$)>1)?"s are":" is") +" still alive at the Devil Square...",0;
+		initnpctimer;
+		end;
+	}
+
+S_Clear:
+for (set .@i, 0; .@i < 9; set .@i, .@i + 1) {
+	set $@DS_Instance_Data[.@i], 0;
+}
+return;
+
+}
+
+// -- Mapflags
+ordeal_2-1	mapflag	nowarp
+ordeal_2-1	mapflag	nowarpto
+ordeal_2-1	mapflag	noteleport
+ordeal_2-1	mapflag	nosave	SavePoint
+ordeal_2-1	mapflag	nomemo
+ordeal_2-1	mapflag	nobranch
+ordeal_2-1	mapflag	nopenalty
+ordeal_2-1	mapflag	monster_noteleport
+
+ordeal_2-1,246,245,3	script	Exit#DS2	2008,{
+	mes "[The Fallen]";
+	mes "You have defeated me...";
+	mes "Farewell...";
+	next;
+	
+	set #icp, #icp + 1;
+	message strcharinfo(0), "You receive 1 Instance Completion Point.";
+	if (rand(1,1000) <= ($@DS_Instance_Data[2]? ($@DS_Instance_Data[2]*10) : 5))
+		getitem 1228, 1;
+	if (rand(1,1000) <= ($@DS_Instance_Data[3]? ($@DS_Instance_Data[3]*10) : 5))
+		getitem 13017, 1;
+	if (rand(1,1000) <= ($@DS_Instance_Data[4]? ($@DS_Instance_Data[4]*10) : 5))
+		getitem 2374, 1;
+	if (rand(1,1000) <= ($@DS_Instance_Data[5]? ($@DS_Instance_Data[5]*10) : 5))
+		getitem 2554, 1;
+	if (rand(1,1000) <= ($@DS_Instance_Data[6]? ($@DS_Instance_Data[6]*10) : 5))
+		getitem 2433, 1;
+	warp "SavePoint",0,0;
+	close;
+}

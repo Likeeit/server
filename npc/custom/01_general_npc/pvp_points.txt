@@ -1,0 +1,14 @@
+-	script	PvP_Points	-1,{
+	OnInit:
+	setarray .maps$[0], "prontera";
+	end;
+
+	OnPCKillEvent:
+	set .@mapname$, strcharinfo(3);
+	for (set .@i, 0; .@i < getarraysize(.maps$); set .@i, .@i + 1) {
+		if (.@mapname$ == .maps$[.@i]) break;
+		else if (.@i == getarraysize(.maps$)-1) end;
+	}
+	set #pvp_points, #pvp_points + 1;
+	end;
+}

@@ -1,0 +1,175 @@
+// The equipment/items/cards restriction file 
+// here you define which items may not be used at PvP / GvG 
+// format: <item id>,<mode>
+// mode
+// 1    - restricted in normal maps
+// 2    - restricted in PVP
+// 4    - restricted in GVG
+// 8    - restricted in Battlegrounds
+// Restricted zones - they're configured by 'restricted <number>' mapflag
+// 32   - restricted in zone 1
+// 64   - restricted in zone 2
+// 128  - restricted in zone 3
+// 256  - restricted in zone 4
+// 512  - restricted in zone 5
+// 1024 - restricted in zone 6
+// 2048 - restricted in zone 7
+
+//Examples:
+//1201,1 you can't use KNIFE(ID 1201) on normal maps
+//608,4 you can't use Yggdrasil Seed(ID 608) on both GvG and WoE Castles
+//4174,6 Forbid Deviling Card in every PVP or GVG map, and during woes.
+//501,32 you can't use Red Potion on map marked as 'restricted zone 1'
+//502,64 you can't use Orange Potion on map marked as 'restricted zone 2'
+//503,128 you can't use Yellow Potion on map marked as 'restricted zone 3'
+// you can even mix modes
+//519,322 (256+64+2) you can't use Milk on PVP, and maps marked as 'restricted zone 2' and 'restricted zone 4'
+
+
+//PVP
+14529,2 //Greed Scroll
+602,2 //bwing
+604,2 //dead branch
+
+//Woe
+607,4
+608,4
+604,4 //dead branch
+
+
+//GVG
+12218,4 //LV5 Assumptio Scroll
+14529,4 //Greed Scroll
+14590,4 //Party Assumptio 5 Scroll
+
+//BATTLEGROUND
+12218,8 //LV5 Assumptio Scroll
+14590,8 //Party Assumptio 5 Scroll
+
+4128,12 //GTB card
+
+//Zone 1 - Aldebaran Turbo Track
+601,32 //Fly Wing
+605,32 //Anodyne
+506,32 //Green Potion
+525,32 //Panacea
+
+//Zone 2 - Jail
+601,64 //Fly Wing - not really needed here but ...
+602,64 //Butterfly Wing - also not needed
+12212,64 //Giant Fly Wing
+14582,64
+14583,64
+14584,64
+14585,64
+
+//Zone 3 - Izlude Battle Arena, Gladiator Arena
+601,128 //Fly Wing
+//Weapons for BG
+13036,128
+13037,128
+13411,128
+13410,128
+1183,128
+1184,128
+1425,128
+1482,128
+1632,128
+1633,128
+1634,128
+1635,128
+1543,128
+1542,128
+1380,128
+1379,128
+13305,128
+13306,128
+1739,128
+1738,128
+1279,128
+1280,128
+1924,128
+1923,128
+1978,128
+1977,128
+1574,128
+1575,128
+1824,128
+1823,128
+13108,128
+13171,128
+13172,128
+13173,128
+13174,128
+//Armors for BG
+2538,128
+2539,128
+2540,128
+2435,128
+2436,128
+2437,128
+2376,128
+2377,128
+2378,128
+2379,128
+2380,128
+2381,128
+2382,128
+2720,128
+2721,128
+2722,128
+2723,128
+2724,128
+2725,128
+2733,128
+//Glorious equips
+1187,128
+1281,128
+1282,128
+1310,128
+1382,128
+1426,128
+1486,128
+1546,128
+1576,128
+1577,128
+1640,128
+1641,128
+1743,128
+1826,128
+1827,128
+1927,128
+1981,128
+2002,128
+13042,128
+13110,128
+13176,128
+13177,128
+13178,128
+13179,128
+13307,128
+13416,128
+13417,128
+13418,128
+2394,128
+2395,128
+2396,128
+2444,128
+2445,128
+2446,128
+2549,128
+2772,128
+2773,128
+2774,128
+
+//zone 4 - WoE SE
+4441,256 // FBH card
+
+//zone 6 - instance maps, vend
+604,1024 //dead branch
+
+//Zone 7 - Towns
+14529,2048 //Greed Scroll
+
+//Box of Sunlight PVP version
+16300,4077

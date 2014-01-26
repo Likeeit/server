@@ -1,0 +1,103 @@
+//Custom woe portal
+
+-	script	woeportal	-1,{
+
+//OnInit:
+// disables portals at server start.
+//	disablenpc "payg02";
+//	disablenpc "prtg02-1";
+//	disablenpc "schg202";
+//	disablenpc "arug202";
+//	end;
+
+OnClock1159:
+	enablenpc "schg102";
+	end;
+
+OnClock1401:
+	disablenpc "schg102";
+	end;
+
+OnClock1559:
+	enablenpc "payg02";
+	end;
+
+OnClock1701:
+	disablenpc "payg02";
+	end;
+
+OnClock1359:
+	enablenpc "schg202";
+	end;
+
+OnClock1601:
+	disablenpc "schg202";
+	end;
+
+OnClock0459:
+	enablenpc "prtg01";
+	end;
+
+OnClock501:
+	disablenpc "prtg01";
+	end;
+
+OnClock2159:
+	enablenpc "arug402";
+	end;
+
+OnClock2301:
+	disablenpc "arug402";
+	end;
+}
+
+//End of Woon custom warp portal
+
+// Al De Baren castle maps
+//alde_gld,48,79,0	warp	aldg01	1,1,aldeg_cas01,34,248
+//alde_gld,95,253,0	warp	aldg02	1,1,aldeg_cas02,88,163
+//alde_gld,142,81,0	warp	aldg03	1,1,aldeg_cas03,114,286
+//alde_gld,243,242,0	warp	aldg04	1,1,aldeg_cas04,149,17
+//alde_gld,259,90,0	warp	aldg05	1,1,aldeg_cas05,216,103
+
+// Geffen Castles Map
+//gef_fild13,112,269,0	warp	gefg05	1,1,gefg_cas03,100,280
+//gef_fild13,139,240,0	warp	gefg06	1,1,gefg_cas03,125,250
+//gef_fild13,150,54,0	warp	gefg01	1,1,gefg_cas01,34,140
+//gef_fild13,196,281,0	warp	gefg08	1,1,gefg_cas04,24,149
+//gef_fild13,210,75,0	warp	gefg02	1,1,gefg_cas01,95,178
+//gef_fild13,256,57,0	warp	gefg09	1,1,gefg_cas05,11,134
+//gef_fild13,305,83,0	warp	gefg09-1	1,1,gefg_cas05,99,200
+//gef_fild13,308,244,0	warp	gefg03	1,1,gefg_cas02,70,143
+//gef_fild13,77,284,0	warp	gefg04	1,1,gefg_cas03,60,286
+//gef_fild13,83,185,0	warp	gefg07	1,1,gefg_cas03,89,159
+
+//payon
+//pay_gld,121,238,0	warp	payg01	1,1,payg_cas01,214,48
+pay_gld,291,116,0	warp	payg02	1,1,payg_cas02,272,57
+//pay_gld,321,293,0	warp	payg03	1,1,payg_cas03,226,26
+//pay_gld,140,156,0	warp	payg04	1,1,payg_cas04,252,271
+//pay_gld,204,269,0	warp	payg05	3,1,payg_cas05,62,225
+
+//Prontera Castles Map
+prt_gld,129,65,0	warp	prtg01	1,1,prtg_cas01,99,32
+//prt_gld,240,124,0	warp	prtg02-1	1,1,prtg_cas02,43,229
+//prt_gld,153,141,0	warp	prtg03-1	1,1,prtg_cas03,168,12
+//prt_gld,107,240,0	warp	prtg04-1	1,1,prtg_cas04,86,13
+//prt_gld,199,240,0	warp	prtg05-1	1,1,prtg_cas05,17,235
+//prt_gld,159,25,0	warp	prtg002	6,2,prt_castle,102,178
+//prt_gld,159,298,0	warp	prtg001	1,1,prt_fild01,199,30
+
+// Schwaltzvalt Castle Maps
+sch_gld,293,90,0	warp	schg102	1,1,schg_cas01,119,8
+sch_gld,288,258,0	warp	schg202	1,1,schg_cas02,339,78
+//sch_gld,97,183,0	warp	schg302	1,1,schg_cas03,337,330
+//sch_gld,139,96,0	warp	schg402	1,1,schg_cas04,119,8
+//sch_gld,65,315,0	warp	schg502	1,1,schg_cas05,119,8
+
+// Arunafeltz Castle Maps
+//aru_gld,155,274,0	warp	arug102	1,1,arug_cas01,275,93
+//aru_gld,78,47,0	warp	arug202	1,1,arug_cas02,139,31
+//aru_gld,68,150,0	warp	arug302	1,1,arug_cas03,141,45
+aru_gld,289,347,0	warp	arug402	1,1,arug_cas04,141,45
+//aru_gld,287,107,0	warp	arug502	1,1,arug_cas05,141,45

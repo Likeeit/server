@@ -1,0 +1,185 @@
+-	script	CardTradeIn_Conf	-1,{
+	end;
+
+OnInit:
+	set $CardTradeIn_Rate,10;	// How many Card points is given for 1 Card
+					// Officialy 1
+	end;
+}
+
+//- General NPC
+//============================================================ 
+new_5-2,94,97,4	script	Card Exchanger	882,{
+mes "[Misa]";
+mes "Hey, I Love to collect monster Cards of monsters above level 25.";
+mes "I can exchange 1 Card for ^FF0000"+$CardTradeIn_Rate+" Points^000000.";
+mes "Wanna tade?";
+	next;
+	switch (select("Check my Points.:Trade-in Cards for Points.:Exchange Points for Coins.:How does this work?:Leave.")) {
+		case 1:
+			if(#CARD_TRADEIN_PTS == 0){
+				mes "[Misa]";
+				mes "Tch, You don't have ^FF0000Points^000000 at all.";
+				mes "Trade-in some Monster Cards first....";
+				close;
+			} 
+			mes "[Misa]";
+			mes "Looks like You have ^FF0000"+#CARD_TRADEIN_PTS+" Points^000000 at this time.";
+			close;
+		case 2:
+			callfunc "CardTradeIn_Sell";
+		case 3:
+			if(#CARD_TRADEIN_PTS == 0){
+				mes "[Misa]";
+				mes "Sorry, but you don't have enough ^FF0000Points^000000 at all. Trade-in some of your Monster cards to get points.";
+				close;
+			} 
+			mes "[Misa]";
+			mes "Wow, You have ^FF0000"+#CARD_TRADEIN_PTS+" Points^000000 right now.";
+			mes "You wanna convert them into Coins?";
+			next;
+			switch (select("Gold Packet:Silver Packet:Nothing")) {
+			
+			Case 1:
+				switch (select("20 Points to 1 Gold Coin:200 Points to 10 Gold Coin:1000 Points to 50 Gold Coin:Nothing")) {
+				case 1:
+					callfunc "CardTradeIn_Buy",671,1,20;
+				case 2:
+					callfunc "CardTradeIn_Buy",671,10,200;
+				case 3:
+					callfunc "CardTradeIn_Buy",671,50,1000;
+				case 4:
+					mes "[Misa]";
+					mes "That's too bad, come back of you wanna exchange for the Coins.";
+					close;
+					}
+			Case 2:
+					switch (select("10 Points to 4 Silver Coins:100 Points to 40 Silver Coins:1000 Points to 400 Silver Coins:Nothing")) {
+				case 1:
+					callfunc "CardTradeIn_Buy",675,4,10;
+				case 2:
+					callfunc "CardTradeIn_Buy",675,40,100;
+				case 3:
+					callfunc "CardTradeIn_Buy",675,400,1000;
+				case 4:
+					mes "[Misa]";
+					mes "That's too bad, come back of you wanna exchange for the Coins.";
+					close;					
+					}
+			}
+		case 4:
+			mes "[Misa]";
+			mes "I accept Cards of monsters above level 25 only.";
+			mes "I can exchange 1 Card for ^FF0000"+$CardTradeIn_Rate+" Points^000000.";
+			next;
+			mes "[Misa]";
+			mes "If you agree to exchange your Cards for Points, ^FF0000All of them^000000 in your inventory will be ^FF0000DELETED^000000. So you should store keep in your inventory only those Cards you want to trade.";
+			next;
+			mes "[Misa]";
+			mes "All recived Points can be exchanged for either:";
+			mes "Silver Coins, or";
+			mes "Gold Coins.";
+			next;
+			mes "[Misa]";
+			mes "Well,that's about it. Just bring me Monster Cards if you wanna trade with me.";
+			close;
+		case 5:
+			mes "[Misa]";
+			mes "You know where to find me if you change your mind.";
+			close;
+	}
+}
+
+//- Sell/Buy Functions
+//============================================================
+
+function	script	CardTradeIn_Sell	{	
+	set @card_amount,0;
+	getinventorylist;
+	for (set .@i,0; .@i < @inventorylist_count; set .@i,.@i+1) {
+		if (@inventorylist_id[.@i] > 4071 && @inventorylist_id[.@i] < 4500 || @inventorylist_id[.@i] == 4065 || @inventorylist_id[.@i] == 4029) {
+			set @card_amount,@card_amount+@inventorylist_amount[.@i];
+		}
+	}
+	if (!@card_amount) {
+		mes "[Misa]";
+		mes "You don't have any Card at your inventory. Sorry, I can't trade with you right now...";
+		mes "Maybe you should check your storage for them or go kill some mobs?";
+		close;
+	}
+	mes "[Misa]";
+	mes "The Cards are at your inventory are:";
+	set @card_pts,0;
+	for (set .@i,0; .@i < @inventorylist_count; set .@i,.@i+1) {
+		if (@inventorylist_id[.@i] > 4071 && @inventorylist_id[.@i] < 4500 || @inventorylist_id[.@i] == 4065 || @inventorylist_id[.@i] == 4029) {
+			set @card_pts,@card_pts+@inventorylist_amount[.@i]*$CardTradeIn_Rate;
+			mes "^FF0000"+getitemname(@inventorylist_id[.@i])+"^000000 - "+@inventorylist_amount[.@i]+"ea.";
+		}
+	}
+	mes "";
+	mes "So you wanna trade them all for ^FF0000"+@card_pts+"^000000 Points?";
+	next;
+	switch (select("Yes, exchange "+@card_amount+" Cards for ^FF0000"+@card_pts+" Points^000000:I changed my mind")) {
+		case 1:
+			mes "[Misa]";
+			mes "All the Cards in your inventory will be lost. Do you realy want to continue?";
+			next;
+			if (select("Yes, I do!:I changed my mind.") == 2) {
+				mes "[Misa]";
+				mes "Come back later if you want to trade with me.";
+				close;
+			}
+			for (set .@i,0; .@i < @inventorylist_count; set .@i,.@i+1) {
+				if (@inventorylist_id[.@i] > 4071 && @inventorylist_id[.@i] < 4500 || @inventorylist_id[.@i] == 4065 || @inventorylist_id[.@i] == 4029) {
+					delitem @inventorylist_id[.@i],@inventorylist_amount[.@i];
+				}
+			}
+			set #CARD_TRADEIN_PTS,#CARD_TRADEIN_PTS+@card_pts;
+			mes "You have received ^FF0000"+@card_pts+" Points^000000 for "+@card_amount+" Cards.";
+			mes "Totaly you have ^FF0000"+#CARD_TRADEIN_PTS+" Points^000000.";
+			next;
+			mes "[Misa]";
+			mes "Thank you for the deal. Now you can exchange your ^FF0000Points^000000 for Coins in return.";
+			close;
+		default:	
+			mes "[Misa]";
+			mes "Come back later if you want to trade with me.";
+			close;
+	}
+	return;
+}
+
+function	script	CardTradeIn_Buy	{
+	if (getarg(0) == 0) {
+		mes "[Misa]";
+		mes "Come back later if you want to trade with me.";
+		close;
+	}
+	else {
+		if (#CARD_TRADEIN_PTS < getarg(2)) {
+			mes "[Misa]";
+			mes "Sorry, but you have ^FF0000"+#CARD_TRADEIN_PTS+" Points^000000 only. It isn't enough for exchange.";
+			close;
+		} 
+		mes "[Misa]";
+		mes "Would you like to exchange ^FF0000"+getarg(2)+" Points^000000 to ^FF0000"+getarg(1)+" "+getitemname(getarg(0))+"^000000?";
+		next;
+		switch (select("Yes, I want to exchange.:I changed my mind.")) {
+			case 1:
+				mes "[Misa]";
+				mes "Take your ^FF0000"+getarg(1)+" "+getitemname(getarg(0))+"^000000.";
+				getitem getarg(0),getarg(1);
+				set #CARD_TRADEIN_PTS,#CARD_TRADEIN_PTS-getarg(2);
+				mes "You still have ^0000FF"+#CARD_TRADEIN_PTS+" Points^000000 left.";
+				next;
+				mes "[Misa]";
+				mes "Thank you for deal. Come back later >_<";
+				close;
+			case 2:
+				mes "[Misa]";
+				mes "Come back later if you want to trade with me.";
+				close;
+		}
+	}
+	return; 
+}

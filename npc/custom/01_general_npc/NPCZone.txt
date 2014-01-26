@@ -1,0 +1,10 @@
+job3_rune02,40,40,5	script	Exit NPC	902,{
+	warp "prontera.gat" ,155,189;
+}
+
+
+new_5-2,91,96,5	script	Exit Event and Quest	902,{
+	warp "prontera.gat" ,155,189;
+}
+
+job3_rune02	mapflag	nocommand	10

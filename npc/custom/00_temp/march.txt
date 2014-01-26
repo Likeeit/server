@@ -1,0 +1,311 @@
+prontera,163,185,3	script	March::March	862,{
+mes "[March]";
+mes "Hello there.";
+mes "I'm honored to give you the chance to claim some headgears that are related to the month March.";
+mes "Are you up for the challenge?";
+
+menu "[GM] Nihad",march_nihad,"[GM] Dumpling",march_mandy,"[GM] Abigail",march_abigail,"St. Patrick's Day",march_patrick,"Poring Cake Hat",march_poring;
+
+march_nihad:
+next;
+mes "[March]";
+mes "Happy Birthday to Nihad, our creator.";
+next;
+
+mes "[March]";
+mes "Specially for Nihad's birthday we have the Beer Hat.";
+mes "Are you interested in making this headgear?";
+switch(select("Yes:No")){
+	case 1:
+		next;
+		mes "[March]";
+		mes "To make the Beer Hat, I require the following items:";
+		mes "ID: 7326  - " + getitemname(7326) + " x200";
+		mes "ID: 7448  - " + getitemname(7448) + " x200";
+		mes "ID: 12353 - " + getitemname(12353) + " x100";
+		mes "ID: 976   - " + getitemname(976) + " x5";
+		mes "ID: 970   - " + getitemname(970) + " x50";
+		mes "Are you sure you want to make this headgear?";
+		switch(select("Yes:No")){
+			case 1:
+			if(
+				(countitem(7326) < 200) ||
+				(countitem(7448) < 200) ||
+				(countitem(12353) < 100)||
+				(countitem(976) < 5)    ||
+				(countitem(970) < 50)
+			){
+				goto march_missing_items;
+				close;
+			}
+			else{
+				delitem 7326,200;
+				delitem 7448,200;
+				delitem 12353,100;
+				delitem 976,5;
+				delitem 970,50;
+				
+				getitem 5416,1;
+				
+				next;
+				mes "[March]";
+				mes "Have fun with your headgear.";
+				mes "Hope to see you next time.";
+				close;
+			}
+			
+			case 2:
+			goto march_no;
+			close;
+		}
+		
+	case 2:
+	goto march_no;
+	close;
+}
+
+march_mandy:
+next;
+mes "[March]";
+mes "Happy Birthday to Dumpling, our Head Gamemaster.";
+next;
+
+mes "[March]";
+mes "Specially for Dumpling's birthday we have the Frog King Hat.";
+mes "Are you interested in making this headgear?";
+switch(select("Yes:No")){
+	case 1:
+		next;
+		mes "[March]";
+		mes "To make the Frog King Hat, I require the following items:";
+		mes "ID: 5447 - " + getitemname(5447) + " x1";
+		mes "ID: 4058 - " + getitemname(4058) + " x1";
+		mes "ID: 2235 - " + getitemname(2235) + " x1";
+		mes "ID: 719  - " + getitemname(719) + " x20";
+		mes "Are you sure you want to make this headgear?";
+		switch(select("Yes:No")){
+			case 1:
+			if(
+				(countitem(5447) < 1) ||
+				(countitem(4058) < 1) ||
+				(countitem(2235) < 1) ||
+				(countitem(719) < 20)
+			){
+				goto march_missing_items;
+				close;
+			}
+			else{
+				delitem 5447,1;
+				delitem 4058,1;
+				delitem 2235,1;
+				delitem 719,20;
+				
+				getitem 5528,1;
+				
+				next;
+				mes "[March]";
+				mes "Have fun with your headgear.";
+				mes "Hope to see you next time.";
+				close;
+			}
+			
+			case 2:
+			goto march_no;
+			close;
+		}
+		
+	case 2:
+	goto march_no;
+	close;
+}
+
+march_abigail:
+next;
+mes "[March]";
+mes "Happy Birthday to Abigail, one of our Police officers.";
+next;
+
+mes "[March]";
+mes "Specially for Abigail's birthday we have the " + getitemname(5464) + ".";
+mes "Are you interested in making this headgear?";
+switch(select("Yes:No")){
+	case 1:
+		next;
+		mes "[March]";
+		mes "To make the " + getitemname(5464) + ", I require the following items:";
+		mes "ID: 2700 - " + getitemname(2700) + " x1";
+		mes "ID: 1020 - " + getitemname(1020) + " x200";
+		mes "ID: 7165 - " + getitemname(7165) + " x200";
+		mes "ID: 7166 - " + getitemname(7166) + " x200";
+		mes "ID: 2234 - " + getitemname(2234) + " x1";
+		mes "Are you sure you want to make this headgear?";
+		switch(select("Yes:No")){
+			case 1:
+				if(
+					(countitem(2700) < 1) ||
+					(countitem(1020) < 200) ||
+					(countitem(7165) < 200) ||
+					(countitem(7166) < 200) ||
+					(countitem(2234) < 1)
+				){
+					goto march_missing_items;
+					close;
+				}
+				else{
+					delitem 2700,1;
+					delitem 1020,200;
+					delitem 7165,200;
+					delitem 7166,200;
+					delitem 2234,1;
+					
+					getitem 5464,1;
+					
+					next;
+					mes "[March]";
+					mes "Have fun with your headgear.";
+					mes "Hope to see you next time.";
+					close;
+				}
+			
+			case 2:
+				goto march_no;
+				close;
+		}
+		
+	case 2:
+		goto march_no;
+		close;
+}
+
+march_patrick:
+next;
+mes "[March]";
+mes "Happy St. Patrick's Day.";
+next;
+
+mes "[March]";
+mes "Specially for St. Patrick's day we have the " + getitemname(5193) + ".";
+mes "Are you interested in making this headgear?";
+switch(select("Yes:No")){
+	case 1:
+		next;
+		mes "[March]";
+		mes "To make the " + getitemname(5193) + ", I require the following items:";
+		mes "ID: 2244 - " + getitemname(2244) + " x1";
+		mes "ID: 2208 - " + getitemname(2208) + " x1";
+		mes "ID: 5085 - " + getitemname(5085) + " x1";
+		mes "ID: 7168 - " + getitemname(7168) + " x200";
+		mes "ID: 979  - " + getitemname(979) + " x10";
+		mes "ID: 511  - " + getitemname(511) + " x150";
+		mes "Are you sure you want to make this headgear?";
+		switch(select("Yes:No")){
+			case 1:
+				if(
+					(countitem(2244) < 1) ||
+					(countitem(2208) < 1) ||
+					(countitem(5085) < 1) ||
+					(countitem(7168) < 200) ||
+					(countitem(979) < 10) ||
+					(countitem(511) < 150)
+				){
+					goto march_missing_items;
+					close;
+				}
+				else{
+					delitem 2244,1;
+					delitem 2208,1;
+					delitem 5085,1;
+					delitem 7168,200;
+					delitem 979,10;
+					delitem 511,150;
+					
+					getitem 5193,1;
+					
+					next;
+					mes "[March]";
+					mes "Have fun with your headgear.";
+					mes "Hope to see you next time.";
+					close;
+				}
+			
+			case 2:
+				goto march_no;
+				close;
+		}
+		
+	case 2:
+		goto march_no;
+		close;
+}
+
+march_poring:
+next;
+mes "[March]";
+mes "Say hello to our two favorit things combined. Porings and food.";
+next;
+
+mes "[March]";
+mes "Specially for the fact we love Porings and food, we have the " + getitemname(5487) + ".";
+mes "Are you interested in making this headgear?";
+switch(select("Yes:No")){
+	case 1:
+		next;
+		mes "[March]";
+		mes "To make the " + getitemname(5487) + ", I require the following items:";
+		mes "ID: 5035 - " + getitemname(5035) + " x1";
+		mes "ID: 5028 - " + getitemname(5028) + " x1";
+		mes "ID: 539  - " + getitemname(539) + " x200";
+		mes "ID: 9001 - " + getitemname(9001) + " x1";
+		mes "ID: 4001 - " + getitemname(4001) + " x1";
+		mes "Are you sure you want to make this headgear?";
+		switch(select("Yes:No")){
+			case 1:
+				if(
+					(countitem(5035) < 1) ||
+					(countitem(5028) < 1) ||
+					(countitem(539) < 200) ||
+					(countitem(9001) < 1) ||
+					(countitem(4001) < 1)
+				){
+					goto march_missing_items;
+					close;
+				}
+				else{
+					delitem 5035,1;
+					delitem 5028,1;
+					delitem 539,200;
+					delitem 9001,1;
+					delitem 4001,1;
+					
+					getitem 5487,1;
+					
+					next;
+					mes "[March]";
+					mes "Have fun with your headgear.";
+					mes "Hope to see you next time.";
+					close;
+				}
+			
+			case 2:
+				goto march_no;
+				close;
+		}
+		
+	case 2:
+		goto march_no;
+		close;
+}
+
+march_no:
+next;
+mes "[March]";
+mes "Too bad, come back when you want to get a nice headgear.";
+close;
+
+march_missing_items:
+next;
+mes "[March]";
+mes "You seem to lack some of the required items.";
+mes "Please come back when you have all the items.";
+close;
+}

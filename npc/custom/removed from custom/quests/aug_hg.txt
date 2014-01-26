@@ -1,0 +1,56 @@
+spl_fild03,196,204,3	script	August Headgear Quest	939,{
+ 
+mes "[August Headgear Quest]";
+mes "I like August so much... I made a hat for it.";
+mes "Its a Tendrilion Hat, want it?";
+next;
+	menu "Yes",-,"Nope",H_exit;
+	mes "[August Headgear Quest]";
+	mes "Keep in mind this hat gives no stat bonuses!";
+	next;
+		menu "Tendrilion Hat",I_beer,"Cancel",H_cancel;
+
+I_beer:
+mes "[August Headgear Quest]";
+mes "1x Horn of Tendrilion";
+mes "20x Mystic Horn";
+mes "20x Soft Feather";
+mes "3x Unicorn Horn";
+mes "10x White Dyestuffs";
+mes "2,000,000 zeny";
+next;
+	mes "[August Headgear Quest]";
+	mes "So, do you have the items?";
+	next;
+		menu "Here are the items!",M_tdrlh,"I need more time to gather them",H_exit;
+
+M_tdrlh:
+if(countitem(6033)<1 || countitem(6023)<20 || countitem(7063)<20 || countitem(2257)<3 || countitem(982)<10 || Zeny<1000000) goto M_insufficient;
+delitem 6033,1;
+delitem 6023,20;
+delitem 7063,20;
+delitem 2257,3;
+delitem 982,10;
+set zeny,zeny-1000000;
+next;
+	mes "[August Headgear Quest]";
+	mes "Here you go!";
+	getitem 5780,1;
+	close;
+	
+M_insufficient:
+mes "[August Headgear Quest]";
+mes "Sorry but you don't have the required items.";
+mes "Maybe you should go take a look again.";
+close;
+
+H_exit:
+mes "[August Headgear Quest]";
+mes "Come back later...";
+close;
+
+H_cancel:
+mes "[August Headgear Quest]";
+mes "Nevermind...";
+close;
+}

@@ -1,0 +1,59 @@
+// ================================================================
+// ============ [ PRONTERA CHAT BLOCKING SCRIPT ] =================
+// ========= [ + Created for WoonRO by Aureus H. + ] ==============
+// ==================== [ Edited by Cheesy ] ======================
+// ================================================================
+
+prontera.gat,0,0,0	script	ChatBlock_Prontera::PRT_CHATBLOCK	-1,{
+
+	OnInit:
+		setcell "prontera",148,162,163,194,cell_nochat,1;
+		setcell "prontera",147,196,147,177,cell_nochat,1;
+		setcell "prontera",146,196,146,178,cell_nochat,1;
+		setcell "prontera",145,196,145,179,cell_nochat,1;
+		setcell "prontera",144,196,144,180,cell_nochat,1;
+		setcell "prontera",143,196,143,181,cell_nochat,1;
+		setcell "prontera",142,196,142,182,cell_nochat,1;
+		setcell "prontera",141,196,141,183,cell_nochat,1;
+		setcell "prontera",140,196,140,184,cell_nochat,1;
+		setcell "prontera",139,196,139,185,cell_nochat,1;
+		setcell "prontera",138,196,138,186,cell_nochat,1;
+		setcell "prontera",137,196,137,187,cell_nochat,1;
+		setcell "prontera",136,196,136,188,cell_nochat,1;
+		setcell "prontera",135,196,135,189,cell_nochat,1;
+		setcell "prontera",134,196,134,190,cell_nochat,1;
+		setcell "prontera",133,196,133,191,cell_nochat,1;
+		setcell "prontera",132,196,132,192,cell_nochat,1;
+		setcell "prontera",131,196,131,193,cell_nochat,1;
+		setcell "prontera",130,196,130,194,cell_nochat,1;
+		setcell "prontera",129,196,129,195,cell_nochat,1;
+		setcell "prontera",128,196,128,196,cell_nochat,1;
+		setcell "prontera",164,196,164,177,cell_nochat,1;
+		setcell "prontera",165,196,165,178,cell_nochat,1;
+		setcell "prontera",166,196,166,179,cell_nochat,1;
+		setcell "prontera",167,196,167,180,cell_nochat,1;
+		setcell "prontera",168,196,168,181,cell_nochat,1;
+		setcell "prontera",169,196,169,182,cell_nochat,1;
+		setcell "prontera",170,196,170,183,cell_nochat,1;
+		setcell "prontera",171,196,171,184,cell_nochat,1;
+		setcell "prontera",172,196,172,185,cell_nochat,1;
+		setcell "prontera",173,196,173,186,cell_nochat,1;
+		setcell "prontera",174,196,174,187,cell_nochat,1;
+		setcell "prontera",175,196,175,188,cell_nochat,1;
+		setcell "prontera",176,196,176,189,cell_nochat,1;
+		setcell "prontera",177,196,179,190,cell_nochat,1;
+		setcell "prontera",178,196,178,191,cell_nochat,1;
+		setcell "prontera",179,196,179,192,cell_nochat,1;
+		setcell "prontera",180,196,180,193,cell_nochat,1;
+		setcell "prontera",181,196,181,194,cell_nochat,1;
+		setcell "prontera",182,196,182,195,cell_nochat,1;
+		setcell "prontera",183,196,183,196,cell_nochat,1;
+		setcell "prontera",154,197,157,195,cell_nochat,1;
+		setcell "prontera",164,175,164,166,cell_nochat,1;	
+		setcell "prontera",145,173,165,177,cell_nochat,1;
+
+		setcell "payon",159,226,172,236,cell_nochat,1;
+		setcell "ayothaya",144,116,154,122,cell_nochat,1;
+		end;
+
+}

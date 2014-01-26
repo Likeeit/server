@@ -1,0 +1,6 @@
+-	script	Auto1Announce	-1,{
+
+OnMinute50:
+    announce "Please go on our forums and vote on the WOE times under suggestions. www.Woon-ro.com",0;
+    end;
+}

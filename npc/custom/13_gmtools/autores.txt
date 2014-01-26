@@ -1,0 +1,69 @@
+//===== rAthena Script =======================================
+//= Woon-Ro auto ressurection
+//===== By: ==================================================
+//= Ridley
+//===== Compatible With: =====================================
+//= eamod SVN
+//===== Description: =========================================
+//= PM npc:autores to activate/disable 
+//============================================================
+
+-	script	autores	-1,{
+	OnWhisperGlobal:
+		set .@name$,"[^0000FFEvent Map Auto Revive^000000]";
+		if(getgmlevel() >= 30) {
+			L_begin:
+			mes .@name$;
+			if(.active == 1) {
+				mes "Currently, the system is ^00FF00ACTIVE^000000";
+				mes "^0000FFMap: ^000000"+.map$;
+				mes "^0000FFRespawn Point: ^000000("+.mapx+","+.mapy+")";
+				if(select("Turn System Off") == 1) {
+					set .active,0;
+					next;
+					goto L_begin;
+				}
+			} else {
+				mes "Currently, the sistem is ^FF0000DISABLED^000000";
+				if(select("Turn System On") == 1) {
+					next;
+					mes .@name$;
+					mes "Please enter a ^0000FFmap name^000000";
+					input(.map$);
+					mes "Please enter ^0000FFRespawn X Coordinate^000000";
+					while(input(.mapx,1,999)) {
+						dispbottom "Invalid X coordinate";
+					}
+					mes "Please enter ^0000FFRespawn Y Coordinate^000000";
+					while(input(.mapy,1,999)) {
+						dispbottom "Invalid Y coordinate";
+					}
+					set .active,1;
+					next;
+					mes .@name$;
+					mes "System now activated on "+.map$;
+					mes "Respawn Point: ("+.mapx+","+.mapy+")";
+					close;
+				}
+			}
+		} else {
+			dispbottom "Access Denied.";
+			end;
+		}
+		
+	OnPCDieEvent:
+		if(.active == 1) {
+			getmapxy(@mapname$,@mapx,@mapy,0);
+			if(@mapname$ == .map$) {
+				message strcharinfo(0),"DO NOT RETURN -- AUTO REVIVING";
+				sleep2 2000;
+				atcommand "@alive";
+				warp .map$,.mapx,.mapy;
+				end;
+			} else {
+				end;
+			}
+		} else {
+		end;
+		}
+}

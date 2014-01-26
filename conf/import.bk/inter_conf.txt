@@ -1,0 +1,27 @@
+// MySQL Character SQL server
+char_server_ip: localhost
+char_server_port: 3306
+char_server_id: root
+char_server_pw: swej7Kaspesta3R7ce
+char_server_db: ragnarok
+
+// MySQL Map SQL Server
+map_server_ip: localhost
+map_server_port: 3306
+map_server_id: root
+map_server_pw: swej7Kaspesta3R7ce
+map_server_db: ragnarok
+
+// MySQL Log SQL Database
+log_db_ip: localhost
+log_db_port: 3306
+log_db_id: root
+log_db_pw: swej7Kaspesta3R7ce
+log_db_db: ragnarok
+
+// for TXT -> SQL convertors
+db_server_ip: localhost
+db_server_port: 3306
+db_server_id: root
+db_server_pw: swej7Kaspesta3R7ce
+db_server_logindb: ragnarok

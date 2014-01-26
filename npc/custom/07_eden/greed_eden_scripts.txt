@@ -1,0 +1,57 @@
+moc_para01,15,32,5	script	Oda	468,{
+	set @VIPNPC$, "[Oda]";
+
+	mes @VIPNPC$;
+	mes "Hello, Welcome to WoonRO, I can redeem you '^ff0000VIP Staus^000000'";
+	mes "With this you can access special VIP Quests, Gain 50% more EXP & use Primo";
+	next;
+	mes @VIPNPC$;
+	mes "What would you like to do?";
+	}
+moc_para01,25,15,2	script	Primo	970,{
+	set @Buffernpc$, "[Primo]";
+	mes @Buffernpc$;
+	mes "Hello adventurer, you look like you are itching to get out there and save the world!";
+	if (##VIPSTATUS == 0) {
+	mes "I can also tell that you haven't been blessed with 'VIP Status' ";
+	mes "My orders are to help out any Adventurer marked as VIP with special Buffs";
+	next;
+	mes @Buffernpc$;
+	mes "Currently I would give you Buffs that would last 30 minutes if you were VIP";
+	next;
+	mes @Buffernpc$;
+	mes "Talk to Oda to learn how to become VIP, she can be found upstairs";
+	close;	}
+	if (##VIPSTATUS == 1) {
+	mes "I can also tell you that you've been blessed with ^ff0000'VIP Status'^000000";
+	next;
+	mes @Buffernpc$;
+	mes "That is awsome!";
+	mes "I have buffed your stats for 30 minutes to help you on your journey. Just come back when you need a refill!";
+	sc_start SC_VITFOOD, 1200000, 10;
+	sc_start SC_LUKFOOD, 1200000, 10;
+	sc_start SC_STRFOOD, 1200000, 10;
+	sc_start SC_INTFOOD, 1200000, 10;
+	sc_start SC_AGIFOOD, 1200000, 10;
+	sc_start SC_DEXFOOD, 3600000, 10;
+	dispbottom "You have been blessed!";
+	close;	}
+	else { 
+	mes "Error on the scripts, please report it";	
+	close;	}
+	}
+
+moc_para01,30,30,4	script	Rakkis	99,{
+	mes "[Rakkis]";
+	mes "Have you tried any of those quests on the boards over there?";
+	close;
+}
+
+moc_para01,43,23,2	script	Sparkle	93,{
+	mes "[Sparkle]";
+	mes "Have you completed one of the quests on the boards?";
+	next;
+	mes "[Sparkle]";
+	mes "If so, just click on the quest on the boards again to get your rewards";
+	close;
+}

@@ -1,0 +1,404 @@
+new_5-2,72,109,5	script	Party Survival	88,{
+	mes .name$;
+	if (has_instance("1@lhz") != "") {
+		mes "Would you like to enter the instance?";
+		if (select("Yes:No") == 2)
+			close;
+		if (getmapusers(has_instance("1@lhz")) > 20) {
+			next;
+			mes .name$;
+			mes "Sorry, the instance is already fully occupied.";
+			close;
+		}
+		if (BaseLevel < 99) {
+			next;
+			mes .name$;
+			mes "Sorry, you are not strong enough to enter the instance.";
+			mes "You must be level 99.";
+			close;
+		}
+		if (gettimetick(2) < psi_end && psi_end == getvariableofnpc(getd(".end_time"+instance_id(1)), "PartySurvivalInstance")) {
+			next;
+			mes .name$;
+			mes "To rejoin you must pay 1 Silver Coin or 500,000 Zeny.";
+			switch(select("Pay Silver Coin:Pay 500,000 Zeny:Leave")) {
+				case 1:
+					if (countitem(675) < 1) {
+						next;
+						mes .name$;
+						mes "You have no Silver Coins.";
+						close;
+					}
+					delitem 675, 1;
+					break;
+
+				case 2:
+					if (Zeny < 500000) {
+						next;
+						mes .name$;
+						mes "You have not enough Zeny.";
+						close;
+					}
+					set Zeny, Zeny - 500000;
+					break;
+
+				case 3:
+					close;
+					break;
+			}
+		}
+		else if (gettimetick(2) < psi_cd) {
+			next;
+			mes .name$;
+			mes "You have already joined an instance in the last 24 hours.";
+			close;
+		}
+		if (has_instance("1@lhz") != "") {
+			warp "1@lhz", 138, 134;
+			set psi_end, getvariableofnpc(getd(".end_time"+instance_id(1)), "PartySurvivalInstance");
+			set psi_cd, gettimetick(2) + (3600*24);
+			if (!getvariableofnpc(getd(".started"+instance_id(1)), "PartySurvivalInstance")) {
+				set getvariableofnpc(getd(".started"+instance_id(1)), "PartySurvivalInstance"), 1;
+				donpcevent instance_npcname("PartySurvivalInstance")+"::OnStartEvent";
+			}
+		}
+		close;
+	}
+	mes "Hello, brave warrior.";
+	mes "Do you wish to attempt the Party Survival Instance?";
+	if (select("Yes:No") == 2) {
+		next;
+		mes .name$;
+		mes "Come back when you feel ready.";
+		mes "Remember, you need at least 5 party members, but no more than 20!";
+		close;
+	}
+	next;
+	mes .name$;
+	if (getpartyleader(getcharid(1), 2) != getcharid(0)) {
+		mes "You are not the leader of your party.";
+		mes "Only the leader of the party can register for an instance.";
+		close;
+	}
+	mes "Let me see if your party meets the requirements.";
+	mes "Your party must consist of at least 5 members, but no more than 20.";
+	mes "Also, the level requirement to enter is 99.";
+	next;
+	getpartymember getcharid(1);
+	mes .name$;
+	if ($@partymembercount < 5) {
+		mes "You do not have enough party members.";
+		mes "Make sure you have at least 5 before registering!";
+		close;
+	}
+	if ($@partymembercount > 20) {
+		mes "Your party is too large.";
+		mes "Maximum party members is 20.";
+		close;
+	}
+	mes "Your party appears to be in order.";
+	mes "Do you wish to create the instance now?";
+	if (select("Yes:No") == 2) {
+		next;
+		mes .name$;
+		mes "Very well, do come back if you change your mind.";
+		close;
+	}
+	next;
+	mes .name$;
+	getpartymember getcharid(1);
+	if ($@partymembercount < 5) {
+		mes "You do not have enough party members.";
+		mes "Make sure you have at least 5 before registering!";
+		close;
+	}
+	if ($@partymembercount > 20) {
+		mes "Your party is too large.";
+		mes "Maximum party members is 20.";
+		close;
+	}
+	mes "Instance has been created, you have 3 hours to finish the challenge.";
+	mes "Good luck.";
+	instance_create("PartySurvival", getcharid(1));
+	instance_set_timeout 10800, 10800, instance_id(1);
+	instance_attachmap("1@lhz", instance_id(1), 1);
+	instance_init instance_id(1);
+	set getvariableofnpc(getd(".end_time"+instance_id(1)), "PartySurvivalInstance"), gettimetick(2)+10800;
+	set getvariableofnpc(getd(".started"+instance_id(1)), "PartySurvivalInstance"), 0;
+	set getvariableofnpc(getd(".pname"+instance_id(1)+"$"), "PartySurvivalInstance"), strcharinfo(1);
+	disablenpc instance_npcname("Exit NPC#psi", instance_id(1));
+	disablenpc instance_npcname("Respawn Now", instance_id(1));
+	disablenpc instance_npcname("Tool Dealer#psi", instance_id(1));
+	disablenpc instance_npcname("Healer#psi", instance_id(1));
+	close;
+
+
+
+	OnInit:
+	// Config
+	set .name$, "[Party Survival]";
+	end;
+
+	OnPCDieEvent:
+	if (has_instance("1@lhz") != "" && strcharinfo(3) == has_instance("1@lhz")) {
+		warp has_instance("1@lhz"), 46, 165;
+		sleep2 1000;
+		atcommand "@alive";
+		heal 99999, 99999;
+		set .@time, 10000*(getvariableofnpc(getd(".round"+instance_id(1)), instance_npcname("PartySurvivalInstance"))-1);
+		addtimer 30000+.@time, strnpcinfo(0)+"::OnRespawn";
+		message strcharinfo(0), "You will warp back to the fighting room in "+(30+(.@time/1000))+" seconds.";
+	}
+	end;
+
+	OnRespawn:
+	if (has_instance("1@lhz") != "") {
+		warp has_instance("1@lhz"), 138, 134;
+	}
+	end;
+
+}
+
+1@lhz,0,0,0	script	PartySurvivalInstance	-1,{
+	OnInit:
+	setarray .wave1[0], 1038, 1626, 1870, 1290, 1098, 1291, 1864, 1865;
+	setarray .wave1_amount[0], 1, 1, 5, 5, 5, 10, 10, 10;
+	setarray .wave2[0], 2194, 2016, 1451, 1571, 1065, 2021, 2204, 2201;
+	setarray .wave2_amount[0], 1, 5, 10, 10, 10, 5, 5, 5;
+	setarray .wave3[0], 1785, 1259, 1783, 1376, 2072, 2071, 2085, 2086;
+	setarray .wave3_amount[0], 1, 5, 10, 10, 10, 10, 10, 10;
+	setarray .wave4[0], 1511, 1829, 1830, 1507, 2018, 1979, 1219, 1202;
+	setarray .wave4_amount[0], 1, 5, 5, 5, 5, 5, 5, 10;
+	setarray .wave5[0], 1832, 1268, 1698, 1754, 1831, 1702, 2023, 1638;
+	setarray .wave5_amount[0], 1, 5, 15, 5, 5, 5, 10, 5;
+	setarray .wave6[0], 1751, 1765, 1987, 1993, 1634, 1774, 1974, 1947;
+	setarray .wave6_amount[0], 1, 5, 10, 5, 5, 20, 5, 5;
+	setarray .wave7[0], 1768, 1637, 1975, 1720, 2092, 1641, 2223, 2233;
+	setarray .wave7_amount[0], 1, 5, 5, 5, 10, 5, 2, 2;
+	setarray .wave8[0], 1917, 1921, 1918, 1920, 1919, 2222, 2163, 2282;
+	setarray .wave8_amount[0], 1, 5, 5, 5, 5, 2, 5, 5;
+	setarray .wave9[0], 1874, 1705, 1707, 1706, 1704, 2282, 2234, 2232;
+	setarray .wave9_amount[0], 1, 6, 6, 6, 6, 6, 1, 1;
+	setarray .wave10[0], 1502, 1904, 1847, 1766, 1096, 1388, 1582, 1980;
+	setarray .wave10_amount[0], 1, 10, 1, 5, 5, 5, 5, 2;
+	end;
+
+	OnStartEvent:
+	setd ".time"+instance_id(0), gettimetick(2);
+	setd ".round"+instance_id(0), 0;
+	sleep 10000;
+	mapannounce has_instance("1@lhz"), "Welcome to the Party Survival Challenge", 0;
+	sleep 3000;
+	mapannounce has_instance("1@lhz"), "Your goal is to survive 10 rounds of fearsome monsters", 0;
+	sleep 3000;
+	mapannounce has_instance("1@lhz"), "Each new wave of monsters will be stronger than before", 0;
+	sleep 3000;
+	mapannounce has_instance("1@lhz"), "If you fall, you will be taken to a waiting room where you will wait to be respawned", 0;
+	sleep 3000;
+	mapannounce has_instance("1@lhz"), "However, at least one player must be in the fighting room.", 0;
+	sleep 3000;
+	mapannounce has_instance("1@lhz"), "If all party members are in the waiting room at any point, you will have failed the challenge.", 0;
+	sleep 3000;
+	mapannounce has_instance("1@lhz"), "The reward for completing the challenge is 1 Instance Completion Point (ICP).", 0;
+	sleep 3000;
+	donpcevent instance_npcname("PartySurvivalInstance")+"::OnStartRound";
+	end;
+
+	OnStartRound:
+	setd ".round"+instance_id(0), getd(".round"+instance_id(0)) + 1;
+	if (getd(".round"+instance_id(0)) > 10) {
+		setd ".time"+instance_id(0), gettimetick(2)-getd(".time"+instance_id(0));
+		for (set .@i, 0; .@i < 10; set .@i, .@i + 1) {
+			if (getd(".time"+instance_id(0)) < $psi_rank[.@i] || !$psi_rank[.@i]) {
+				for (set .@j, 9; .@j > .@i; set .@j, .@j - 1) {
+					set $psi_rank[.@j], $psi_rank[.@j-1];
+					set $psi_rank_party$[.@j], $psi_rank_party$[.@j-1];
+				}
+				set $psi_rank[.@i], getd(".time"+instance_id(0));
+				set $psi_rank_party$[.@i], getd(".pname"+instance_id(0)+"$");
+				break;
+			}
+		}
+		disablenpc instance_npcname("Respawn Now", instance_id(0));
+		mapannounce has_instance("1@lhz"), "You have defeated the final wave of monsters!", 0;
+		sleep 3000;
+		mapannounce has_instance("1@lhz"), "You will be warped to the waiting room where the Exit NPC will be. You will receive your reward upon exiting.", 0;
+		sleep 5000;
+		enablenpc instance_npcname("Exit NPC#psi", instance_id(0));
+		mapwarp has_instance("1@lhz"), has_instance("1@lhz"), 46, 165;
+		sleep 3000;
+		mapannounce has_instance("1@lhz"), "Please exit through the Exit NPC to collect your reward. The instance will be destroyed in 30 seconds.", 0;
+		sleep 30000;
+		instance_destroy(instance_id(0));
+		end;
+	}
+	mapannounce has_instance("1@lhz"), "Round "+getd(".round"+instance_id(0))+" will begin in approximately 30 seconds!", 0;
+	sleep 30000;
+	mapannounce has_instance("1@lhz"), "The wave of monsters has arrived!", 0;
+	monster "1@lhz", 130, 152, getmonsterinfo(getd(".wave"+getd(".round"+instance_id(0))+"["+0+"]"),0), getd(".wave"+getd(".round"+instance_id(0))+"["+0+"]"), getd(".wave"+getd(".round"+instance_id(0))+"_amount["+0+"]"), instance_npcname("PartySurvivalInstance")+"::OnKillMob";
+	monster "1@lhz", 145, 152, getmonsterinfo(getd(".wave"+getd(".round"+instance_id(0))+"["+1+"]"),0), getd(".wave"+getd(".round"+instance_id(0))+"["+1+"]"), getd(".wave"+getd(".round"+instance_id(0))+"_amount["+1+"]"), instance_npcname("PartySurvivalInstance")+"::OnKillMob";
+	monster "1@lhz", 157, 141, getmonsterinfo(getd(".wave"+getd(".round"+instance_id(0))+"["+2+"]"),0), getd(".wave"+getd(".round"+instance_id(0))+"["+2+"]"), getd(".wave"+getd(".round"+instance_id(0))+"_amount["+2+"]"), instance_npcname("PartySurvivalInstance")+"::OnKillMob";
+	monster "1@lhz", 157, 126, getmonsterinfo(getd(".wave"+getd(".round"+instance_id(0))+"["+3+"]"),0), getd(".wave"+getd(".round"+instance_id(0))+"["+3+"]"), getd(".wave"+getd(".round"+instance_id(0))+"_amount["+3+"]"), instance_npcname("PartySurvivalInstance")+"::OnKillMob";
+	monster "1@lhz", 145, 116, getmonsterinfo(getd(".wave"+getd(".round"+instance_id(0))+"["+4+"]"),0), getd(".wave"+getd(".round"+instance_id(0))+"["+4+"]"), getd(".wave"+getd(".round"+instance_id(0))+"_amount["+4+"]"), instance_npcname("PartySurvivalInstance")+"::OnKillMob";
+	monster "1@lhz", 130, 116, getmonsterinfo(getd(".wave"+getd(".round"+instance_id(0))+"["+5+"]"),0), getd(".wave"+getd(".round"+instance_id(0))+"["+5+"]"), getd(".wave"+getd(".round"+instance_id(0))+"_amount["+5+"]"), instance_npcname("PartySurvivalInstance")+"::OnKillMob";
+	monster "1@lhz", 121, 126, getmonsterinfo(getd(".wave"+getd(".round"+instance_id(0))+"["+6+"]"),0), getd(".wave"+getd(".round"+instance_id(0))+"["+6+"]"), getd(".wave"+getd(".round"+instance_id(0))+"_amount["+6+"]"), instance_npcname("PartySurvivalInstance")+"::OnKillMob";
+	monster "1@lhz", 121, 141, getmonsterinfo(getd(".wave"+getd(".round"+instance_id(0))+"["+7+"]"),0), getd(".wave"+getd(".round"+instance_id(0))+"["+7+"]"), getd(".wave"+getd(".round"+instance_id(0))+"_amount["+7+"]"), instance_npcname("PartySurvivalInstance")+"::OnKillMob";
+	end;
+	
+	OnKillMob:
+	if (mobcount(has_instance("1@lhz"), instance_npcname("PartySurvivalInstance")+"::OnKillMob") < 1) {
+		mapannounce has_instance("1@lhz"), "Round "+getd(".round"+instance_id(0))+" cleared!", 0;
+		sleep 3000;
+		donpcevent instance_npcname("PartySurvivalInstance")+"::OnStartRound";
+		areapercentheal has_instance("1@lhz"),110,96,160,157,99999,99999;
+		if (getd(".round"+instance_id(0)) == 5) {
+			enablenpc instance_npcname("Respawn Now");
+			enablenpc instance_npcname("Tool Dealer#psi");
+		}
+		if (getd(".round"+instance_id(0)) == 6) {
+			enablenpc instance_npcname("Healer#psi");
+		}
+	}
+	end;
+
+}
+
+1@lhz,40,164,5	script	Exit NPC#psi	47,{
+	set #icp, #icp + 1;
+	message strcharinfo(0), "You receive 1 Instance Completion Point.";
+	warp "prontera", 150, 150;
+	end;
+}
+
+// tool dealer
+1@lhz,51,168,4	shop	Tool Dealer#psi	90,601:60,12212:1000,602:300,506:40,501:50,504:1200,521:1500,514:500,533:1100,610:4000,645:800,656:1500,657:3000,1065:100,611:40,717:600,716:600,715:2500
+
+//countdown skip npc
+1@lhz,42,170,5	script	Respawn Now	57,{
+	mes "Do you wish to skip the current waiting period?";
+	mes "The fee is 500,000 Zeny or 1 Silver Coin.";
+	if (select("Yes:No") == 2)
+		close;
+	next;
+	mes "How would you like to pay?";
+	set .@chosen, select("Zeny:Silver Coin");
+	next;
+	if ((.@chosen == 1 && Zeny < 500000) || (.@chosen == 2 && countitem(675) < 1)) {
+		mes "You don't have enough to pay the fee!";
+		close;
+	}
+	if (.@chosen == 1)
+		set Zeny, Zeny - 500000;
+	else
+		delitem 675, 1;
+	deltimer "Party Survival::OnRespawn";
+	doevent "Party Survival::OnRespawn";
+	close;
+	
+}
+
+1@lhz,49,170,4	script	Healer#psi	971,{
+if (healdel > gettimetick(2)){
+close;
+}
+percentheal 100,100;
+emotion e_no1;
+
+set healdel, gettimetick(2)+5;
+
+// Agi / Blessing
+sc_start SC_BLESSING,0,10;
+sc_start SC_INCREASEAGI,0,10;
+
+if (instance_gbuff&1) {
+set @GuildBuff1$, "$Buff1"+getcharid(2);
+set @GuildBuff2$, "$Buff2"+getcharid(2);
+set @GuildBuff3$, "$Buff3"+getcharid(2);
+set @GuildBuff4$, "$Buff4"+getcharid(2);
+set @GuildBuff5$, "$Buff5"+getcharid(2);
+set @GuildBuff6$, "$Buff6"+getcharid(2);
+set @GuildBuff7$, "$Buff7"+getcharid(2);
+
+set .@temp, getd(@GuildBuff1$);
+if (.@temp == 1 && !(gbuffs&pow(2,0))) {
+	sc_start SC_ASSUMPTIO,0,5;
+	}
+set .@temp, getd(@GuildBuff2$);
+if (.@temp == 1 && !(gbuffs&pow(2,1))) {
+	sc_start SC_MAGNIFICAT,0,5;
+	}
+set .@temp, getd(@GuildBuff3$);
+if (.@temp == 1 && !(gbuffs&pow(2,2))) {
+	sc_start SC_ANGELUS,0,10;
+	}
+set .@temp, getd(@GuildBuff4$);
+if (.@temp == 1 && !(gbuffs&pow(2,3))) {
+	sc_start SC_GLORIA,0,5;
+	}
+set .@temp, getd(@GuildBuff5$);
+if (.@temp == 1 && !(gbuffs&pow(2,4))) {
+	sc_start SC_IMPOSITIO,0,5;
+	}
+set .@temp, getd(@GuildBuff6$);
+if (.@temp == 1 && !(gbuffs&pow(2,5))) {
+	switch( Class ) {
+				case Job_Star_Gladiator:
+				case Job_Star_Gladiator2:
+					set .@skill_id, 448; break;
+				case Job_SuperNovice:
+					set .@skill_id, 451; break;
+				case Job_Soul_Linker:
+					set .@skill_id, 461; break;
+				case Job_Novice_High:
+				case Job_Swordman_High:
+				case Job_Mage_High:
+				case Job_Archer_High:
+				case Job_Acolyte_High:
+				case Job_Merchant_High:
+				case Job_Thief_High:
+					set .@skill_id, 494; break;
+			default:
+				switch( BaseJob ) {
+				case Job_Alchemist:	set .@skill_id, 445; break;
+				case Job_Monk:		set .@skill_id, 447; break;
+				case Job_Sage:		set .@skill_id, 449; break;
+				case Job_Crusader:	set .@skill_id, 450; break;
+				case Job_Knight:	set .@skill_id, 452; break;
+				case Job_Wizard:	set .@skill_id, 453; break;
+				case Job_Priest:	set .@skill_id, 454; break;
+				case Job_Bard:
+				case Job_Dancer:	set .@skill_id, 455; break;
+				case Job_Rogue:		set .@skill_id, 456; break;
+				case Job_Assassin:	set .@skill_id, 457; break;
+				case Job_Blacksmith:	set .@skill_id, 458; break;
+				case Job_Hunter:	set .@skill_id, 460; break;
+			}
+		break;
+		}
+		if (.@skill_id) {
+			sc_start4 SC_SPIRIT,350000,5,.@skill_id,0,0;		
+			specialeffect2 503;
+		}
+	}
+set .@temp, getd(@GuildBuff7$);
+if (.@temp == 1 && !(gbuffs&pow(2,6)) && countitem(7139) > 0) {
+	sc_start SC_CP_WEAPON,600000,0;
+	sc_start SC_CP_SHIELD,600000,0;
+	sc_start SC_CP_ARMOR,600000,0;
+	sc_start SC_CP_HELM,600000,0;
+	delitem 7139, 1;
+	}
+}
+percentheal 100,100;
+end;
+}
+
+1@lhz	mapflag	nomemo
+1@lhz	mapflag	nosave	SavePoint
+1@lhz	mapflag	noteleport
+1@lhz	mapflag	nowarp
+1@lhz	mapflag	nowarpto
+1@lhz	mapflag	nopenalty
+1@lhz	mapflag	nobranch
+1@lhz	mapflag	monster_noteleport
+1@lhz	mapflag	nostorage

@@ -1,0 +1,12 @@
+-	script	skullgetter	-1,{
+
+OnPCKillEvent:
+	getmapxy .@m$,.@x,.@y,0;
+	if (.@m$ == "wglad" || .@m$ == "pvp_y_1-2"){
+		getnameditem 7420, rid2name(killedrid);
+		dispbottom "You've got now "+countitem(7420)+" Skulls.";
+	}
+	end;
+}
+
+wglad	mapflag	loadevent

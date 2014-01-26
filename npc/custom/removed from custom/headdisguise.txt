@@ -1,0 +1,285 @@
+//===== eAthena Script ==============================================
+//= Headgear Disguiser
+//===== By: =========================================================
+//= Soulman
+//===== Current Version: ============================================
+//= 1.2
+//===== Compatible With: ============================================
+//= eAthena/rAthena with corresponding source mod implemented
+//===== Description: ================================================
+//= Gives player headgear disguises which overwrite equipment looks
+//===== Additional Comments: ========================================
+//= Scripted for Woon-RO
+//===================================================================
+job3_rune02,46,45,4	script	Headgear Disguiser	422,{
+	set .@name$, "^0000FF[Headgear Disguiser]^000000";
+	mes .@name$;
+	mes "Hello there.";
+	mes "I am the Headgear Disguiser. I let people change their look while keeping their strongest gear equipped!";
+	mes "How may I help you today?";
+	menu "Make me a disguise", L_Start, "Remove a disguise", L_Remove, "Nevermind", L_End;
+	
+	L_Start:
+	next;
+	mes .@name$;
+	mes "Certainly, sir.";
+	L_Repick:
+	mes "Please enter the item ID of the headgear you want as a disguise.";
+	input.@itemid;
+	next;
+	switch (getiteminfo(.@itemid,5)) {
+		case 1:		//lower
+			set .@look,3;
+			break;
+		case 256:	//top
+			set .@look,4;
+			break;
+		case 257:	//lower + top
+			set .@look,4;
+			break;
+		case 512:	//mid
+			set .@look,5;
+			break;
+		case 513:	//mid + lower
+			set .@look,5;
+			break;
+		case 768:	//mid + top
+			set .@look,4;
+			break;
+		case 769:	//mid + top + lower
+			set .@look,4;
+			break;
+			
+		default:
+			set .@look, 0;
+			break;
+	}
+	for (set .@i, 0; .@i < getarraysize(.blHG); set .@i, .@i+1) {
+		if (.@itemid == .blHG[.@i]) {
+			mes .@name$;
+			mes "I'm sorry, this headgear disguise is not allowed.";
+			mes "Please choose another.";
+			close;
+		}
+	}
+	if (!.@look) {
+		mes .@name$;
+		mes "Sorry, that item ID is invalid.";
+		mes "Please make sure that the item ID is one of a headgear type item.";
+		close;
+	}
+/*	if (!countitem(.@itemid)) {
+		mes .@name$;
+		mes "Please ensure that you have the item in your inventory in order to proceed.";
+		close;	
+	}*/
+	mes .@name$;
+	mes "Thank you.";
+	mes "Based off the item ID, you want to apply a ^FF0000"+getitemname(.@itemid)+"^000000 disguise.";
+	mes "Is this correct?";
+	next;
+	if (select("Yes:No") == 2) {
+		mes .@name$;
+		goto L_Repick;
+	}
+	if (disguise_look3)
+		set .@bottomview, getiteminfo(disguise_look3, 11);
+	else
+		set .@bottomview, getlook(3);
+	if (disguise_look4)
+		set .@topview, getiteminfo(disguise_look4, 11);
+	else
+		set .@topview, getlook(4);
+	if (disguise_look5)
+		set .@midview, getiteminfo(disguise_look5, 11);
+	else
+		set .@midview, getlook(5);
+	mes .@name$;
+	mes "Now, let's see how this looks on you.";
+	mes "This process may take a while.";
+	progressbar "ff00ff",3;
+	changelook .@look, getiteminfo(.@itemid, 11);
+	next;
+	mes .@name$;
+	mes "There we go!";
+	mes "How do you like your new look?";
+	next;
+	switch(prompt("Awesome! I want to purchase this disguise.:I want to choose a different disguise.:I don't want to disguise myself anymore.")) {
+		case 1:
+			mes .@name$;
+			mes "Good to hear!";
+			if (.cost_item)
+				mes "The transformation process will cost ^FF0000"+.cost_itemqty+"^000000 "+getitemname(.cost_item)+"(s).";
+			else
+				mes "The transformation process will cost ^FF0000"+.cost_zeny+"^000000 Zeny.";
+			mes "Also, the disguise will last only ^FF0000"+.expiry_time+"^000000 hours.";
+			mes "Are you okay with that?";
+			set .@confirm, prompt("Yes:No");
+			if (.@confirm == 2) {
+				next;
+				goto L_End;
+			}
+			else if(.@confirm == 255) {
+			switch(.@look) {
+				case 3:
+					changelook .@look, .@bottomview;
+					break;
+				case 4:
+					changelook .@look, .@topview;
+					break;
+				case 5:
+					changelook .@look, .@midview;
+					break;
+			}
+			close;				
+			}
+			break;
+		
+		case 2:
+		switch(.@look) {
+			case 3:
+				changelook .@look, .@bottomview;
+				break;
+			case 4:
+				changelook .@look, .@topview;
+				break;
+			case 5:
+				changelook .@look, .@midview;
+				break;
+		}	
+			goto L_Start;
+			break;
+		
+		case 3:
+			goto L_End;
+			break;
+			
+		case 255:
+			switch(.@look) {
+				case 3:
+					changelook .@look, .@bottomview;
+					break;
+				case 4:
+					changelook .@look, .@topview;
+					break;
+				case 5:
+					changelook .@look, .@midview;
+					break;
+			}
+			close;
+	}
+	next;
+	mes .@name$;
+	if (.cost_item) {
+		if (countitem(.cost_item) < .cost_itemqty) {
+			mes "You do not have enough "+getitemname(.cost_item)+"(s).";
+			mes "Please come back when you have at least ^FF0000"+.cost_itemqty+"^000000 "+getitemname(.cost_item)+"(s.)";
+			switch(.@look) {
+				case 3:
+					changelook .@look, .@bottomview;
+					break;
+				case 4:
+					changelook .@look, .@topview;
+					break;
+				case 5:
+					changelook .@look, .@midview;
+					break;
+			}
+			close;
+		}
+	}
+	else {
+		if (Zeny < .cost_zeny) {
+		mes "You don't have enough Zeny.";
+		mes "Please come back when you have at least ^FF0000"+.cost_zeny+"^000000 Zeny.";
+			switch(.@look) {
+				case 3:
+					changelook .@look, .@bottomview;
+					break;
+				case 4:
+					changelook .@look, .@topview;
+					break;
+				case 5:
+					changelook .@look, .@midview;
+					break;
+			}
+		close;
+	}
+	}
+	if (.cost_item)
+		delitem .cost_item, .cost_itemqty;
+	else
+		set Zeny, Zeny - .cost_zeny;
+	setd "disguise_look"+.@look, .@itemid;
+	setd "disguise_time"+.@look, gettimetick(2)+(.expiry_time*3600);
+	mes "The disguise has been successfully applied.";
+	mes "Enjoy your new look!";
+	close;
+
+	L_Remove:
+	next;
+	mes .@name$;
+	set .@menu$, "";
+	set .@a, 0;
+	for (set .@i, 3; .@i < 6; set .@i, .@i+1) {
+		if (getd("disguise_look"+.@i)) {
+			set .@menu$, .@menu$ + ((.@a == 0) ? getitemname(getd("disguise_look"+.@i)) : ":"+getitemname(getd("disguise_look"+.@i)));
+			set .@option[.@a], .@i;
+			set .@a, .@a + 1;
+			}
+		else
+			continue;
+	}
+	if (.@menu$ == "") {
+		mes "You haven't got any disguises on.";
+		close;
+	}
+	mes "Which disguise would you like to remove?";
+	set .@selected, .@option[select(.@menu$)-1];
+	setd "disguise_look"+.@selected, 0;
+	setd "disguise_time"+.@selected, 0;
+	changelook	.@selected, getlook(.@selected);
+	next;
+	mes .@name$;
+	mes "The disguise has been removed.";
+	close;
+	
+	L_End:
+	switch(.@look) {
+		case 3:
+		changelook .@look, .@bottomview;
+		break;
+		case 4:
+		changelook .@look, .@topview;
+		break;
+		case 5:
+		changelook .@look, .@midview;
+		break;
+	}
+	mes .@name$;
+	mes "Please do come back if you are ever in the mood for a new look!";
+	close;
+	
+	OnPCLoginEvent:
+	for (set .@i, 3; .@i < 6; set .@i, .@i + 1) {
+		if (getd("disguise_look"+.@i))
+			if (gettimetick(2) > getd("disguise_time"+.@i)) {
+				message strcharinfo(0), "The "+getitemname(getd("disguise_look"+.@i))+" disguise has expired!";
+				setd "disguise_look"+.@i, 0;
+				setd "disguise_time"+.@i, 0;	
+			}
+			else
+				changelook .@i, getiteminfo(getd("disguise_look"+.@i), 11);
+	}
+	end;
+	
+	OnInit:
+	// Config start
+	setarray .blHG[0], 5137,5389,5379,5800,5338,5564,5373,5421,5224,5202,5155,5376,5339,5361,5377,5346,5336,5181,5314,5225,5423,5396,5518,5138,5211,5420,5362,5474,5337,5286,5415,5409,5520,5463,5293,5801,5325,5529,5538,5574,5357,5277,5278; // Blacklisted headgear disguises.
+	set .cost_item, 0; // Item to cost, overrides zeny cost.
+	set .cost_itemqty, 0; // Amount of items to charge
+	set .cost_zeny, 500000; // Zeny cost for this service. Default: 2,000,000z.
+	set .expiry_time, 48; // Time after headgear expires (in hours). Default: 48 hours.
+	// Config end
+	end;
+}

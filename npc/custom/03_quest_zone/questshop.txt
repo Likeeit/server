@@ -1,0 +1,177 @@
+new_5-2,105,97,3	script	Woon Quest Shop	951,{
+function Add; function Chk; function Slot; function A_An;
+
+	if(.Shops$ != "") set .@i,1;
+	else {
+		set .@menu$,"";
+		for(set .@i,1; .@i<=getarraysize(.Shops$); set .@i,.@i+1)
+			set .@menu$, .@menu$+.Shops$[.@i]+":";
+		set .@i, select(.@menu$); }
+	dispbottom "Select one item at a time.";
+	callshop "qshop"+.@i,1;
+	npcshopattach "qshop"+.@i;
+	end;
+
+function Add {
+	for(set .@n,5; 1; set .@n,.@n+2)
+		if (!getarg(.@n,0)) break;
+	for(set .@i,2; .@i<.@n; set .@i,.@i+1)
+		set getd(".q_"+getarg(1)+"["+(.@i-2)+"]"), getarg(.@i);
+	npcshopadditem "qshop"+getarg(0),getarg(1),((.ShowZeny)?getarg(3):0);
+	return; }
+function Chk {
+	if (getarg(0)<getarg(1)) { set @qf,1; return "^FF0000"; }
+	else return "^00FF00"; }
+function Slot {
+	set .@s$,getitemname(getarg(0));
+	switch(.ShowSlot){
+		case 1: if (!getitemslots(getarg(0))) return .@s$;
+		case 2: if (getiteminfo(getarg(0),11)>0) return .@s$+" ["+getitemslots(getarg(0))+"]";
+		default: return .@s$; } }
+function A_An {
+	setarray .@A$[0],"a","e","i","o","u";
+	set .@B$, "_"+getarg(0);
+	for(set .@i,0; .@i<5; set .@i,.@i+1)
+		if (compare(.@B$,"_"+.@A$[.@i])) return "an "+getarg(0);
+	return "a "+getarg(0); }
+
+OnBuyItem:
+	if (@bought_nameid == 2553){ goto L_QuestShopContinue; end;}
+	if (@bought_nameid == 2399){ goto L_QuestShopContinue; end;}
+	set .@q[0],@bought_nameid;
+	
+	copyarray .@q[1],getd(".q_"+@bought_nameid+"[0]"),getarraysize(getd(".q_"+@bought_nameid+"[0]"));
+	if (!.@q[1]) { message strcharinfo(0),"An error has occurred."; end; }
+	mes "[Hat Maker [A-J]]";
+	mes "Reward: ^0055FF"+((.@q[1]>1)?.@q[1]+"x ":"")+Slot(.@q[0])+"^000000";
+	mes "Requirements:";
+	if (.@q[2]) mes " > "+Chk(Zeny,.@q[2])+.@q[2]+" Zeny^000000";
+	if (.@q[3]) mes " > "+Chk(getd(.Points$[0]),.@q[3])+.@q[3]+" "+.Points$[1]+" ("+getd(.Points$[0])+"/"+.@q[3]+")^000000";
+	if (.@q[4]) for(set .@i,4; .@i<getarraysize(.@q); set .@i,.@i+2)
+		mes " > "+Chk(countitem(.@q[.@i]),.@q[.@i+1])+((.DisplayID)?"{"+.@q[.@i]+"} ":"")+Slot(.@q[.@i])+" ("+countitem(.@q[.@i])+"/"+.@q[.@i+1]+")^000000";
+	if (@qf) { set @qf,0; close; }
+	next;
+	if (!checkweight(.@q[0],.@q[1])) {
+		mes "[Hat Maker [A-J]]";
+		mes "^FF0000You need "+(((.@q[1]*getiteminfo(.@q[0],6))+Weight-MaxWeight)/10)+" additional weight capacity to complete this trade.^000000";
+		close; }
+	set @qe1, getiteminfo(.@q[0],5); set @qe2, getiteminfo(.@q[0],11);
+	while(1){
+		switch(select(" ~ Purchase ^0055FF"+getitemname(.@q[0])+"^000000:")) {
+			case 1:
+				if (.@q[2]) set Zeny, Zeny-.@q[2];
+				if (.@q[3]) setd .Points$[0], getd(.Points$[0])-.@q[3];
+				if (.@q[4]) for(set .@i,4; .@i<getarraysize(.@q); set .@i,.@i+2)
+					delitem .@q[.@i],.@q[.@i+1];
+				getitem .@q[0],.@q[1];
+				if (.Announce) announce strcharinfo(0)+" has created "+A_An(getitemname(.@q[0]))+"!",0;
+				specialeffect2 699;
+				close; }}
+
+OnInit:
+// --------------------- Config ---------------------
+// Custom points, if needed: "<variable>","<name to display>"
+	setarray .Points$[0],"#CASHPOINTS","Cash Points";
+
+	set .Announce,0;	// Announce quest completion? (1: yes / 0: no)
+	set .ShowSlot,1;	// Show item slots? (2: all equipment / 1: if slots > 0 / 0: never)
+	set .DisplayID,1;	// Show item IDs? (1: yes / 0: no)
+	set .ShowZeny,0;	// Show Zeny cost, if any? (1: yes / 0: no)
+
+// Shop categories, if needed: "<Shop 1>","<Shop 2>"{,...};
+// Duplicate dummy data for any additional shops (bottom of script).
+// If no categories, use the second line instead (remove //).
+
+	//setarray .Shops$[1],"Headgears[A-J]","Headgears[K-N]","Headgears[O-Z]";
+	set .Shops$[30],"WoonRO's Special Quest";
+
+// Add(<shop number>,<reward ID>,<reward amount>,<Zeny cost>,<point cost>,
+// <required item ID>,<required item amount>{,...});
+// Shop number corresponds with order above (default is 1).
+// Note: Do NOT use a reward item more than once!
+
+
+	Add(30,12103,1,0,0,604,50,7163,50,7449,10,7563,10,719,1);
+	//	Bradium Earing
+	Add(30,2788,1,1000000,0,6224,5,6090,100,2622,1,4004,1,9048,1);
+	//	Bradium Brooch
+	Add(30,2790,1,1000000,0,6224,5,6090,100,2625,1,4401,1,4086,1);
+	Add(30,2202,1,1000000,0,671,20,969,25,7169,5,2201,1,2276,1,5104,1,750,1);
+	Add(30,18507,1,10000000,0,2202,1,2286,1);
+	Add(30,2204,1,10000000,0,2202,1,2203,1);
+	Add(30,2553,1,0,0,2523,1,1036,25,7451,1);
+	Add(30,2399,1,0,0,2371,1,1036,75,6073,25);
+	Add(30,13105,1,0,0,13104,1,984,100,999,100);
+//	Add(30,12212,1,500000,0,601,100,7442,10,1058,40);
+	Add(30,9039,1,0,0,671,15,2700,5,1020,500,2513,1,9020,1,5091,1,9030,1);
+	Add(30,9028,1,0,0,671,15,12040,5,5024,1,550,250);
+	Add(30,9038,1,0,0,671,10,9030,1,5076,1,981,10);
+	Add(30,9031,1,0,0,671,10,9004,1,978,10,2250,1,622,5,706,4);
+	Add(30,9029,1,0,0,9032,1,9033,1,9034,1,9046,1,2236,1);
+// Chinese Handicraft [0]   [Accessory] 
+	Add(30,2708,1,10000000,0,4431,1,1133,2,2678,1,662,200,7097,200);
+	
+// Dragon items edit
+L_QuestShopContinue:
+if (@bought_nameid == 2553){
+	mes "[Hat Maker [A-J]]";
+	mes "Reward: Dragon Manteau[1]";
+	mes "Requirements:";
+	mes "> {2523} Undershirt[1] 1";
+	mes "> {1036} Dragon Scale 25";
+	mes "> {7451} Fire Dragon Scale 1";
+	next;
+		mes "[Hat Maker [A-J]]";
+		mes "Are you sure you want to make this item?";
+		switch(select("Yes, I want to make Dragon Manteau[1]")){
+			if(countitem(2523)<1){ goto l_noitem;}
+			if(countitem(1036)<25){ goto l_noitem;}
+			if(countitem(7451)<1){ goto l_noitem;}
+				delitem 2523,1;
+				delitem 1036,25;
+				delitem 7451,1;
+				getitem 2553,1;
+				close;
+		}
+}
+if (@bought_nameid == 2399){
+	mes "[Hat Maker [A-J]]";
+	mes "Reward: Dragon Vest[1]";
+	mes "Requirements:";
+	mes "> {2371} Pantie[1] 1";
+	mes "> {1036} Dragon Scale 75";
+	mes "> {6073} Dragon's Mane 25";
+	next;
+		mes "[Hat Maker [A-J]]";
+		mes "Are you sure you want to make this item?";
+		switch(select("Yes, I want to make Dragon Vest[1]")){
+			if(countitem(2371)<1){ goto l_noitem;}
+			if(countitem(1036)<75){ goto l_noitem;}
+			if(countitem(6073)<25){ goto l_noitem;}
+			delitem 2371,1;
+			delitem 1036,75;
+			delitem 6073,25;
+			getitem 2399,1;
+			close;
+		}
+}
+	
+	l_noitem:
+	next;
+	mes "[Hat Maker [A-J]]";
+	mes "You lack some of the required items.";
+	mes "Please make sure you have all the items you need to make this item.";
+	close;
+
+
+// End of Dragon vest and manteau edit
+
+
+// --------------------------------------------------
+	for(set .@i,1; .@i<=getarraysize(.Shops$); set .@i,.@i+1)
+		npcshopdelitem "qshop"+.@i,909;
+	end;
+}
+
+// -------- Dummy data (duplicate as needed) --------
+-	shop	qshop30	-1,909:-1

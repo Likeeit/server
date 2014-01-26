@@ -1,0 +1,80 @@
+// ID, Delay(ms)
+//Acolyte Class
+//Heal
+28,192
+//Blessing
+34,312
+//Lex Aeterna
+78,544
+//Status Recovery
+72,544
+
+//Archer Class
+//Arrow Shower
+47,384
+//Detecting
+130,544
+//Double Strafing
+46,200
+//Falcon Assault
+381,192
+//Sharp Shooting
+382,224
+
+//Mage Class
+//Cold Bolt
+14,192
+//Dispell
+289,250
+//Earth Spike
+90,192
+//Fire Bolt
+19,192
+//Ganbantein
+483,480
+//Heaven's Drive
+91,512
+//Jupitel Thunder
+84,192
+//Land Protector
+288,480
+//Lightning Bolt
+20,192
+//Soul Strike
+13,192
+
+//Merchant Class
+//Cart Termination
+485,192
+
+//Ninja Class
+//Lightning Spear of Ice
+537,200
+//North Wind
+542,200
+//Raging Fire Dragon
+536,200
+
+//Taekwon Class
+//Kaite
+465,544
+//Kaupe
+464,544
+
+//Swordman Class
+//Bash
+5,224
+//Devotion
+255,312
+//Pressure
+367,224
+//Shield Boomerang
+251,192
+//Shield Chain
+480,192
+//Shield Charge
+250,192
+
+//Thief Class
+//Grimtooth
+137,192

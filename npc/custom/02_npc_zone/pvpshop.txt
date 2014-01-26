@@ -1,0 +1,67 @@
+-	script	PvP_Points	-1,{
+	OnInit:
+	setarray .maps$[0], "guild_vs3";
+	end;
+
+	OnPCKillEvent:
+	set .@mapname$, strcharinfo(3);
+	for (set .@i, 0; .@i < getarraysize(.maps$); set .@i, .@i + 1) {
+		if (.@mapname$ == .maps$[.@i]) break;
+		else if (.@i == getarraysize(.maps$)-1) end;
+	}
+	set #pvp_points, #pvp_points + 1;
+	end;
+}
+
+job3_rune02,35,48,5	script	PvP Shop	65,{
+	set .@name$, "[PvP Shop]";
+	mes .@name$;
+	mes "Current PvP Points: ^0000FF"+#pvp_points+"^000000";
+	mes "Which shop would you like to view?";
+	menu "Regular Shop", -, "Special Shop", L_Spec;
+
+	close2;
+	callshop "PvP Shop Reg",0;
+	end;
+
+	L_Spec:
+	next;
+	mes .@name$;
+	if (getarraysize(.item_id) < 1) {
+		mes "This shop has no items currently.";
+		close;
+	}
+	mes "Please select an item from the list.";
+	set .@menu$, "";
+	for (set .@i, 0; .@i < getarraysize(.item_id); set .@i, .@i + 1) {
+		set .@menu$, .@menu$ + getitemname(.item_id[.@i])+" - "+.item_price[.@i]+" pt(s):";
+	}
+	set .@chosen, select(.@menu$)-1;
+	next;
+	mes .@name$;
+	mes "Please input how many you wish to buy, 0 to cancel.";
+	input(.@amount,0,99);
+	if (.@amount == 0) close;
+	next;
+	mes .@name$;
+	mes .@amount+" "+getitemname(.item_id[.@chosen])+"(s) will cost you ^FF0000"+(.item_price[.@chosen]*.@amount)+"^000000 PvP Point(s).";
+	mes "Proceed?";
+	if (select("Yes:No") == 2) close;
+	next;
+	mes .@name$;
+	if (#pvp_points < .item_price[.@chosen]*.@amount) {
+		mes "You don't have enough PvP points.";
+		close;
+	}
+	mes "Purchase successful!";
+	set #pvp_points, #pvp_points - (.item_price[.@chosen]*.@amount);
+	getitem .item_id[.@chosen], .@amount;
+	close;
+	
+	OnInit:
+	setarray .item_id[0],16300;
+	setarray .item_price[0],5;
+	end;
+
+}
+job3_rune02,0,0,5	cashshop(#pvp_points)	PvP Shop Reg	65,7420:1,12276:100,12277:100,12278:100,12300:100,12301:100,12302:100,5188:3500,5344:5000,5341:5000,5345:5000,5340:5000,5343:5000,5342:5000,5566:4000

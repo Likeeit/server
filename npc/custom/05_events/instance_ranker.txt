@@ -1,0 +1,26 @@
+new_5-2,85,114,5	script	Instance Ranker	59,{
+	set .@name$, "[Instance Ranker]";
+	mes .@name$;
+	mes "Welcome, which instance ranking would you like to view?";
+	menu "Party Survival Instance", L_PSI, "Close",-;
+
+	close;
+
+	L_PSI:
+	next;
+	mes .@name$;
+	mes "<Party Name> <Record Time>";
+	mes " ";
+	for (set .@i, 0; .@i < 10; set .@i, .@i + 1) {
+		if (!($psi_rank[.@i] && $psi_rank_party$[.@i] != ""))
+			mes (.@i+1)+". None - None";
+		else {
+			set .@hr, $psi_rank[.@i]/3600;
+			set .@mn, ($psi_rank[.@i]-(.@hr*3600))/60;
+			set .@sec, ($psi_rank[.@i]-(.@mn*60))-(.@hr*3600);
+			if (.@sec < 0) set .@sec, 0;
+			mes (.@i+1)+". "+$psi_rank_party$[.@i]+" - "+((.@hr < 10)? "0":"")+.@hr+":"+((.@mn < 10)? "0":"")+.@mn+":"+((.@sec < 10)? "0":"")+.@sec;	
+		}
+	}
+	close;
+}

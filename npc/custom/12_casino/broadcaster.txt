@@ -1,0 +1,539 @@
+//===== eAthena Script =======================================
+//= Broadcasting 
+//===== By ===================================================
+//= Rosemount
+//===== Version ==============================================
+//= 1.0 - Script Created
+//===== Created on ===========================================
+//= eAthena Svn r650
+//===== Description ==========================================
+//= With 40 color and admin menu
+//===== Topic Start ==========================================
+//= http://rathena.org/board/topic/66227-broadcaster-with-40-color/page__pid__113929#entry113929
+//============================================================
+
+
+-	script	Broad	-1,{
+OnWhisperGlobal:
+if(getgmlevel() >=99) goto L_admin;
+end;
+
+L_admin:
+menu "Set broadcast price",L_set,"Enable Broadcast",L_enable,"Disable Broadcast",L_disable;
+
+L_set:
+input $price;
+close;
+
+L_enable:
+enablenpc "BroadCaster";
+close;
+
+L_disable:
+mes "Please insert the reason";
+input @reason$;
+announce "GM "+strcharinfo(0)+" : was disable broadcaster npc by reason [ "+@reason$+" ]",bc_all;
+disablenpc "BroadCaster";
+close;
+}
+
+cmd_in02,211,100,4	script	BroadCaster	100,{
+mes "The price for today is ^FF0000"+$price+"^000000 zeny.";
+next;
+goto L_menu;
+
+L_menu:
+menu 
+     "^FF0000Color#1^000000",L_01,
+     "^FF4000Color#2^000000",L_02,
+     "^FF8000Color#3^000000",L_03,
+     "^FFBF00Color#4^000000",L_04,
+     "^FFFF00Color#5^000000",L_05,
+     "^BFFF00Color#6^000000",L_06,
+     "^80FF00Color#7^000000",L_07,
+     "^40FF00Color#8^000000",L_08,
+     "^FA5882Color#9^000000",L_09,
+     "^0101DFColor#10^000000",L_10,
+     "^7401DFColor#11^000000",L_11,
+     "^045FB4Color#12^000000",L_12,
+     "^2ECCFAColor#13^000000",L_13,
+     "^FF00FFColor#14^000000",L_14,
+     "^0000FFColor#15^000000",L_15,
+     "^088A08Color#16^000000",L_16,
+     "^FA58D0Color#17^000000",L_17,
+     "^FA8258Color#18^000000",L_18,
+     "^D0A9F5Color#19^000000",L_19,
+     "^04B486Color#20^000000",L_20,
+     "^C1FFC1Color#21^000000",L_21,
+     "^698B69Color#22^000000",L_22,
+     "^FFF68FColor#23^000000",L_23,
+     "^FF6A6AColor#24^000000",L_24,
+     "^FFA500Color#25^000000",L_25,
+     "^EE9A00Color#26^000000",L_26,
+     "^CD8500Color#27^000000",L_27,
+     "^B0E2FFColor#28^000000",L_28,
+     "^A4D3EEColor#29^000000",L_29,
+     "^C6E2FFColor#30^000000",L_30,
+     "^DA70D6Color#31^000000",L_31,
+     "^BA55D3Color#32^000000",L_32,
+     "^BA55D3Color#33^000000",L_33,
+     "^FAEBD7Color#34^000000",L_34,
+     "^FFEFD5Color#35^000000",L_35,
+     "^FFAEB9Color#36^000000",L_36,
+     "^EEA2ADColor#37^000000",L_37,
+     "^FF7256Color#38^000000",L_38,
+     "^FFA07AColor#39^000000",L_39,
+     "^EE7621Color#40^000000",L_40; 
+
+
+L_01:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad01,"No",L_no;
+
+broad01:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFF0000;
+close;
+
+L_02:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad02,"No",L_no;
+
+broad02:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFF4000;
+close;
+
+L_03:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad03,"No",L_no;
+
+broad03:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFF8000;
+close;
+
+L_04:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad04,"No",L_no;
+
+broad04:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFFBF00;
+close;
+
+L_05:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad05,"No",L_no;
+
+broad05:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFFFF00;
+close;
+
+L_06:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad06,"No",L_no;
+
+broad06:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xBFFF00;
+close;
+
+L_07:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad07,"No",L_no;
+
+broad07:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0x80FF00;
+close;
+
+L_08:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad08,"No",L_no;
+
+broad08:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0x40FF00;
+close;
+
+L_09:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad09,"No",L_no;
+
+broad09:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFA5882;
+close;
+
+L_10:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad10,"No",L_no;
+
+broad10:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0x0101DF;
+close;
+
+L_11:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad11,"No",L_no;
+
+broad11:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0x7401DF;
+close;
+
+L_12:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad12,"No",L_no;
+
+broad12:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0x045FB4;
+close;
+
+L_13:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad13,"No",L_no;
+
+broad13:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0x2ECCFA;
+close;
+
+L_14:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad14,"No",L_no;
+
+broad14:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFF00FF;
+close;
+
+L_15:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad15,"No",L_no;
+
+broad15:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0x0000FF;
+close;
+
+L_16:
+input @broadcast$;
+
+broad16:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0x088A08;
+close;
+
+L_17:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad17,"No",L_no;
+
+broad17:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFA58D0;
+close;
+
+L_18:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad18,"No",L_no;
+
+broad18:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFA8258;
+close;
+
+L_19:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad19,"No",L_no;
+
+broad19:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xD0A9F5;
+close;
+
+L_20:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad20,"No",L_no;
+
+broad20:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0x04B486;
+close;
+
+L_21:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad21,"No",L_no;
+
+broad21:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xC1FFC1;
+close;
+
+L_22:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad22,"No",L_no;
+
+broad22:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0x698B69;
+close;
+
+L_23:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad23,"No",L_no;
+
+broad23:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFFF68F;
+close;
+
+L_24:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad24,"No",L_no;
+
+broad24:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFF6A6A;
+close;
+
+L_25:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad25,"No",L_no;
+
+broad25:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFFA500;
+close;
+
+L_26:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad26,"No",L_no;
+
+broad26:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xEE9A00;
+close;
+
+L_27:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad27,"No",L_no;
+
+broad27:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xCD8500;
+close;
+
+L_28:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad28,"No",L_no;
+
+broad28:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xB0E2FF;
+close;
+
+L_29:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad29,"No",L_no;
+
+broad29:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xA4D3EE;
+close;
+
+L_30:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad30,"No",L_no;
+
+broad30:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xC6E2FF;
+close;
+
+L_31:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad31,"No",L_no;
+
+broad31:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xDA70D6;
+close;
+
+L_32:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad32,"No",L_no;
+
+broad32:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xBA55D3;
+close;
+
+L_33:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad33,"No",L_no;
+
+broad33:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xBA55D3;
+close;
+
+L_34:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad34,"No",L_no;
+
+broad34:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFAEBD7;
+close;
+
+L_35:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad35,"No",L_no;
+
+broad35:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFFEFD5;
+close;
+
+L_36:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad36,"No",L_no;
+
+broad36:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFFAEB9;
+close;
+
+L_37:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad37,"No",L_no;
+
+broad37:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xEEA2AD;
+close;
+
+L_38:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad38,"No",L_no;
+
+broad38:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFF7256;
+close;
+
+L_39:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad39,"No",L_no;
+
+broad39:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xFFA07A;
+close;
+
+L_40:
+input @broadcast$;
+mes "Are you sure want to broadcast ^FF0000"+@broadcast$+"^000000";
+menu "Yes",broad40,"No",L_no;
+
+broad40:
+if(Zeny < $price) goto error;
+set Zeny, Zeny - $price;
+announce ""+strcharinfo(0)+": "+@broadcast$+"",0,0xEE7621;
+close;
+
+L_no:
+next;
+if(Sex == 0)
+mes "Hello Mrs ^FA8258"+strcharinfo(0)+"^000000 Have a nice day.";
+else
+mes "Hello Mr ^FA8258"+strcharinfo(0)+"^000000 Have a nice day.";
+close;
+
+error:
+next;
+mes "You dont have ^FF0000"+$price+"^000000 zeny.";
+close;
+}

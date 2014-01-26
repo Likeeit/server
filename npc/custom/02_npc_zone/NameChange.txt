@@ -1,0 +1,107 @@
+job3_rune02,41,48,3	script	NameChange	66,{
+	// CONFIG - copy these settings from ../conf/char_athena.conf
+	set .@char_name_option, 1;
+	set .@char_name_letters$, "abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+	
+	mes "[Name Wizard]";
+	mes "Soo, you heard about my magic power?";
+	mes "My power to change someone's identity?";
+	next;
+	
+	mes "[Name Wizard]";
+	mes "That's right, I can make everyone think that your name is different than it always was.";
+	mes "I do require a^FF0000 Ticket of Identification^000000 though. But I'm sure for an adventurer like you are that is not a problem.";
+	next;
+	
+	mes "[Name Wizard]";
+	mes "Besides a^FF0000 Ticket of Identification^000000 there are some other requirements.";
+	mes "You can not be in a party or guild.";
+	mes "You cannot pick a name that is already in use.";
+	mes "Your new name must be 4 or more characters long to a maximum of 23 characters long.";
+	next;
+
+	mes "So, are you interested in my service or not?";
+	if(select("No","Yes")==2)
+	{
+		if(countitem(7623) < 1)
+		{
+			mes "[Name Wizard]";
+			mes "You don't even have a ^FF0000 Ticket of Identification^000000.";
+			mes "Begone before I change your name into Liar.";
+			close;
+		}
+				
+		mes "[Name Wizard]";
+		mes "Tell me what you want your new identity to be.";
+		input .@name$;
+	
+		// check name length
+		if (getstrlen(.@name$)<4)
+		{
+			mes "[Name Wizard]";
+			mes "Your new name must be at least^FF0000 4^000000 characters long.";
+			close;
+		}
+		else if (getstrlen(.@name$)>23)
+		{
+			mes "[Name Wizard]";
+			mes "Your new name can be as long as^FF0000 23^000000 characters.";
+			close;
+		}
+
+		// check allowed characters
+		if (.@char_name_option == 1)
+		{		 
+			// only letters/symbols in 'char_name_letters' are allowed
+			for (set .@i,0; .@i<getstrlen(.@name$); set .@i,.@i+1)
+			{
+				if (!compare(.@char_name_letters$, charat(.@name$,.@i)))
+				{
+					mes "[Name Wizard]";
+					mes "You used an invalid character: " + charat(.@name$,.@i);
+					close;
+				}
+			}
+		}
+				
+		if (getcharid(1)) 
+		{
+			mes "Please leave your party before requesting a name change.";
+			close;
+		} 
+			else if (getcharid(2)) 
+		{
+			mes "Please leave your guild before requesting a name change.";
+			close;
+		}
+
+		// check if name exists
+		query_sql "SELECT COUNT(char_id) FROM `char` WHERE `name`='"+escape_sql(.@name$)+"'", .@name_exists;
+		if (.@name_exists) 
+		{
+			mes "Sorry, that name is already taken :(";
+				close;
+		}
+					
+		// confirm
+		mes "[Name Wizard]";
+		mes "Are you sure you want your new name to be^0000FF "+.@name$+"^000000 ?";
+		mes "If you confirm you have to use another Ticket of Identification to change your name again.";
+		mes "The GM Team will not edit your name incase you made a typo. Be 100% sure before you do this.";
+		mes "After you confirm, you will be logged out. Please wait 10 seconds before logging back in!";
+		if(select("Yes, change my name:No, thanks")==2) close;
+
+		delitem 7623,1;		
+		set .@char_id, getcharid(0);	// save their Char ID
+		atcommand "@kick "+strcharinfo(0);
+		// sleep 500;	// (usually not necessary) give the server time to save their char to SQL
+		query_sql "UPDATE `char` SET `name`='"+escape_sql(.@name$)+"' WHERE char_id="+.@char_id;
+		end;
+		}
+	else
+	{
+		mes "[Name Wizard]";
+		mes "Ok, come back when you want to use my service.";
+		close;
+	}
+}

@@ -1,0 +1,146 @@
+[Status]: Memory manager initialised: log/login-server_sql.leaks
+
+          (=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=)
+          (            eAthena Development Team presents            )
+          (       ______  __    __                                  )
+          (      /\  _  \/\ \__/\ \                                 )
+          (    __\ \ \_\ \ \ ,_\ \ \___      __    ___      __      )
+          (  /'__`\ \  __ \ \ \/\ \  _ `\  /'__`\/' _ `\  /'__`\    )
+          ( /\  __/\ \ \/\ \ \ \_\ \ \ \ \/\  __//\ \/\ \/\ \_\.\_  )
+          ( \ \____\\ \_\ \_\ \__\\ \_\ \_\ \____\ \_\ \_\ \__/.\_\ )
+          (  \/____/ \/_/\/_/\/__/ \/_/\/_/\/____/\/_/\/_/\/__/\/_/ )
+          (   _   _   _   _   _   _   _     _   _   _   _   _   _   )
+          (  / \ / \ / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \  )
+          ( ( e | n | g | l | i | s | h ) ( A | t | h | e | n | a ) )
+          (  \_/ \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/  )
+          (                                                         )
+          (=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=)
+
+[Info]: SVN Revision: 'exported'.
+[Warning]: You are running eAthena as the root superuser.
+[Warning]: It is unnecessary and unsafe to run eAthena with root privileges.
+[Status]: Memory manager initialised: log/map-server_sql.leaks
+
+          (=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=)
+          (            eAthena Development Team presents            )
+          (       ______  __    __                                  )
+          (      /\  _  \/\ \__/\ \                                 )
+          (    __\ \ \_\ \ \ ,_\ \ \___      __    ___      __      )
+          (  /'__`\ \  __ \ \ \/\ \  _ `\  /'__`\/' _ `\  /'__`\    )
+          ( /\  __/\ \ \/\ \ \ \_\ \ \ \ \/\  __//\ \/\ \/\ \_\.\_  )
+          ( \ \____\\ \_\ \_\ \__\\ \_\ \_\ \____\ \_\ \_\ \__/.\_\ )
+          (  \/____/ \/_/\/_/\/__/ \/_/\/_/\/____/\/_/\/_/\/__/\/_/ )
+          (   _   _   _   _   _   _   _     _   _   _   _   _   _   )
+          (  / \ / \ / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \  )
+          ( ( e | n | g | l | i | s | h ) ( A | t | h | e | n | a ) )
+          (  \_/ \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/  )
+          (                                                         )
+          (=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=)
+
+[Info]: SVN Revision: 'exported'.
+[Warning]: You are running eAthena as the root superuser.
+[Warning]: It is unnecessary and unsafe to run eAthena with root privileges.
+[Status]: Memory manager initialised: log/char-server_sql.leaks
+
+          (=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=)
+          (            eAthena Development Team presents            )
+          (       ______  __    __                                  )
+          (      /\  _  \/\ \__/\ \                                 )
+          (    __\ \ \_\ \ \ ,_\ \ \___      __    ___      __      )
+          (  /'__`\ \  __ \ \ \/\ \  _ `\  /'__`\/' _ `\  /'__`\    )
+          ( /\  __/\ \ \/\ \ \ \_\ \ \ \ \/\  __//\ \/\ \/\ \_\.\_  )
+          ( \ \____\\ \_\ \_\ \__\\ \_\ \_\ \____\ \_\ \_\ \__/.\_\ )
+          (  \/____/ \/_/\/_/\/__/ \/_/\/_/\/____/\/_/\/_/\/__/\/_/ )
+          (   _   _   _   _   _   _   _     _   _   _   _   _   _   )
+          (  / \ / \ / \ / \ / \ / \ / \   / \ / \ / \ / \ / \ / \  )
+          ( ( e | n | g | l | i | s | h ) ( A | t | h | e | n | a ) )
+          (  \_/ \_/ \_/ \_/ \_/ \_/ \_/   \_/ \_/ \_/ \_/ \_/ \_/  )
+          (                                                         )
+          (=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=)
+
+[Info]: SVN Revision: 'exported'.
+[Warning]: You are running eAthena as the root superuser.
+[Warning]: It is unnecessary and unsafe to run eAthena with root privileges.
+[Error]: File not found: conf/import/packet_conf.txt
+[Error]: File not found: conf/import/packet_conf.txt
+[Info]: Server supports up to '1024' concurrent connections.
+[Info]: Server supports up to '1024' concurrent connections.
+[Warning]: plugin_open: not loaded (invalid file) : 'plugins/sig.so'
+[Info]: Reading configuration file conf/login_athena.conf...
+[Warning]: plugin_open: not loaded (invalid file) : 'plugins/sig.so'
+[Status]: set login_port : 6900
+[Info]: Console Silent Setting: 0
+[Info]: Console Silent Setting: 0
+[Info]: Reading configuration file conf/inter_athena.conf...
+[Error]: Configuration file (conf/import/inter_conf.txt) not found.
+[Info]: Finished reading conf/inter_athena.conf.
+[Error]: Configuration file (conf/import/login_conf.txt) not found.
+[Info]: Finished reading conf/login_athena.conf.
+[Info]: Reading the configuration file conf/subnet_athena.conf...
+[Status]: Read information about 1 subnetworks.
+[Error]: File not found: conf/import/packet_conf.txt
+[Info]: Server supports up to '1024' concurrent connections.
+[Warning]: plugin_open: not loaded (invalid file) : 'plugins/sig.so'
+[Info]: Reading configuration file conf/char_athena.conf...
+[Status]: WoonRO server has been initialized
+[Info]: Console Silent Setting: 0
+[Error]: Configuration file not found: conf/import/char_conf.txt.
+[Info]: Done reading conf/char_athena.conf.
+[Info]: Reading the configuration file conf/subnet_athena.conf...
+[Status]: Read information about 1 subnetworks.
+[Info]: Reading file conf/inter_athena.conf...
+[Info]: Reading file conf/import/inter_conf.txt...
+[Error]: file not found: conf/import/inter_conf.txt
+[Info]: Done reading conf/inter_athena.conf.
+[Info]: Finished reading the char-server configuration.
+[Info]: interserver initialize...
+[Info]: reading file conf/inter_athena.conf...
+[Status]: set char_server_ip : localhost
+[Status]: set char_server_port : 3306
+[Status]: set char_server_id : root
+[Status]: set char_server_pw : 22EKhQU5FG
+[Status]: set char_server_db : ragnarok
+[Error]: file not found: conf/import/inter_conf.txt
+[Info]: done reading conf/inter_athena.conf.
+[Info]: Connect Character DB server.... (Character Server)
+[Info]: Using account engine 'sql'.
+[Error]: make_listen_bind: bind failed (socket #6, code 98)!
+[Info]: Finished reading the inter-server configuration.
+[Info]: Initializing char server.
+[Info]: Begin Initializing.......
+[Status]: Chars per Account: 'Unlimited'.......
+[Error]: Map configuration file not found at: conf/import/map_conf.txt
+[Error]: 
+Not all IP addresses in map_athena.conf configured, autodetecting...
+[Info]: Defaulting to 68.168.21.133 as our IP address
+[Info]: Map Server IP Address : '68.168.21.133' -> '68.168.21.133'.
+[Info]: Char Server IP Address : '68.168.21.133' -> '68.168.21.133'.
+[Error]: File not found: conf/import/battle_conf.txt
+[Error]: Messages file not found: conf/import/msg_conf.txt
+[Error]: AtCommand configuration file not found: conf/import/atcommand_conf.txt
+[Error]: file not found: [conf/import/script_conf.txt]
+[Status]: Using SQL dbs: no
+[Error]: File not found: 'conf/import/inter_conf.txt'.
+[Error]: Log configuration file not found at: conf/import/log_conf.txt
+[Info]: Connecting to the Map DB Server....
+[Status]: connect success! (Map Server Connection)
+[Status]: Loading maps (using db/map_cache.dat as map cache)...
+[Status]: Loading maps (1209)..
+[Info]: Finished initilizing.......
+[Info]: char server initialized.
+[Status]: Defaulting to 68.168.21.133 as our IP address
+[Info]: Cleaning the 'char' table...
+[Info]: Cleaning the 'guild' table...
+[Info]: Cleaning the 'guild_member' table...
+[Info]: End of char server initilization function.
+[Info]: open port 6121.....
+[Error]: make_listen_bind: bind failed (socket #4, code 98)!
+[Notice]: Removing map [ poring_c01 ] from maplist
+[Notice]: Removing map [ poring_c02 ] from maplist
+[Info]: Successfully loaded '1207' maps.
+[Notice]: Maps removed: '2'
+[Status]: Done reading '23' entries in 'region_db.txt'.
+[Status]: Done reading '386' entries in 'region_map_db.txt'.
+[Status]: Done reading '4' entries in 'db/channel_db.txt'.
+[Status]: Done reading packet database from 'packet_db.txt'. Using default packet version: 25.
+[Error]: make_listen_bind: bind failed (socket #4, code 98)!

@@ -1,0 +1,296 @@
+prontera,164,175,3	script	Vending Area	726,{
+
+	warp "wvend.gat",55,64;
+	end;
+
+OnInit:
+	setcell "wvend",2,55,63,73,cell_novending,1;
+	setcell "wvend",2,2,49,4,cell_novending,1;
+	setcell "wvend",4,5,8,54,cell_novending,1;
+	setcell "wvend",12,5,15,54,cell_novending,1;
+	setcell "wvend",19,5,24,54,cell_novending,1;
+	setcell "wvend",28,5,31,54,cell_novending,1;
+	setcell "wvend",35,5,40,54,cell_novending,1;
+	setcell "wvend",44,5,47,54,cell_novending,1;
+	end;
+}
+
+//Exit Warper
+wvend,56,72,3	script	Exit#vend	726,{
+
+	warp "prontera.gat",155,186;
+	end;
+}
+
+
+//Bulletin Boards
+wvend,45,60,6	script	Vend Agent#1::Vend Agent	899,{
+
+	mes "[Vend Agent]";
+	mes "Be warned:";
+	mes "Vending over an existing vend will be kicked on 1st offense and jailed on 2nd offense.";
+	close;
+}
+wvend,29,60,6	duplicate(Vend Agent)	Vend Agent#2	899
+wvend,13,60,6	duplicate(Vend Agent)	Vend Agent#3	899
+
+
+
+
+//General Maps & Towns
+prontera	mapflag	novending
+prt_in	mapflag	novending
+wvend	mapflag	restricted	6
+wvend	mapflag	nobranch
+wvend	mapflag	town
+izlude	mapflag	novending
+guild_vs1	mapflag	novending
+ordeal_1-1	mapflag	novending
+pay_arche	mapflag	novending
+mosk_fild01	mapflag	novending
+mora	mapflag	novending
+malangdo	mapflag	novending
+dewata	mapflag	novending
+cmd_in02	mapflag	novending
+new_1-1	mapflag	novending
+bat_room	mapflag	novending
+bat_room	mapflag	nochat
+
+//MvP Maps
+moc_pryd06	mapflag	novending
+moc_fild22	mapflag	novending
+gef_dun02	mapflag	novending
+pay_fild11	mapflag	novending
+abbey02	mapflag	novending
+xmas_fild01	mapflag	novending
+ra_san05	mapflag	novending
+prt_sewb4	mapflag	novending
+mosk_dun03	mapflag	novending
+thor_v03	mapflag	novending
+ama_dun03	mapflag	novending
+kh_dun02	mapflag	novending
+ayo_dun02	mapflag	novending
+anthell02	mapflag	novending
+anthell01	mapflag	novending
+mjolnir_04	mapflag	novending
+pay_dun04	mapflag	novending
+gef_fild14	mapflag	novending
+gef_fild02	mapflag	novending
+gef_fild10	mapflag	novending
+moc_fild17	mapflag	novending
+ein_dun02	mapflag	novending
+beach_dun	mapflag	novending
+odin_tem03	mapflag	novending
+jupe_core	mapflag	novending
+abbey03	mapflag	novending
+odin_tem03	mapflag	novending
+odin_tem02	mapflag	novending
+lhz_dun03	mapflag	novending
+prt_maze03	mapflag	novending
+abyss_03	mapflag	novending
+gld_dun02	mapflag	novending
+gef_dun01	mapflag	novending
+treasure02	mapflag	novending
+gld_dun01	mapflag	novending
+pay_fild11	mapflag	novending
+gon_dun03	mapflag	novending
+ice_dun03	mapflag	novending
+niflheim	mapflag	novending
+2@nyd	mapflag	novending
+moc_pryd04	mapflag	novending
+in_sphinx5	mapflag	novending
+dic_dun02	mapflag	novending
+thana_boss	mapflag	novending
+tur_dun04	mapflag	novending
+gld_dun04	mapflag	novending
+gld_dun03	mapflag	novending
+gld_dun01	mapflag	novending
+pay_fild04	mapflag	novending
+yuno_fild03	mapflag	novending
+xmas_dun01	mapflag	novending
+xmas_dun02	mapflag	novending
+
+
+//Woe Maps
+aldeg_cas01	mapflag	novending
+aldeg_cas02	mapflag	novending
+aldeg_cas03	mapflag	novending
+aldeg_cas04	mapflag	novending
+aldeg_cas05	mapflag	novending
+gefg_cas01	mapflag	novending
+gefg_cas02	mapflag	novending
+gefg_cas03	mapflag	novending
+gefg_cas04	mapflag	novending
+gefg_cas05	mapflag	novending
+payg_cas01	mapflag	novending
+payg_cas02	mapflag	novending
+payg_cas03	mapflag	novending
+payg_cas04	mapflag	novending
+payg_cas05	mapflag	novending
+prtg_cas01	mapflag	novending
+prtg_cas02	mapflag	novending
+prtg_cas03	mapflag	novending
+prtg_cas04	mapflag	novending
+prtg_cas05	mapflag	novending
+nguild_alde	mapflag	novending
+nguild_gef	mapflag	novending
+nguild_pay	mapflag	novending
+nguild_prt	mapflag	novending
+schg_cas01	mapflag	novending
+schg_cas02	mapflag	novending
+schg_cas03	mapflag	novending
+schg_cas04	mapflag	novending
+schg_cas05	mapflag	novending
+arug_cas01	mapflag	novending
+arug_cas02	mapflag	novending
+arug_cas03	mapflag	novending
+arug_cas04	mapflag	novending
+arug_cas05	mapflag	novending
+
+// Orc Memory Blocking Vending
+0011@orcs	mapflag	novending
+0021@orcs	mapflag	novending
+0031@orcs	mapflag	novending
+0041@orcs	mapflag	novending
+0051@orcs	mapflag	novending
+0061@orcs	mapflag	novending
+0071@orcs	mapflag	novending
+0081@orcs	mapflag	novending
+0091@orcs	mapflag	novending
+0101@orcs	mapflag	novending
+
+0012@orcs	mapflag	novending
+0022@orcs	mapflag	novending
+0032@orcs	mapflag	novending
+0042@orcs	mapflag	novending
+0052@orcs	mapflag	novending
+0062@orcs	mapflag	novending
+0072@orcs	mapflag	novending
+0082@orcs	mapflag	novending
+0092@orcs	mapflag	novending
+0102@orcs	mapflag	novending
+
+// Endless Tower
+0011@tower	mapflag	novending
+0021@tower	mapflag	novending
+0031@tower	mapflag	novending
+0041@tower	mapflag	novending
+0051@tower	mapflag	novending
+0061@tower	mapflag	novending
+0071@tower	mapflag	novending
+0081@tower	mapflag	novending
+0091@tower	mapflag	novending
+0101@tower	mapflag	novending
+
+0012@tower	mapflag	novending
+0022@tower	mapflag	novending
+0032@tower	mapflag	novending
+0042@tower	mapflag	novending
+0052@tower	mapflag	novending
+0062@tower	mapflag	novending
+0072@tower	mapflag	novending
+0082@tower	mapflag	novending
+0092@tower	mapflag	novending
+0102@tower	mapflag	novending
+
+0013@tower	mapflag	novending
+0023@tower	mapflag	novending
+0033@tower	mapflag	novending
+0043@tower	mapflag	novending
+0053@tower	mapflag	novending
+0063@tower	mapflag	novending
+0073@tower	mapflag	novending
+0083@tower	mapflag	novending
+0093@tower	mapflag	novending
+0103@tower	mapflag	novending
+
+0014@tower	mapflag	novending
+0024@tower	mapflag	novending
+0034@tower	mapflag	novending
+0044@tower	mapflag	novending
+0054@tower	mapflag	novending
+0064@tower	mapflag	novending
+0074@tower	mapflag	novending
+0084@tower	mapflag	novending
+0094@tower	mapflag	novending
+0104@tower	mapflag	novending
+
+0015@tower	mapflag	novending
+0025@tower	mapflag	novending
+0035@tower	mapflag	novending
+0045@tower	mapflag	novending
+0055@tower	mapflag	novending
+0065@tower	mapflag	novending
+0075@tower	mapflag	novending
+0085@tower	mapflag	novending
+0095@tower	mapflag	novending
+0105@tower	mapflag	novending
+
+0016@tower	mapflag	novending
+0026@tower	mapflag	novending
+0036@tower	mapflag	novending
+0046@tower	mapflag	novending
+0056@tower	mapflag	novending
+0066@tower	mapflag	novending
+0076@tower	mapflag	novending
+0086@tower	mapflag	novending
+0096@tower	mapflag	novending
+0106@tower	mapflag	novending
+
+// Nyd Memory
+0011@nyd	mapflag	novending
+0021@nyd	mapflag	novending
+0031@nyd	mapflag	novending
+0041@nyd	mapflag	novending
+0051@nyd	mapflag	novending
+0061@nyd	mapflag	novending
+0071@nyd	mapflag	novending
+0081@nyd	mapflag	novending
+0091@nyd	mapflag	novending
+0101@nyd	mapflag	novending
+
+0012@nyd	mapflag	novending
+0022@nyd	mapflag	novending
+0032@nyd	mapflag	novending
+0042@nyd	mapflag	novending
+0052@nyd	mapflag	novending
+0062@nyd	mapflag	novending
+0072@nyd	mapflag	novending
+0082@nyd	mapflag	novending
+0092@nyd	mapflag	novending
+0102@nyd	mapflag	novending
+
+// Sealed Shrine
+0011@cata	mapflag	novending
+0021@cata	mapflag	novending
+0031@cata	mapflag	novending
+0041@cata	mapflag	novending
+0051@cata	mapflag	novending
+0061@cata	mapflag	novending
+0071@cata	mapflag	novending
+0081@cata	mapflag	novending
+0091@cata	mapflag	novending
+0101@cata	mapflag	novending
+
+0012@cata	mapflag	novending
+0022@cata	mapflag	novending
+0032@cata	mapflag	novending
+0042@cata	mapflag	novending
+0052@cata	mapflag	novending
+0062@cata	mapflag	novending
+0072@cata	mapflag	novending
+0082@cata	mapflag	novending
+0092@cata	mapflag	novending
+0102@cata	mapflag	novending
+
+// Party Survival
+0011@lhz	mapflag	novending
+0021@lhz	mapflag	novending
+0031@lhz	mapflag	novending
+0041@lhz	mapflag	novending
+0051@lhz	mapflag	novending
+0061@lhz	mapflag	novending
+0071@lhz	mapflag	novending
+0081@lhz	mapflag	novending
+0091@lhz	mapflag	novending
+0101@lhz	mapflag	novending

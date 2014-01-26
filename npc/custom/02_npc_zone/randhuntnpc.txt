@@ -1,0 +1,126 @@
+new_5-2,90,112,4	script	Hunting Quests	997,{
+
+set .@s, select( ( (!rand_quest) ? "Get new quest" : "Complete quest:Reset quest" ) + ":Close") -1;
+
+if( !.@s && !rand_quest) {
+	mes "You will get a random monster and a random number of them to kill.";
+	mes "Once you finish the quest, you will get 1 gold coin.";
+	next;
+	mes "...... Randomizing";
+	next;
+
+	set r_amount, 5* rand(1,10);
+	set $ranmonster,rand(1,17);
+	if($ranmonster == 1)
+	set r_id, 1720;
+	if($ranmonster == 2)
+	set r_id, 1219;
+	if($ranmonster == 3)
+	set r_id, 1830;
+	if($ranmonster == 4)
+	set r_id, 1783;
+	if($ranmonster == 5)
+	set r_id, 1920;
+	if($ranmonster == 6)
+	set r_id, 1870;
+	if($ranmonster == 7)
+	set r_id, 1700;
+	if($ranmonster == 8)
+	set r_id, 1702;
+	if($ranmonster == 9)
+	set r_id, 1829;
+	if($ranmonster == 10)
+	set r_id, 1839;
+	if($ranmonster == 11)
+	set r_id, 1681;
+	if($ranmonster == 12)
+	set r_id, 1283;
+	if($ranmonster == 13)
+	set r_id, 1302;
+	if($ranmonster == 14)
+	set r_id, 1259;
+	if($ranmonster == 15)
+	set r_id, 1262;
+	if($ranmonster == 16)
+	set r_id, 1755;
+	if($ranmonster == 17)
+	set r_id, 1754;
+
+	set rand_quest, 1;
+	set rand_q_kill, 0;
+
+	mes "Your quest is the following:";
+	mes "Monster to kill: " + GetMonsterInfo(r_id,0);
+	mes "Monster ID = " + r_id;
+	mes "Monters needed to be killed: " + r_amount;
+
+	close;
+
+} else if( !.@s && rand_quest ) {
+
+	mes "Your quest is the following:";
+	mes "Monster to kill: " + GetMonsterInfo(r_id,0);
+	mes "Monster ID = " + r_id;
+	mes "Monters needed to be killed: [" + ( (rand_q_kill < 10) ? "0" + rand_q_kill : rand_q_kill) + "/" + ( (r_amount < 10) ? "0" + r_amount : r_amount) + "]";
+
+	next;
+
+	if( rand_q_kill < r_amount ) {
+		mes "You didn't kill all the monsters needed at the moment.";
+		mes "Monsters killed: [^FF0000" + ( (rand_q_kill < 10) ? "0" + rand_q_kill : rand_q_kill) + "^000000/" + ( (r_amount < 10) ? "0" + r_amount : r_amount) + "]";
+		close;
+
+	} else {
+		mes "Congratulation you completed your quest!";
+		set rand_quest, 0;
+		set rand_q_kill, 0;
+
+		getitem 671, 1;
+
+		close;
+	}
+
+}else if( .@s == 1 && rand_quest ) {
+	mes "To reset your quest you need 2 Gold Coins";
+	next;
+
+	if( countitem(671) < 2 ) {
+		mes "You have not enough Gold Coins";
+		close;
+	} else {
+		mes "Are you sure you want to delete your quest?";
+
+		if( select( "No","Yes" ) == 1 ) close;
+
+		delitem 671, 2;
+		set rand_quest, 0;
+		set rand_q_kill, 0;
+
+		mes "Quest resetted.";
+		close;
+	}
+
+} else if( (.@s == 1 && !rand_quest) || .@s == 2 ) {
+	mes "See you...";
+	close;
+}
+
+ 
+OnNPCKillEvent:
+	if( killedrid != r_id || !rand_quest ) end;
+
+	else {
+		set rand_q_kill, ( ( rand_q_kill < (r_amount - 1) ) ? rand_q_kill + 1 : r_amount );
+		dispbottom GetMonsterInfo(r_id,0) + " killed: [" + ( (rand_q_kill < 10) ? "0" + rand_q_kill : rand_q_kill) + "/" + ( (r_amount < 10) ? "0" + r_amount : r_amount) + "]";
+	}
+	end;
+
+
+OnInit:
+
+	//Item and amount as Reward
+	set .rew_item, 671;
+	set .rew_amount, 1;
+
+	end;
+}

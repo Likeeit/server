@@ -1,0 +1,462 @@
+//===== eAthena Script =======================================
+//= Heal Npc
+//===== By: ==================================================
+//= Lotsa People (1.x)
+//===== Current Version: =====================================
+//= 3.1
+//===== Compatible With: =====================================
+//= eAthena 0.1+;
+//===== Description: =========================================
+//= Healer NPC Which Heals For Free and offers Guild Buffs.
+//===== Additional Comments: =================================
+//= 3.1 By Melli, added Guild Buffs.
+//= 3.0 By massdriller, Changed and edited the script
+//= added other warp points of maps.
+//= 2.0 By Darkchild, Duplicates And Changed A Bit
+//= you can replace this script file by heal_payment.txt
+//= if you want that players have to pay their healings.
+//============================================================
+prontera,153,192,5	script	Healer#h1-1::Healer	971,{
+percentheal 100,100;
+emotion e_no1;
+
+// Repair
+while (getbrokenid(1)) {
+	repair(1);
+	set .@i, .@i +1;
+}
+if (.@i) dispbottom .@i + " items repaired.";
+
+// Debuff
+sc_end SC_STONE;
+sc_end SC_FREEZE;
+sc_end SC_STUN;
+sc_end SC_SLEEP;
+sc_end SC_POISON;
+sc_end SC_CURSE;
+sc_end SC_SILENCE;
+sc_end SC_CONFUSION;
+sc_end SC_BLIND;
+sc_end SC_BLEEDING;
+sc_end SC_SLOWCAST;
+sc_end SC_CRITICALWOUND;
+
+// Agi / Blessing
+sc_start SC_BLESSING,0,10;
+sc_start SC_INCREASEAGI,0,10;
+
+// If char has no guild
+if(getcharid(2)==0){ goto L_heal;}
+
+// Start of buff loop
+set y, 0;
+goto L_guildassumptio;
+end;
+
+L_guildassumptio:
+while (getcharid(2) != $guildassumptio[y] && getcharid(2) != $guildassumptio2[y] && getcharid(2) != $guildassumptio3[y]){
+	set y,y+1;
+	if(y == 128) {
+		set y, 0;
+		goto L_guildmagnificat;
+    }
+}
+sc_start SC_ASSUMPTIO,0,5;
+set y, 0;
+goto L_guildmagnificat;
+end;
+
+L_guildmagnificat:
+while (getcharid(2) != $guildmagnificat[y] && getcharid(2) != $guildmagnificat2[y] && getcharid(2) != $guildmagnificat3[y]){
+	set y,y+1;
+	if(y == 128) {
+		set y, 0;
+		goto L_guildangelus;
+    }
+}
+sc_start SC_MAGNIFICAT,0,5;
+set y, 0;
+goto L_guildangelus;
+end;
+
+L_guildangelus:
+while (getcharid(2) != $guildangelus[y] && getcharid(2) != $guildangelus2[y] && getcharid(2) != $guildangelus3[y]){
+	set y,y+1;
+	if(y == 128) {
+		set y, 0;
+		goto L_guildgloria;
+    }
+}
+sc_start SC_angelus,0,10;
+set y,0;
+goto L_guildgloria;
+end;
+
+L_guildgloria:
+while (getcharid(2) != $guildgloria[y] && getcharid(2) != $guildgloria2[y] && getcharid(2) != $guildgloria3[y]){
+	set y,y+1;
+	if(y == 128) {
+		set y, 0;
+		goto L_guildimpositio;
+    }
+}
+sc_start SC_GLORIA,0,5;
+set y,0;
+goto L_guildimpositio;
+end;
+
+L_guildimpositio:
+while (getcharid(2) != $guildimpositio[y] && getcharid(2) != $guildimpositio2[y] && getcharid(2) != $guildimpositio3[y]){
+	set y,y+1;
+	if(y == 128) {
+		set y, 0;
+		goto L_guildspirit;
+    }
+}
+sc_start SC_IMPOSITIO,0,5;
+set y,0;
+goto L_guildspirit;
+end;
+
+L_guildspirit:
+while (getcharid(2) != $guildspirit[y] && getcharid(2) != $guildspirit2[y] && getcharid(2) != $guildspirit3[y]){
+	set y,y+1;
+	if(y == 128) {
+		set y, 0;
+		goto L_guildspirit;
+    }
+}
+set y,0;
+percentheal 100,100;
+switch( Class ) {
+				case Job_Star_Gladiator:
+				case Job_Star_Gladiator2:
+					set .@skill_id, 448; break;
+				case Job_SuperNovice:
+					set .@skill_id, 451; break;
+				case Job_Soul_Linker:
+					set .@skill_id, 461; break;
+				case Job_Novice_High:
+				case Job_Swordman_High:
+				case Job_Mage_High:
+				case Job_Archer_High:
+				case Job_Acolyte_High:
+				case Job_Merchant_High:
+				case Job_Thief_High:
+					set .@skill_id, 494; break;
+			default:
+				switch( BaseJob ) {
+				case Job_Alchemist:	set .@skill_id, 445; break;
+				case Job_Monk:		set .@skill_id, 447; break;
+				case Job_Sage:		set .@skill_id, 449; break;
+				case Job_Crusader:	set .@skill_id, 450; break;
+				case Job_Knight:	set .@skill_id, 452; break;
+				case Job_Wizard:	set .@skill_id, 453; break;
+				case Job_Priest:	set .@skill_id, 454; break;
+				case Job_Bard:
+				case Job_Dancer:	set .@skill_id, 455; break;
+				case Job_Rogue:		set .@skill_id, 456; break;
+				case Job_Assassin:	set .@skill_id, 457; break;
+				case Job_Blacksmith:	set .@skill_id, 458; break;
+				case Job_Hunter:	set .@skill_id, 460; break;
+			}
+		break;
+		}
+		if (.@skill_id) {
+			sc_start4 SC_SPIRIT,350000,5,.@skill_id,0,0;		
+			specialeffect2 503;
+			goto L_heal;
+		}
+		else{ goto L_heal; }
+
+L_heal:
+percentheal 100,100;
+end;
+}
+
+morocc,158,97,3	duplicate(Healer)	Healer#h1-2	971
+ayothaya,148,121,4	duplicate(Healer)	Healer#h1-3	971
+geffen,122,59,1	duplicate(Healer)	Healer#h1-4	971
+umbala,87,160,5	duplicate(Healer)	Healer#h1-5	971
+payon,167,233,5	duplicate(Healer)	Healer#h1-6	971
+alberta,185,144,5	duplicate(Healer)	Healer#h1-7	971
+alberta,122,59,4	duplicate(Healer)	Healer#h2-7	971
+aldebaran,133,115,5	duplicate(Healer)	Healer#h1-8	971
+izlude,125,118,5	duplicate(Healer)	Healer#h1-9	971
+xmas,148,137,5	duplicate(Healer)	Healer#h1-10	971
+comodo,209,146,4	duplicate(Healer)	Healer#h1-11	971
+amatsu,105,156,5	duplicate(Healer)	Healer#h1-12	971
+gonryun,163,122,4	duplicate(Healer)	Healer#h1-13	971
+yuno,153,174,6	duplicate(Healer)	Healer#h1-14	971
+niflheim,188,180,5	duplicate(Healer)	Healer#h1-15	971
+louyang,221,106,4	duplicate(Healer)	Healer#h1-16	971
+rachel,130,116,4	duplicate(Healer)	Healer#h1-17	971
+veins,215,126,4	duplicate(Healer)	Healer#h1-18	971
+moscovia,216,185,6	duplicate(Healer)	Healer#h1-19	971
+lighthalzen,161,94,4	duplicate(Healer)	Healer#h1-20	971
+hugel,98,149,3	duplicate(Healer)	Healer#h1-21	971
+mid_camp,223,241,4	duplicate(Healer)	Healer#h1-22	971
+splendide,196,88,4	duplicate(Healer)	Healer#h1-23	971
+manuk,279,224,4	duplicate(Healer)	Healer#h1-24	971
+brasilis,193,220,4	duplicate(Healer)	Healer#h1-25	971
+bat_room,150,150,4	duplicate(Healer)	Healer#battle	971
+dicastes01,189,191,4	duplicate(Healer)	Healer#dicaste	971
+einbech,83,101,4	duplicate(Healer)	Healer#einbech	971
+einbroch,59,199,4	duplicate(Healer)	Healer#einbroch	971
+jawaii,209,297,4	duplicate(Healer)	Healer#jawaii	971
+moc_ruins,66,156,4	duplicate(Healer)	Healer#mocruin	971
+
+//===== Guild Buffs ==========================================
+job3_rune02,46,35,4	script	Guild Buffs	936,{
+
+mes "[Guild Buffs]";
+if(getcharid(2)==0){
+	mes "I'm sorry, I can only help you, if you're in a guild.";
+close;
+}
+
+mes "Hello, I offer buffs for guilds.";
+mes "Please select the buff you want to buy for your guild.";
+mes "The buffs you bought will be permanently available for your guild.";
+next;
+	mes "[Guild Buffs]";
+	mes "Guild Leaders can remove buffs by selecting to buy them and then confirming.";
+	next;
+	switch(select("Assumptio:Magnificat:Angelus:Gloria:Impositio Manus:Spirits")){
+	
+		case 1:
+			set buff$, "Assumptio Level 5";
+			set price, 120000000;
+			set buffon$, "assu";
+						
+			L_selectassumptio:
+			while (getcharid(2) != $guildassumptio[y] && getcharid(2) != $guildassumptio2[y] && getcharid(2) != $guildassumptio3[y]){
+				set y,y+1;
+				if(y == 128) {
+					set y, 0;
+					goto L_buffselect;
+				}
+				goto L_selectassumptio;
+			}
+			if(getcharid(2) == $guildassumptio[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildassumptio2[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildassumptio3[y]){ goto L_avaible;}
+			end;
+			
+		case 2:
+			set buff$, "Magnificat Level 5";
+			set price, 100000000;
+			set buffon$, "magni";
+						
+			L_selectmagnificat:
+			while (getcharid(2) != $guildmagnificat[y] && getcharid(2) != $guildmagnificat2[y] && getcharid(2) != $guildmagnificat3[y]){
+				set y,y+1;
+				if(y == 128) {
+					set y, 0;
+					goto L_buffselect;
+				}
+				goto L_selectmagnificat;
+			}
+			if(getcharid(2) == $guildmagnificat[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildmagnificat2[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildmagnificat3[y]){ goto L_avaible;}
+			end;
+			
+		case 3:
+			set buff$, "Angelus Level 10";
+			set price, 100000000;
+			set buffon$, "angelus";
+						
+			L_selectangelus:
+			while (getcharid(2) != $guildangelus[y] && getcharid(2) != $guildangelus2[y] && getcharid(2) != $guildangelus3[y]){
+				set y,y+1;
+				if(y == 128) {
+					set y, 0;
+					goto L_buffselect;
+				}
+				goto L_selectangelus;
+			}
+			if(getcharid(2) == $guildangelus[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildangelus2[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildangelus3[y]){ goto L_avaible;}
+			end;
+			
+		case 4:
+			set buff$, "Gloria Level 5";
+			set price, 100000000;
+			set buffon$, "gloria";
+						
+			L_selectgloria:
+			while (getcharid(2) != $guildgloria[y] && getcharid(2) != $guildgloria2[y] && getcharid(2) != $guildgloria3[y]){
+				set y,y+1;
+				if(y == 128) {
+					set y, 0;
+					goto L_buffselect;
+				}
+				goto L_selectgloria;
+			}
+			if(getcharid(2) == $guildgloria[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildgloria2[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildgloria3[y]){ goto L_avaible;}
+			end;
+			
+		case 5:
+			set buff$, "Impositio Manus Level 5";
+			set price, 100000000;
+			set buffon$, "impo";
+						
+			L_selectimpositio:
+			while (getcharid(2) != $guildimpositio[y] && getcharid(2) != $guildimpositio2[y] && getcharid(2) != $guildimpositio3[y]){
+				set y,y+1;
+				if(y == 128) {
+					set y, 0;
+					goto L_buffselect;
+				}
+				goto L_selectimpositio;
+			}
+			if(getcharid(2) == $guildimpositio[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildimpositio2[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildimpositio3[y]){ goto L_avaible;}
+			end;
+			
+		case 6:
+			set buff$, "Spirits Level 4 (excluding Rebirth Spirit and Soul Linker Spirit)";
+			set price, 150000000;
+			set buffon$, "spirit";
+						
+			L_selectspirit:
+			while (getcharid(2) != $guildspirit[y] && getcharid(2) != $guildspirit2[y] && getcharid(2) != $guildspirit3[y]){
+				set y,y+1;
+				if(y == 128) {
+					set y, 0;
+					goto L_buffselect;
+				}
+				goto L_selectspirit;
+			}
+			if(getcharid(2) == $guildspirit[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildspirit2[y]){ goto L_avaible;}
+			if(getcharid(2) == $guildspirit3[y]){ goto L_avaible;}
+			end;
+	}
+L_buffselect:
+	mes "[Guild Buffs]";
+	mes "So, you want to buy " + buff$ + " for " + price + " Zeny?";
+	next;
+	switch(select("Yes, please:No, thank you")){
+		
+		case 1:
+			if(zeny<price){
+				mes "[Guild Buffs]";
+				mes "I'm sorry, you don't have enough money.";
+				close;
+			}
+			set zeny, zeny-price;
+			set x, 0;
+			
+			if (buffon$=="assu"){
+				LV_assu:
+				while (($guildassumptio[x] != "" && $guildassumptio2[x] != "" && $guildassumptio3[x] != "")){
+					set x,x+1;
+					if(x == 128) {
+						set x, 0;
+						goto L_buffselect;
+					}
+					goto LV_assu;
+				}
+				if($guildassumptio[x] == ""){set $guildassumptio[x], getcharid(2); goto L_buffbought;}
+				if($guildassumptio2[x] == ""){set $guildassumptio2[x], getcharid(2); goto L_buffbought;}
+				if($guildassumptio3[x] == ""){set $guildassumptio3[x], getcharid(2); goto L_buffbought;}				
+			}
+			
+			if (buffon$=="magni"){
+				LV_magni:
+				while (($guildmagnificat[x] != "" && $guildmagnificat2[x] != "" && $guildmagnificat3[x] != "")){
+					set x,x+1;
+					if(x == 128) {
+						set x, 0;
+						goto L_buffselect;
+					}
+					goto LV_magni;
+				}
+				if($guildmagnificat[x] == ""){set $guildmagnificat[x], getcharid(2); goto L_buffbought;}
+				if($guildmagnificat2[x] == ""){set $guildmagnificat2[x], getcharid(2); goto L_buffbought;}
+				if($guildmagnificat3[x] == ""){set $guildmagnificat3[x], getcharid(2); goto L_buffbought;}				
+			}
+
+			if (buffon$=="angelus"){
+				LV_ange:
+				while (($guildangelus[x] != "" && $guildangelus2[x] != "" && $guildangelus3[x] != "")){
+					set x,x+1;
+					if(x == 128) {
+						set x, 0;
+						goto L_buffselect;
+					}
+					goto LV_ange;
+				}
+				if($guildangelus[x] == ""){set $guildangelus[x], getcharid(2); goto L_buffbought;}
+				if($guildangelus2[x] == ""){set $guildangelus2[x], getcharid(2); goto L_buffbought;}
+				if($guildangelus3[x] == ""){set $guildangelus3[x], getcharid(2); goto L_buffbought;}
+			}
+			
+			if (buffon$=="gloria"){
+				LV_glor:
+				while (($guildgloria[x] != "" && $guildgloria2[x] != "" && $guildgloria3[x] != "")){
+					set x,x+1;
+					if(x == 128) {
+						set x, 0;
+						goto L_buffselect;
+					}
+					goto LV_glor;
+				}
+				if($guildgloria[x] == ""){set $guildgloria[x], getcharid(2); goto L_buffbought;}
+				if($guildgloria2[x] == ""){set $guildgloria2[x], getcharid(2); goto L_buffbought;}
+				if($guildgloria3[x] == ""){set $guildgloria3[x], getcharid(2); goto L_buffbought;}				
+			}
+
+			if (buffon$=="impo"){
+				LV_impo:
+				while (($guildimpositio[x] != "" && $guildimpositio2[x] != "" && $guildimpositio3[x] != "")){
+					set x,x+1;
+					if(x == 128) {
+						set x, 0;
+						goto L_buffselect;
+					}
+					goto LV_impo;
+				}
+				if($guildimpositio[x] == ""){set $guildimpositio[x], getcharid(2); goto L_buffbought;}
+				if($guildimpositio2[x] == ""){set $guildimpositio2[x], getcharid(2); goto L_buffbought;}
+				if($guildimpositio3[x] == ""){set $guildimpositio3[x], getcharid(2); goto L_buffbought;}				
+			}
+			
+			if (buffon$=="spirit"){
+				LV_spir:
+				while (($guildspirit[x] != "" && $guildspirit2[x] != "" && $guildspirit3[x] != "")){
+					set x,x+1;
+					if(x == 128) {
+						set x, 0;
+						goto L_buffselect;						
+					}
+					goto LV_spir;
+				}
+				if($guildspirit[x] == ""){set $guildspirit[x], getcharid(2); goto L_buffbought;}
+				if($guildspirit2[x] == ""){set $guildspirit2[x], getcharid(2); goto L_buffbought;}
+				if($guildspirit3[x] == ""){set $guildspirit3[x], getcharid(2); goto L_buffbought;}				
+			}
+		
+		case 2:
+			mes "[Guild Buffs]";
+			mes "See you next time.";
+			close;
+		}
+	L_buffbought:
+		mes "[Guild Buffs]";
+		mes "Transaction complete, the buff is now available for your guild.";
+		close;
+	
+L_avaible:
+	mes "[Guild Buffs]";
+	mes "You already bought " + buff$ + ".";
+	mes "You cannot buy it again.";
+	mes "Goodbye.";
+	close;
+}

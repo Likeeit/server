@@ -1,0 +1,102 @@
+job3_rune02,31,34,5	script	Feel Resetter	843,{
+
+
+if(BaseJob == Job_Star_Gladiator) {
+	mes "[Feel Resetter]";
+	mes "Hello, would you like to reset your Feeling maps or your Hatred targets?";
+	mes "My service costs 500.000 Zeny.";
+	next;
+	switch(select("Reset Feeling","Reset Hatred","Cancel")) {
+
+	case 1:
+	mes "[Feel Resetter]";
+	mes "Are you sure, you want to reset your Feeling maps?";
+	next;
+	switch(select("Yes","Nah")) {
+
+	case 1:
+	if (Zeny < 500000) {
+	mes "[Feel Resetter]";
+	mes "Sorry, you don't have enough Zeny on you.";
+	close;
+	end;
+		} else {
+		mes "[Feel Resetter]";
+		mes "Thank you. The deed has been done. You have to relog for the action to take effect.";
+		set Zeny, Zeny - 500000;
+		atcommand "@feelreset";
+		close;
+		end;
+		}
+
+	case 2:
+	mes "[Feel Resetter]";
+	mes "Let me know if you change your decision. I'll be right here!";
+	close;
+	}
+
+	case 2:
+	mes "[Feel Resetter]";
+	mes "Which target do you want to reset?";
+	next;
+	switch(select("Sun","Moon","Stars","Cancel")) {
+
+	case 1:
+	if (Zeny < 500000) {
+	mes "[Feel Resetter]";
+	mes "Sorry, you don't have enough Zeny on you.";		
+	close;
+	end;
+		} else {
+		mes "[Feel Resetter]";
+		mes "Thank you. The deed has been done. You have to relog for the action to take effect.";
+		set Zeny, Zeny - 500000;
+		set PC_HATE_MOB_SUN,0;
+		close;
+		end;
+		}
+
+	case 2:
+	if (Zeny < 500000) {
+	mes "[Feel Resetter]";
+	mes "Sorry, you don't have enough Zeny on you.";	
+	close;
+	end;
+		} else {
+		mes "[Feel Resetter]";
+		mes "Thank you. The deed has been done. You have to relog for the action to take effect.";
+		set Zeny, Zeny - 500000;
+		set PC_HATE_MOB_MOON,0;
+		close;
+		end;
+		}
+
+	case 3:
+	if (Zeny < 500000) {
+	mes "[Feel Resetter]";
+	mes "Sorry, you don't have enough Zeny on you.";	
+	close;
+	end;
+		} else {
+		mes "[Feel Resetter]";
+		mes "Thank you. The deed has been done. You have to relog for the action to take effect.";
+		set Zeny, Zeny - 500000;
+		set PC_HATE_MOB_STAR,0;
+		close;
+		end;
+		}
+
+	case 4:
+	mes "[Feel Resetter]";
+	mes "Maybe next time, eh?";
+	close;
+	}
+	}		
+
+} else {
+
+	mes "[Feel Resetter]";
+	mes "Sorry, I can only help Star Gladiators.";
+	close;
+}
+}

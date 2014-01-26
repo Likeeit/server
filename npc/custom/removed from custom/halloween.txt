@@ -1,0 +1,251 @@
+// --- Raziel----for halloween---
+//
+//-	script	halloweenghostevent	-1,{
+//
+//OnMinute59:
+//	announce "Prontera is under attack by strange monsters from Halloween Town...!",0;
+//	sleep2 5000;
+//	monster "prontera.gat",0,0,"Halloween Spirit",1812,25;
+//	end;
+//
+//}
+//
+prontera,161,185,3	script	Pumpkin Jakk	1130,{
+
+mes "[Pumpkin Jakk]";
+mes "Greetings, Adventurer.";
+mes "How are preparations for this Halloween going?";
+next;
+menu "Omg Halloween!",-,"You creep me out...",l_exit;
+		mes "[Pumpkin Jakk]";
+		mes "I can tell you are all excited.";
+		mes "I'm a traveller from Halloween Town...";
+		mes "And I decided to help out with halloween preparations.";
+		mes "I got some halloween goodies you might be intrested in.";
+			next;
+			mes "[Pumpkin Jakk]";
+			mes "Pick your treat ...";
+			menu "Brown Paperbag Hat",paper,"Crow Hat",crow,"Drooping Morocc Minion",morocc,"Duneyrr Helm",duneyrr,"Executioner Hood",hood,"Midas Whispers",midas,"Pumpkin Head",pumpkin,"Whisper Mask",whisper,"No sorry, I don't like halloween.",l_exit;
+
+duneyrr:
+mes "[Pumpkin Jakk]";
+mes "Bring me....";
+mes "30 halloween Tickets, and";
+mes "150 Pumpkin Mojo.";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "What do you say?";
+	next;
+		menu "Sure thing!",duneyrra,"no way!!",l_exit;
+
+duneyrra:
+if(countitem(7941)<30) goto l_noitem;
+if(countitem(7609)<150) goto l_noitem;
+
+delitem 7941,30;
+delitem 7609,150;
+mes "[Pumpkin Jakk]";
+mes "Okay...";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "Have a spooky Halloween...!";
+	getitem 5762,1;
+	close;
+
+
+midas:
+mes "[Pumpkin Jakk]";
+mes "Bring me....";
+mes "20 halloween Tickets, and";
+mes "120 Pumpkin Mojo.";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "What do you say?";
+	next;
+		menu "Sure thing!",midasa,"no way!!",l_exit;
+
+midasa:
+if(countitem(7941)<20) goto l_noitem;
+if(countitem(7609)<120) goto l_noitem;
+
+delitem 7941,20;
+delitem 7609,120;
+mes "[Pumpkin Jakk]";
+mes "Okay...";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "Have a spooky Halloween...!";
+	getitem 5752,1;
+	close;
+
+
+crow:
+mes "[Pumpkin Jakk]";
+mes "Bring me....";
+mes "25 halloween Tickets, and";
+mes "100 Pumpkin Mojo.";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "What do you say?";
+	next;
+		menu "Sure thing!",crowa,"no way!!",l_exit;
+
+crowa:
+if(countitem(7941)<25) goto l_noitem;
+if(countitem(7609)<100) goto l_noitem;
+
+delitem 7941,25;
+delitem 7609,100;
+mes "[Pumpkin Jakk]";
+mes "Okay...";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "Have a spooky Halloween...!";
+	getitem 5530,1;
+	close;
+
+
+
+whisper:
+mes "[Pumpkin Jakk]";
+mes "Bring me....";
+mes "20 halloween Tickets, and";
+mes "120 Pumpkin Mojo.";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "What do you say?";
+	next;
+		menu "Sure thing!",whispera,"no way!!",l_exit;
+
+whispera:
+if(countitem(7941)<20) goto l_noitem;
+if(countitem(7609)<120) goto l_noitem;
+
+delitem 7941,20;
+delitem 7609,120;
+mes "[Pumpkin Jakk]";
+mes "Okay...";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "Have a spooky Halloween...!";
+	getitem 5294,1;
+	close;
+
+
+pumpkin:
+mes "[Pumpkin Jakk]";
+mes "Bring me....";
+mes "20 halloween Tickets, and";
+mes "90 Pumpkin Mojo.";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "What do you say?";
+	next;
+		menu "Sure thing!",pumpkina,"no way!!",l_exit;
+
+pumpkina:
+if(countitem(7941)<20) goto l_noitem;
+if(countitem(7609)<90) goto l_noitem;
+
+delitem 7941,20;
+delitem 7609,90;
+mes "[Pumpkin Jakk]";
+mes "Okay...";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "Have a spooky Halloween...!";
+	getitem 5134,1;
+	close;
+
+
+hood:
+mes "[Pumpkin Jakk]";
+mes "Bring me....";
+mes "30 halloween Tickets, and";
+mes "120 Pumpkin Mojo.";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "What do you say?";
+	next;
+		menu "Sure thing!",hooda,"no way!!",l_exit;
+
+hooda:
+if(countitem(7941)<30) goto l_noitem;
+if(countitem(7609)<120) goto l_noitem;
+
+delitem 7941,30;
+delitem 7609,120;
+mes "[Pumpkin Jakk]";
+mes "Okay...";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "Have a spooky Halloween...!";
+	getitem 5304,1;
+	close;
+
+		
+morocc:
+mes "[Pumpkin Jakk]";
+mes "Bring me....";
+mes "20 halloween Tickets, and";
+mes "75 Pumpkin Mojo.";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "What do you say?";
+	next;
+		menu "Sure thing!",morocca,"no way!!",l_exit;
+
+morocca:
+if(countitem(7941)<20) goto l_noitem;
+if(countitem(7609)<75) goto l_noitem;
+
+delitem 7941,20;
+delitem 7609,75;
+mes "[Pumpkin Jakk]";
+mes "Okay...";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "Have a spooky Halloween...!";
+	getitem 5671,1;
+	close;
+
+
+paper:
+mes "[Pumpkin Jakk]";
+mes "Bring me....";
+mes "20 halloween Tickets, and";
+mes "100 Pumpkin Mojo.";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "What do you say?";
+	next;
+		menu "Sure thing!",papera,"no way!!",l_exit;
+
+papera:	
+if(countitem(7941)<20) goto l_noitem;
+if(countitem(7609)<100) goto l_noitem;
+
+delitem 7941,20;
+delitem 7609,100;
+mes "[Pumpkin Jakk]";
+mes "Okay...";
+next;
+	mes "[Pumpkin Jakk]";
+	mes "Have a spooky Halloween...!";
+	getitem 5410,1;
+	close;
+
+
+
+l_noitem:
+mes "[Pumpkin Jakk]";
+mes "You need the special halloween items...";
+close;
+
+l_exit:
+mes "[Pumpkin Jakk]";
+mes "Hope you get spooked the crap out...";
+close;
+
+
+}

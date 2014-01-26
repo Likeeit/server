@@ -1,0 +1,760 @@
+// Main Script
+
+-	script	Agit_Event	-1,{
+	end;
+
+	OnInit:
+	initnpctimer;	 
+	end;
+
+	OnTimer30000:
+
+	// First check if WoE should end
+	if (agitcheck() && gettime(3) == $@woe_end_hr && gettime(2) == $@woe_end_mn) {
+		AgitEnd;
+		announce "- The War of Emperium is over! - ", bc_all|bc_woe;
+		donpcevent "WoE Info Board#main::OnGenerateCountdown";
+		for (set .@i, 0; .@i < 29; set .@i, .@i + 1) {
+			donpcevent "WoE Info Board#"+(.@i+1)+"::OnGenerateCountdown";		
+		}
+		set $@woe_end_hr, 0;
+		set $@woe_end_mn, 0;
+	}
+
+	if (!agitcheck()) {
+		for (set .@i, 0; .@i < 5; set .@i, .@i + 1) {
+			set .@woe_session$, "$WOE_SESSION"+(.@i+1);
+			if (getarraysize(getd(.@woe_session$)) >= 5) { // 5 elements of data is required for a valid WoE session.
+				// check if it's time for WoE
+				if (gettime(4) == (getd(.@woe_session$+"[5]")-1) && gettime(3) == (getd(.@woe_session$+"[6]")-1) && gettime(2) == (getd(.@woe_session$+"[7]")-1)) { // start WoE
+					donpcevent "WoE Info Board#main::OnRefresh";
+					AgitStart .@i+1;
+					set $@woe_end_hr, gettime(3) + (getd(.@woe_session$+"[8]")/60);
+					set $@woe_end_mn, gettime(2) + getd(.@woe_session$+"[8]")-(($@woe_end_hr-gettime(3))*60);
+					if ($@woe_end_mn > 59) {
+						set $@woe_end_hr, $@woe_end_hr + 1;
+						set $@woe_end_mn, $@woe_end_mn - 60;
+					}
+					if ($@woe_end_hr > 23) {
+						set $@woe_end_hr, $@woe_end_hr - 24;
+					}
+					set $@woe_session, .@i+1;
+					announce "- The War of Emperium has begun! - ", bc_all|bc_woe;
+					for (set .@y, 0; .@y < 5; set .@y, .@y + 1) {
+						if (getd(.@woe_session$+"["+.@y+"]")) {
+							announce getcastlename(getvariableofnpc(.Castles$[getd(.@woe_session$+"["+.@y+"]")], "WoE Info Board#main"))+" castle is open for siege", bc_all|bc_woe;
+						}
+					}
+					donpcevent "WoE Info Board#main::OnStopCountdown";
+					for (set .@t, 0; .@t < 29; set .@t, .@t + 1) {
+						donpcevent "WoE Info Board#"+(.@t+1)+"::OnStopCountdown";		
+					}
+					break;
+				}
+			}
+		}
+	}
+	setnpctimer 0;
+	startnpctimer;
+	end;
+
+	OnWhisperGlobal:
+	announce $@woe_end_hr, bc_all;
+	announce $@woe_end_hr, bc_all;
+	end;
+}
+
+
+prontera,154,196,3	script	WoE Info Board#main	837,{
+	function getnextwoe;
+	if( .Ready != 1 ) donpcevent "WoE Info Board::OnInit";
+
+	set .@name$, "[^FFA500 WoE Info Board ^000000]";
+	mes "[^FFA500 WoE Info Board ^000000]";
+
+	set .@nextwoe, getnextwoe();
+	if (!.@nextwoe) {
+		mes "WoE has not been configured yet.";
+	}
+	else {
+		switch(getd("$WOE_SESSION"+.@nextwoe+"[5]")) {
+			case 1:
+				set .@day$, "Sunday";
+				break;
+			case 2:
+				set .@day$, "Monday";
+				break;
+			case 3:
+				set .@day$, "Tuesday";
+				break;
+			case 4:
+				set .@day$, "Wednesday";
+				break;
+			case 5:
+				set .@day$, "Thursday";
+				break;
+			case 6:
+				set .@day$, "Friday";
+				break;
+			case 7:
+				set .@day$, "Saturday";
+				break;
+			default:
+				set .@day$, "None";
+				break;				
+		}
+		set .@hour, getd("$WOE_SESSION"+.@nextwoe+"[6]")-1;
+		set .@minute, getd("$WOE_SESSION"+.@nextwoe+"[7]")-1;
+		set .@duration, getd("$WOE_SESSION"+.@nextwoe+"[8]");
+		set .@end_hour, .@hour + (.@duration/60);
+		set .@end_minute, .@minute + (.@duration - ((.@duration/60)*60));
+		if (.@end_minute > 59) {
+			set .@end_hour, .@end_hour + 1;
+			set .@end_minute, .@end_minute-60;
+		}
+		if (.@end_hour > 23)
+			set .@end_hour, .@end_hour - 24;
+		mes "Next WoE will be on "+.@day$;
+		mes "from "+((.@hour < 10)? "0"+.@hour : .@hour)+":"+((.@minute < 10)? "0"+.@minute : .@minute)+" - "+((.@end_hour < 10)? "0"+.@end_hour : .@end_hour)+":"+((.@end_minute < 10)? "0"+.@end_minute : .@end_minute);
+		mes "The following castles will be open for siege:";
+		for (set .@i, 0; .@i < 5; set .@i, .@i + 1) {
+			if (getd("$WOE_SESSION"+.@nextwoe+"["+.@i+"]"))
+				mes .Castles$[getd("$WOE_SESSION"+.@nextwoe+"["+.@i+"]")];
+		}
+		switch(select("Warp to Castle Grounds:Display WoE Schedule")) {
+			case 1:
+				menu "Last Warp",lastwarp,"Prontera",Pro1,"Payon",Pro2,"Geffen",Pro3,"Aldebaran",Pro4,"Arunafeltz",Pro5,"Schwarzwald",Pro6;
+
+					lastwarp:
+					if(lastwarp$=="") { next; mes .@name$; mes "You have not warped anywhere yet!";	close; }
+					warp lastwarp$,lastx,lasty;
+					end;
+
+					Pro1:
+					setarray .@x[0], 134, 240, 153, 112, 203;
+					setarray .@y[0], 65, 128, 137, 240, 239;
+					set .@select, select("Kriemhild:Swanhild:Fadhgridh:Skoegul:Gondul");
+					set lastwarp$,"prt_gld";
+					set lastx, .@x[.@select-1];
+					set lasty, .@y[.@select-1];
+					warp "prt_gld",lastx,lasty;
+					end;
+
+					Pro2:
+					setarray .@x[0], 297, 320, 204, 121, 140;
+					setarray .@y[0], 117, 294, 267, 234, 161;
+					set .@select, select("Scarlet Palace:Holy Shadow:Bamboo Grove Hill:Bright Arbor:Sacred Altar");
+					set lastwarp$,"pay_gld";
+					set lastx, .@x[.@select-1];
+					set lasty, .@y[.@select-1];
+					warp "pay_gld",lastx,lasty;
+					end;
+
+					Pro3:
+					setarray .@x[0], 153, 308, 192, 308, 75;
+					setarray .@y[0], 50, 87, 277, 240, 289;
+					set .@select, select("Repherion:Mersetzdeitz:Bergel:Eeyolbriggar:Yesnelph");
+					set lastwarp$,"gef_fild13";
+					set lastx, .@x[.@select-1];
+					set lasty, .@y[.@select-1];
+					warp "gef_fild13",lastx,lasty;
+					end;
+
+					Pro4:
+					setarray .@x[0], 48, 95, 142, 239, 264;
+					setarray .@y[0], 86, 249, 85, 242, 90;
+					set .@select, select("Neuschwanstein:Hohenshwangau:Neunberg:Wuerzburg:Rothenburg");
+					set lastwarp$,"alde_gld";
+					set lastx, .@x[.@select-1];
+					set lasty, .@y[.@select-1];
+					warp "alde_gld",lastx,lasty;
+					end;
+
+					Pro5:
+					setarray .@x[0], 289, 67, 82, 291, 158;
+					setarray .@y[0], 344, 153, 46, 108, 270;
+					set .@select, select("Gefn:Horn:Cyr:Banadis:Mardol");
+					set lastwarp$,"aru_gld";
+					set lastx, .@x[.@select-1];
+					set lasty, .@y[.@select-1];
+					warp "aru_gld",lastx,lasty;
+					end;
+
+					Pro6:
+					setarray .@x[0], 287, 293, 137, 98, 69;
+					setarray .@y[0], 254, 94, 93, 191, 316;
+					set .@select, select("Andlangr:Himinn:Hijod:Vidblainn:Skidbladnir");
+					set lastwarp$,"sch_gld";
+					set lastx, .@x[.@select-1];
+					set lasty, .@y[.@select-1];
+					warp "sch_gld",lastx,lasty;
+					end;
+
+				break;
+			
+			case 2:
+				for (set .@i, 0; .@i < 5; set .@i, .@i + 1) {
+					if (callsub(S_CheckSession, .@i+1)) {
+						switch(getd("$WOE_SESSION"+(.@i+1)+"[5]")) {
+							case 1:
+								set .@day$, "Sunday";
+								break;
+							case 2:
+								set .@day$, "Monday";
+								break;
+							case 3:
+								set .@day$, "Tuesday";
+								break;
+							case 4:
+								set .@day$, "Wednesday";
+								break;
+							case 5:
+								set .@day$, "Thursday";
+								break;
+							case 6:
+								set .@day$, "Friday";
+								break;
+							case 7:
+								set .@day$, "Saturday";
+								break;
+							default:
+								set .@day$, "None";
+								break;				
+						}
+						set .@hour, getd("$WOE_SESSION"+(.@i+1)+"[6]")-1;
+						set .@minute, getd("$WOE_SESSION"+(.@i+1)+"[7]")-1;
+						set .@duration, getd("$WOE_SESSION"+(.@i+1)+"[8]");
+						set .@end_hour, .@hour + (.@duration/60);
+						set .@end_minute, .@minute + (.@duration - ((.@duration/60)*60));
+						if (.@end_minute > 59) {
+							set .@end_hour, .@end_hour + 1;
+							set .@end_minute, .@end_minute-60;
+						}
+						set .@cas_str$, "";
+						for (set .@d, 0; .@d < 5; set .@d, .@d + 1) {
+							if (getd("$WOE_SESSION"+(.@i+1)+"["+.@d+"]")) {
+								if (.@cas_str$ == "")
+									set .@cas_str$, .Castles$[getd("$WOE_SESSION"+(.@i+1)+"["+.@d+"]")];
+								else
+									set .@cas_str$, .@cas_str$+", "+.Castles$[getd("$WOE_SESSION"+(.@i+1)+"["+.@d+"]")];
+							}
+						}
+						dispbottom "---------------------------------------";
+						dispbottom "Day: "+.@day$;
+						dispbottom "Time: "+((.@hour < 10)? "0"+.@hour : .@hour)+":"+((.@minute < 10)? "0"+.@minute : .@minute)+" - "+((.@end_hour < 10)? "0"+.@end_hour : .@end_hour)+":"+((.@end_minute < 10)? "0"+.@end_minute : .@end_minute);
+						dispbottom "Castles: "+.@cas_str$;
+						
+					}		
+				}
+				break;
+
+			default:
+				break;
+		}
+	}
+	
+	close;
+
+OnInit:
+	if (strnpcinfo(0) == "WoE Info Board#main")
+		bindatcmd("managewoe", strnpcinfo(0)+"::OnManage");
+	setarray .Castles$[1], // This array holds all WoE First Edition Castles, starting from index 1
+		"prtg_cas01",	// 1
+		"payg_cas01",	// 2
+		"gefg_cas01",	// 3
+		"aldeg_cas01",	// 4
+		"prtg_cas03",	// 5
+		"payg_cas03",	// 6
+		"gefg_cas03",	// 7
+		"aldeg_cas03",	// 8
+		"prtg_cas05",	// 9
+		"payg_cas05",	// 10
+		"gefg_cas05",	// 11
+		"aldeg_cas05",	// 12
+		"prtg_cas02",	// 13
+		"payg_cas02",	// 14
+		"gefg_cas02",	// 15
+		"aldeg_cas02",	// 16
+		"prtg_cas04",	// 17
+		"payg_cas04",	// 18
+		"gefg_cas04",	// 19
+		"aldeg_cas04",	// 20
+		"nguild_alde",	// 21
+		"nguild_gef",	// 22
+		"nguild_pay",	// 23
+		"nguild_prt",	// 24
+		"schg_cas01",	// 25
+		"schg_cas02",	// 26
+		"schg_cas03",	// 27
+		"arug_cas01",	// 28
+		"arug_cas02",	// 29
+		"arug_cas03",	// 30
+		"arug_cas04"; // 31
+	setarray .Castles_SE_Event$[1], // This array include the Events inside each castle of WoE Second Edition (need to be one on one with the SE Castle Array)
+		"::OnRecvCastleSc01",
+		"::OnRecvCastleSc02",
+		"::OnRecvCastleSc03",
+		"::OnRecvCastleAr01",
+		"::OnRecvCastleAr02",
+		"::OnRecvCastleAr03";
+
+	// First Time Rotation Setting - CONFIGURATION PART:
+	// =======================================================================
+	// This arrays holds the current Opened Castles for each kind of WoE.
+	// Obviously, FE, SE and AE points to First Edition, Second Edition and
+	// Ancient Edition, just like the Castle Array.
+	//
+	// The next arrays, starting from Index 0, holds the INDEX of the previous
+	// castle arrays. In the example, for FE:
+	// 1 = prtg_cas01
+	// 13 = prtg_cas02
+	//
+	// If this is the first time you are going to use this script, find the index
+	// of your current Castles (your server) in the Castle Arrays, and set the
+	// list in the next arrays. If your server is currently playing on payg_cas03,
+	// aldeg_cas05 and prtg_cas04, the FE array should say: 6,12,17
+	// Same for SE, and uncomment the AE if you use Ancient Edition.
+	//
+	// The Main unique rule on this script is: Do not use consecutive castles in
+	// the castle array.
+	// Just add more index if you use more castles, there is no problem.
+	// If you are going to reduce castle amount, well, it will require DB edit
+	// not only on guild_castle, also on mapreg, edition the Castle_FE or SE or AE
+	// values, or using a script to edit it, because, this setting only run first
+	// time.
+
+	//if( getarraysize($Castles_FE) == 0 ) setarray $Castles_FE[0],1,14;
+	//if( getarraysize($Castles_SE) == 0 ) setarray $Castles_SE[0],1,2,7;
+	// if( getarraysize($Castles_AE) == 0 ) setarray $Castles_AE[0],1;
+
+	// Reset Castle index:
+	// This is required if you are planing to reduce/increase opened castles
+	// Uncomment to remove current index, but you will need to recalculate
+	// and configure again the Onwer Indexs (previous arrays).
+
+	// cleararray $Castles_FE[0],0,getarraysize($Castles_FE);
+	// cleararray $Castles_SE[0],0,getarraysize($Castles_SE);
+	// cleararray $Castles_AE[0],0,getarraysize($Castles_AE);
+	
+	// =======================================================================
+
+	if (strnpcinfo(0) == "WoE Info Board#main")
+		callsub S_Refresh;
+
+	set .Ready, 1;
+	initnpctimer;
+	donpcevent strnpcinfo(0)+"::OnGenerateCountdown";
+	end;
+
+OnGenerateCountdown:
+OnTimer60000:
+	set .@curr_day, gettime(4)+1;
+	set .@curr_hr, gettime(3)+1;
+	set .@curr_mn, gettime(2)+1;
+
+	// get start time of each woe session as total minutes after beginning of week
+	set .@minutes_total, (.@curr_day*24*60)+(.@curr_hr*60)+.@curr_mn;
+	for (set .@i, 0; .@i < 5; set .@i, .@i + 1) {
+		set .@woe_session$, "$WOE_SESSION"+(.@i+1);
+		if (getarraysize(getd(.@woe_session$)) >= 5) { // valid woe session
+			set .@minutes[.@i], (getd(.@woe_session$+"[5]")*24*60)+(getd(.@woe_session$+"[6]")*60)+getd(.@woe_session$+"[7]");
+			if (.@minutes[.@i] > .@minutes_total)
+				set .@c, .@c + 1;
+		}
+	}
+	if (!getarraysize(.@minutes)) {
+		delwaitingroom strnpcinfo(0);
+		setnpctimer 0;
+		startnpctimer;
+		end;
+	}
+	for (set .@i, 0; .@i < 5; set .@i, .@i + 1) {
+		if (!.@minutes[.@i])
+			continue;
+		if (.@c) {
+			if (.@minutes[.@i] < .@minutes_total)
+				continue;
+			if (.@last_diff) {
+				if (.@last_diff > .@minutes[.@i])
+					set .@last_diff, .@minutes[.@i];
+			}
+			else
+				set .@last_diff, .@minutes[.@i];
+		}
+		else {
+			if (.@last_diff) {
+				if (.@last_diff > .@minutes[.@i])
+					set .@last_diff, .@minutes[.@i];
+			}
+			else
+				set .@last_diff, .@minutes[.@i];
+		}
+	}
+	if (.@last_diff > .@minutes_total) {
+		set .@d, (.@last_diff-.@minutes_total)/(24*60);
+		set .@hr, ((.@last_diff-.@minutes_total)-(.@d*24*60))/60;
+		set .@mn, (.@last_diff-.@minutes_total)-(.@d*24*60)-(.@hr*60);
+		delwaitingroom strnpcinfo(0);
+		waitingroom "WoE in 0"+.@d+"d:"+((.@hr < 10)? "0"+.@hr : .@hr)+"h:"+((.@mn < 10)? "0"+.@mn : .@mn)+"m", 0;
+	}
+	else {
+		set .@d, (((7*24*60)-.@minutes_total)+.@last_diff)/(24*60);
+		set .@hr, ((((7*24*60)-.@minutes_total)+.@last_diff)-(.@d*24*60))/60;
+		set .@mn, (((7*24*60)-.@minutes_total)+.@last_diff)-(.@d*24*60)-(.@hr*60);
+		delwaitingroom strnpcinfo(0);
+		waitingroom "WoE in 0"+.@d+"d:"+((.@hr < 10)? "0"+.@hr : .@hr)+"h:"+((.@mn < 10)? "0"+.@mn : .@mn)+"m", 0;
+	}
+	setnpctimer 0;
+	startnpctimer;
+	end;
+
+OnManage:
+	if (getgmlevel() < 60) end;
+	if (agitcheck()) {
+		message strcharinfo(0), "Cannot be accessed during WoE!";
+		end;
+	}
+	set .@name$, "[WoE Management]";
+	mes .@name$;
+	mes "Select the WoE session you wish to configure.";
+	mes "^FF0000Red^000000 indicates unconfigured WoE session and ^00FF00green^000000 indicates already configured WoE session.";
+	for (set .@i, 0; .@i < 5; set .@i, .@i + 1) {
+		if (!.@i) {
+			set .@menu$, ((getarraysize(getd("$WOE_SESSION"+(.@i+1))) >= 5)? "^00FF00WoE Session "+(.@i+1):"^FF0000WoE Session "+(.@i+1))+"^000000";
+		}
+		else {
+			set .@menu$, .@menu$+":"+((getarraysize(getd("$WOE_SESSION"+(.@i+1))) >= 5)? "^00FF00WoE Session "+(.@i+1):"^FF0000WoE Session "+(.@i+1))+"^000000";
+		}
+	}
+	set .@chosen, select(.@menu$);
+	next;
+	L_Config:
+	mes .@name$;
+	mes "Please configure this WoE session "+.@chosen+" accordingly.";
+	set .@menu$, "";
+	set .@castle_menu$, "";
+	for (set .@i, 0; .@i < 11; set .@i, .@i + 1) {
+		if (!.@i) {
+			set .@menu$, "Castle 1 - "+((getd("$WOE_SESSION"+.@chosen+"["+.@i+"]"))? .Castles$[getd("$WOE_SESSION"+.@chosen+"["+.@i+"]")] : "None");
+		}
+		else if (.@i < 5) {
+			set .@menu$, .@menu$+":"+"Castle "+(.@i+1)+" - "+((getd("$WOE_SESSION"+.@chosen+"["+.@i+"]"))? .Castles$[getd("$WOE_SESSION"+.@chosen+"["+.@i+"]")] : "None");
+		}
+		else if (.@i == 5) {
+			switch(getd("$WOE_SESSION"+.@chosen+"["+.@i+"]")) {
+				case 1:
+					set .@day$, "Sunday";
+					break;
+				case 2:
+					set .@day$, "Monday";
+					break;
+				case 3:
+					set .@day$, "Tuesday";
+					break;
+				case 4:
+					set .@day$, "Wednesday";
+					break;
+				case 5:
+					set .@day$, "Thursday";
+					break;
+				case 6:
+					set .@day$, "Friday";
+					break;
+				case 7:
+					set .@day$, "Saturday";
+					break;
+				default:
+					set .@day$, "None";
+					break;				
+			}
+			set .@menu$, .@menu$+":"+"Start Day - "+.@day$;
+		}
+		else if (.@i == 6) {
+			set .@menu$, .@menu$+":"+"Start Hour - "+(getd("$WOE_SESSION"+.@chosen+"["+.@i+"]")? (getd("$WOE_SESSION"+.@chosen+"["+.@i+"]")-1) : "None");
+		}
+		else if (.@i == 7) {
+			set .@menu$, .@menu$+":"+"Start Minute - "+(getd("$WOE_SESSION"+.@chosen+"["+.@i+"]")? (getd("$WOE_SESSION"+.@chosen+"["+.@i+"]")-1) : "None");
+		}
+		else if (.@i == 8) {
+			set .@menu$, .@menu$+":"+"Duration - "+(getd("$WOE_SESSION"+.@chosen+"["+.@i+"]")? getd("$WOE_SESSION"+.@chosen+"["+.@i+"]") : "None");
+		}
+		else if (.@i == 9) {
+			set .@menu$, .@menu$+":"+"Clear WoE Session";
+		}
+		else if (.@i == 10) {
+			set .@menu$, .@menu$+":"+"Back";
+		}
+	}
+	set .@chosen2, select(.@menu$);
+	next;
+	mes .@name$;
+	switch(.@chosen2) {
+		case 1:
+		case 2:
+		case 3:
+		case 4:
+		case 5:
+			mes "Please select a castle from the list:";
+			deletearray .@castle_index[0], getarraysize(.@castle_index);
+			set .@m, 0;
+			if (getd("$WOE_SESSION"+.@chosen+"["+(.@chosen2-1)+"]")) {
+				set .@castle_menu$, "Remove Castle";
+				set .@m, 1;
+			}
+			for (set .@i, 1; .@i < (getarraysize(.Castles$)+1); set .@i, .@i + 1) {
+				for (set .@a, 0; .@a < 5; set .@a, .@a + 1) {
+					if (getd("$WOE_SESSION"+(.@a+1)+"[0]") == .@i ||
+					getd("$WOE_SESSION"+(.@a+1)+"[1]") == .@i ||
+					getd("$WOE_SESSION"+(.@a+1)+"[2]") == .@i ||
+					getd("$WOE_SESSION"+(.@a+1)+"[3]") == .@i ||
+					getd("$WOE_SESSION"+(.@a+1)+"[4]") == .@i)
+						break;
+					else if (.@a == 4) {
+						set .@castle_menu$, (.@castle_menu$ == "")? .Castles$[.@i] : (.@castle_menu$+":"+.Castles$[.@i]);
+						set .@castle_index[.@m], .@i;
+						set .@m, .@m + 1;
+					}
+				}
+			}
+			set .@chosen_castle, select(.@castle_menu$);
+			next;
+			if (.@chosen_castle == 1 && .@m >= getarraysize(.@castle_index)) { // elected to remove castle
+				setd "$WOE_SESSION"+.@chosen+"["+(.@chosen2-1)+"]", .@castle_index[(.@chosen_castle-1)];
+				callsub S_Refresh;
+				break;	
+			} 
+			if (getd("$WOE_SESSION"+.@chosen+"["+(.@chosen2-1)+"]") && getcastledata(.Castles$[getd("$WOE_SESSION"+.@chosen+"["+(.@chosen2-1)+"]")], 1) && !getcastledata(.Castles$[.@castle_index[(.@chosen_castle-1)]], 1)) {
+				mes "This castle is currently owned by a guild and the new castle is unoccupied.";
+				mes "Do you wish to transfer castle ownership from this castle to the new castle?";
+				if (select("Yes:No") == 1) {
+					// transfer castle ownership
+					callsub S_RotateCastle, getd("$WOE_SESSION"+.@chosen+"["+(.@chosen2-1)+"]"), .@castle_index[(.@chosen_castle-1)];
+				}
+				next;
+			}
+			setd "$WOE_SESSION"+.@chosen+"["+(.@chosen2-1)+"]", .@castle_index[(.@chosen_castle-1)];
+			break;
+		case 6:
+			mes "Please choose select the start day.";
+			set .@start_day, select("Monday:Tuesday:Wednesday:Thursday:Friday:Saturday:Sunday")+1;
+			if (.@start_day > 7)
+				set .@start_day, .@start_day - 7;
+			next;
+			setd "$WOE_SESSION"+.@chosen+"["+(.@chosen2-1)+"]", .@start_day;
+			break;
+		case 7:
+			mes "Input start hour (0-23)";
+			input(.@start_hr, 0, 23);
+			next;
+			setd "$WOE_SESSION"+.@chosen+"["+(.@chosen2-1)+"]", .@start_hr+1;
+			break;
+		case 8:
+			mes "Input start minute (0-59)";
+			input(.@start_mn, 0, 59);
+			next;
+			setd "$WOE_SESSION"+.@chosen+"["+(.@chosen2-1)+"]", .@start_mn+1;
+			break;
+		case 9:
+			mes "Input duration (60-180 minutes)";
+			input(.@duration, 60, 180);
+			next;
+			setd "$WOE_SESSION"+.@chosen+"["+(.@chosen2-1)+"]", .@duration;
+			break;
+		case 10:
+			deletearray getd("$WOE_SESSION"+.@chosen+"[0]"), getarraysize(getd("$WOE_SESSION"+.@chosen));
+			break;
+		case 11:
+			doevent strnpcinfo(0)+"::OnManage";
+			close;
+	}
+	goto L_Config;
+	close;
+
+OnStopCountdown:
+	stopnpctimer;
+	while ($@woe_end_hr || $@woe_end_mn || agitcheck()) {
+		delwaitingroom strnpcinfo(0);
+		set .@hr, $@woe_end_hr-gettime(3);
+		if (.@hr < 0)
+			set .@hr, .@hr + 24;
+		set .@mn, $@woe_end_mn-gettime(2);
+		if (.@mn < 0) {
+			set .@hr, .@hr - 1;
+			set .@mn, .@mn + 60;
+		}
+		waitingroom "WoE ends in "+((.@hr < 10)? "0"+.@hr : .@hr)+"h:"+((.@mn < 10)? "0"+.@mn : .@mn)+"m", 0;
+		sleep 60000;
+	}
+	end;
+
+OnRefresh:
+	callsub S_Refresh;
+	end;
+	
+
+OnWhisperGlobal:
+// If you whisp to NPC:WoE Info Board the word rotate, a rotation will be made. It can be used to test the system.
+	if( getgmlevel() < 60 )
+		end;
+	if( @whispervar0$ != "rotate" )
+		end;
+
+	if( .Ready != 1 ) donpcevent "WoE Info Board::OnInit";
+
+	//rankreset 0; // WoE Ranking Restart - Comment this if you don't want to reset WoE Ranking each week. You can use @rankreset 1 to reset it manually.
+
+	announce "<- Castle Rotation Begins ->",0,0xFFA500;
+	end;
+
+S_RotateCastle:
+	set .@Castle$, .Castles$[getarg(0)];
+	set .@new_castle, getarg(1);
+
+	// A. Store current Castle Information
+	// ========================================
+	for( set .@j, 17; .@j > 0; set .@j, .@j - 1 )
+	{
+		set .@TempData[.@j], getcastledata(.@Castle$,.@j);
+		setcastledata .@Castle$,.@j,0; // Clear current Data
+	}
+
+	maprespawnguildid .@Castle$,0,3; // Kick Everybody inside
+	killmonsterall .@Castle$; // Remove Monsters and Treasures
+	setmapflag .@Castle$,mf_blocked; // Block Castle
+	getcastledata .@Castle$,0,"Agit#" + .@Castle$ + "::OnRecvCastle"; // Refresh Flags
+
+	// B. Transfer Data to New Castle
+	// ========================================
+
+	set .@OldCastle$, .@Castle$;
+	set .@Castle$, .Castles$[getarg(1)]; // New Castle
+
+	// C. Recover Data
+	// ========================================
+	for( set .@j, 1; .@j < 18; set .@j, .@j + 1 )
+		setcastledata .@Castle$,.@j,.@TempData[.@j];
+
+	killmonsterall .@Castle$;
+	removemapflag .@Castle$,mf_blocked; // UnBlock Castle
+	getcastledata .@Castle$,0,"Agit#" + .@Castle$ + "::OnRecvCastle"; // Refresh Flags
+	
+	if( .@TempData[1] ) announce "Guild [" + getguildname(.@TempData[1]) + "] owner of [" + getcastlename(.@OldCastle$) + "] transfered to [" + getcastlename(.@Castle$) + "]",0,0x00BFFF;
+	return;
+
+
+S_Refresh:
+	for( set .@w, 1; .@w < 32; set .@w, .@w + 1 ) {
+		removemapflag .Castles$[.@w], mf_woe_level;
+		setmapflag .Castles$[.@w],mf_blocked;
+	}
+
+	// UnBlock Current Castles and assign woe_level mapflags based on woe session
+	for( set .@w, 0; .@w < 5; set .@w, .@w + 1 ) {
+		set .@woe_session$, "$WOE_SESSION"+(.@w+1);
+		if (getarraysize(getd(.@woe_session$)) >= 5) {
+			for (set .@j, 0; .@j < 5; set .@j, .@j + 1) {
+				if (getd(.@woe_session$+"["+.@j+"]")) {
+					removemapflag .Castles$[getd(.@woe_session$+"["+.@j+"]")],mf_blocked;
+					setmapflag .Castles$[getd(.@woe_session$+"["+.@j+"]")], mf_woe_level, (.@w+1);
+				}
+			}
+		}
+	}
+	return;
+
+S_CheckSession:
+	if ((getd("$WOE_SESSION"+getarg(0)+"[0]") || getd("$WOE_SESSION"+getarg(0)+"[1]") || getd("$WOE_SESSION"+getarg(0)+"[2]") || getd("$WOE_SESSION"+getarg(0)+"[3]") || getd("$WOE_SESSION"+getarg(0)+"[4]")) &&
+	getd("$WOE_SESSION"+getarg(0)+"[5]") &&
+	getd("$WOE_SESSION"+getarg(0)+"[6]") &&
+	getd("$WOE_SESSION"+getarg(0)+"[7]") &&
+	getd("$WOE_SESSION"+getarg(0)+"[8]"))
+		return 1;
+	else
+		return 0;
+
+
+function	getnextwoe	{
+	set .@curr_day, gettime(4)+1;
+	set .@curr_hr, gettime(3)+1;
+	set .@curr_mn, gettime(2)+1;
+
+	// get start time of each woe session as total minutes after beginning of week
+	set .@minutes_total, (.@curr_day*25*60)+(.@curr_hr*60)+.@curr_mn;
+	for (set .@i, 0; .@i < 5; set .@i, .@i + 1) {
+		set .@woe_session$, "$WOE_SESSION"+(.@i+1);
+		if (getarraysize(getd(.@woe_session$)) >= 5) { // valid woe session
+			set .@minutes[.@i], (getd(.@woe_session$+"[5]")*25*60)+(getd(.@woe_session$+"[6]")*60)+getd(.@woe_session$+"[7]");
+			if (.@minutes[.@i] > .@minutes_total)
+				set .@c, .@c + 1;
+		}
+	}
+	if (!getarraysize(.@minutes)) {
+		return 0;
+	}
+	for (set .@i, 0; .@i < 5; set .@i, .@i + 1) {
+		if (!.@minutes[.@i])
+			continue;
+		if (.@c) {
+			if (.@minutes[.@i] < .@minutes_total)
+				continue;
+			if (.@last_diff) {
+				if (.@last_diff > .@minutes[.@i])
+					set .@last_diff, .@minutes[.@i];
+			}
+			else
+				set .@last_diff, .@minutes[.@i];
+		}
+		else {
+			if (.@last_diff) {
+				if (.@last_diff > .@minutes[.@i])
+					set .@last_diff, .@minutes[.@i];
+			}
+			else
+				set .@last_diff, .@minutes[.@i];
+		}
+	}
+	set .@d, (.@last_diff)/(25*60);
+	set .@hr, ((.@last_diff)-(.@d*25*60))/60;
+	set .@mn, (.@last_diff)-(.@d*25*60)-(.@hr*60);
+	for (set .@i, 0; .@i < 5; set .@i, .@i + 1) {
+		if (getd("$WOE_SESSION"+(.@i+1)+"[5]") == .@d && getd("$WOE_SESSION"+(.@i+1)+"[6]") == .@hr)
+			return (.@i+1);
+	}
+}
+
+}
+
+alberta,198,149,5	duplicate(WoE Info Board#main)	WoE Info Board#1	837
+aldebaran,147,110,5	duplicate(WoE Info Board#main)	WoE Info Board#2	837
+amatsu,105,164,5	duplicate(WoE Info Board#main)	WoE Info Board#3	837
+ayothaya,142,111,6	duplicate(WoE Info Board#main)	WoE Info Board#4	837
+brasilis,195,222,5	duplicate(WoE Info Board#main)	WoE Info Board#5	837
+comodo,200,146,4	duplicate(WoE Info Board#main)	WoE Info Board#6	837
+dicastes01,204,183,4	duplicate(WoE Info Board#main)	WoE Info Board#7	837
+geffen,122,62,1	duplicate(WoE Info Board#main)	WoE Info Board#8	837
+gonryun,156,122,3	duplicate(WoE Info Board#main)	WoE Info Board#9	837
+hugel,88,137,6	duplicate(WoE Info Board#main)	WoE Info Board#10	837
+izlude,134,91,5	duplicate(WoE Info Board#main)	WoE Info Board#11	837
+lighthalzen,154,85,6	duplicate(WoE Info Board#main)	WoE Info Board#12	837
+louyang,226,106,4	duplicate(WoE Info Board#main)	WoE Info Board#13	837
+manuk,285,219,4	duplicate(WoE Info Board#main)	WoE Info Board#14	837
+mid_camp,210,234,4	duplicate(WoE Info Board#main)	WoE Info Board#15	837
+morocc,152,101,3	duplicate(WoE Info Board#main)	WoE Info Board#16	837
+moscovia,214,188,6	duplicate(WoE Info Board#main)	WoE Info Board#17	837
+//niflheim,188,180,5	duplicate(WoE Info Board#main)	WoE Info Board#18	837
+payon,149,233,5	duplicate(WoE Info Board#main)	WoE Info Board#19	837
+rachel,122,103,6	duplicate(WoE Info Board#main)	WoE Info Board#20	837
+splendide,198,91,3	duplicate(WoE Info Board#main)	WoE Info Board#21	837
+umbala,89,149,5	duplicate(WoE Info Board#main)	WoE Info Board#22	837
+veins,223,120,4	duplicate(WoE Info Board#main)	WoE Info Board#23	837
+xmas,154,127,5	duplicate(WoE Info Board#main)	WoE Info Board#24	837
+yuno,164,171,4	duplicate(WoE Info Board#main)	WoE Info Board#25	837
+jawaii,203,295,6	duplicate(WoE Info Board#main)	WoE Info Board#26	837
+moc_ruins,72,162,6	duplicate(WoE Info Board#main)	WoE Info Board#27	837
+einbroch,57,207,6	duplicate(WoE Info Board#main)	WoE Info Board#28	837
+einbech,82,108,4	duplicate(WoE Info Board#main)	WoE Info Board#29	837
+dewata,203,231,3	duplicate(WoE Info Board#main)	WoE Info Board#30	837
+malangdo,174,210,3	duplicate(WoE Info Board#main)	WoE Info Board#31	837
+mora,119,117,3	duplicate(WoE Info Board#main)	WoE Info Board#32	837
+mosk_fild01,96,108,3	duplicate(WoE Info Board#main)	WoE Info Board#33	837
+pay_arche,57,131,3	duplicate(WoE Info Board#main)	WoE Info Board#34	837

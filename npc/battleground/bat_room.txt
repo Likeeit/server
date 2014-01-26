@@ -1,0 +1,23 @@
+-	script	ClearBGData	-1,{
+end;
+
+OnPCLoadMapEvent:
+	getmapxy(.@map$, .@x, @y, 0, strcharinfo(0));
+	if (.@map$ != "bat_room")
+		end;
+	if( checkquest(8506,PLAYTIME) == 2 )
+		erasequest 8506;
+	if( checkquest(8506,PLAYTIME) != -1 )
+	{
+		message strcharinfo(0), "You have been banned from BG until the deserter indicator goes off.";
+		warp "SavePoint",0,0;
+		end;
+	}
+	bg_leave;
+	bg_queue_leave2 getvariableofnpc(.BG_Queue,"BG_Queue_Join");
+	bg_queue_leave2 getvariableofnpc(.VS_Queue,"BG_Queue_Join");
+	end;
+
+}
+
+bat_room	mapflag	loadevent

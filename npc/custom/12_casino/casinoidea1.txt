@@ -1,0 +1,271 @@
+//===== rAthena Script =======================================
+//= Lotti
+//===== By ===================================================
+//= Wytponsones
+//===== Version ==============================================
+//= 1.0
+//===== Description ==========================================
+//= Lottery script 
+//= You can set reward: ID, Amount, Refine; requirements: ID, Amount;
+//= winning rate, announce activation, announce color;
+//= SReward is your grand prize;
+//============================================================
+
+cmd_in02,186,114,4	script	Lotti	804,{
+set @ii,0;
+set @iii,0;
+set @iiii,0;
+set @reward,0;
+deletearray @mreward[0],128;
+
+mes .npc$;
+mes "Hello, " +strcharinfo(0) + " Are you out shopping in the city?!";
+next;
+mes "I'm " + .npc$ + " i'll exchange cool random prizes for every:";
+for (set @i,0; @i < getarraysize(.ItemR); set @i,@i+2) {
+	set @ii,@ii+1;
+	set @iii,@iii+1;
+	mes @ii + ") " + getitemname(.ItemR[@i]) + " : " + .ItemR[@i+1] + "x";
+	if (@iii == 5) { set @iii,0; next; }
+}
+if (.ZenyR > 0) mes "Zeny: " + .ZenyR;
+next;
+set @ii,0;
+set @iii,0;
+mes .npc$;
+mes "Our grand prize is:";
+for (set @i,0; @i < getarraysize(.SReward); set @i,@i+3) {
+	set @ii,@ii+1;
+	set @iii,@iii+1;
+	if (.SReward[@i+2] < 1) {
+		mes @ii + ") " + getitemname(.SReward[@i]) + " " + .SReward[@i+1] + "x";
+	}else {
+		mes @ii + ") +" + .SReward[@i+2] + " " + getitemname(.SReward[@i]) + " " + .SReward[@i+1] + "x";
+	}
+	if (@iii == 5) { set @iii,0; next; }
+}
+next;
+mes .npc$;
+mes "Do you want to try?";
+next;
+menu "No ..",npc_exit,"Yes ..",-,"Other Prizes",opzes;
+mes .npc$;
+mes "Here we go!";
+next;
+progressbar "",2;
+
+if (Zeny < .ZenyR) goto r_failed;
+for (set @i,0; @i < getarraysize(.ItemR); set @i,@i+2) {
+	if (countitem(.ItemR[@i]) < .ItemR[@i+1]) {
+		goto r_failed;
+	}
+}
+set @win,rand(0,.MaxNum);
+set Zeny,Zeny-.ZenyR;
+for (set @i,0; @i < getarraysize(.ItemR); set @i,@i+2) {
+	delitem .ItemR[@i],.ItemR[@i+1];
+}
+
+for (set @i,0; @i < getarraysize(.SWinNum); set @i,@i+1) {
+	if (.SWinNum[@i] == @win) {
+		goto s_reward;
+	}
+}
+for (set @i,0; @i < getarraysize(.MWinNum); set @i,@i+1) {
+	if (.MWinNum[@i] == @win) {
+		goto m_reward;
+	}
+}
+mes .npc$;
+mes "Sorry, but you lose";
+close;
+
+s_reward:
+do {
+	set @reward,.SReward[rand(0,getarraysize(.SReward))];
+} while (getitemname(@reward) == "null");
+
+for (set @i,0; @i < getarraysize(.SReward); set @i,@i+3) {
+	if (@reward == .SReward[@i]) {
+		if (.SReward[@i+2] < 1) { 
+			set @a,1; 
+			getitem .SReward[@i],.SReward[@i+1]; 
+			break;
+		}else { 
+			set @a,2; 
+			getitem2 .SReward[@i],.SReward[@i+1],1,.SReward[@i+2],0,0,0,0,0; 
+			break;
+		}
+	}
+}
+if (.announce == 1) {
+	if (@a == 1)  announce .npc$ + " " + strcharinfo(0) + ", won a " + getitemname(.SReward[@i]) + "!!",0,.@announcc$;
+	if (@a == 2) announce .npc$ + " " + strcharinfo(0) + ", won a +" +.SReward[@i+2] + " " + getitemname(.SReward[@i]) + " " + .SReward[@i+1] +"x !!",0,.@announcc$;
+}
+mes .npc$;
+mes "Congratulations!, You WON!";
+close;
+
+m_reward:
+if (.MWinall == 1) {
+	for (set @i,0; @i < getarraysize(.MReward); set @i,@i+3) {
+		if (.MReward[@i+2] < 1) { 
+			set @a,1; 
+			getitem .MReward[@i],.MReward[@i+1]; 
+		}else { 
+			set @a,2; 
+			getitem2 .MReward[@i],.MReward[@i+1],1,.MReward[@i+2],0,0,0,0,0; 
+		}
+	}
+}else if (.MWinall == 0) {
+	if (.MWinT[0] == 0) {
+		do {
+			set @reward,.MReward[rand(0,getarraysize(.MReward))];
+		} while (getitemname(@reward) == "null");
+	
+		for (set @i,0; @i < getarraysize(.MReward); set @i,@i+3) {
+			if (@reward == .MReward[@i]) {
+				if (.MReward[@i+2] < 1) { 
+					set @a,1; 
+					getitem .MReward[@i],.MReward[@i+1]; 
+					break;
+				}else { 
+					set @a,2; 
+					getitem2 .MReward[@i],.MReward[@i+1],1,.MReward[@i+2],0,0,0,0,0; 
+					break;
+				}
+			}
+		}
+	}else if (.MWinT[0] == 1){
+		if (.MwinT[1] == 1) {
+			do {
+				do {
+					do {
+						set @reward,.MReward[rand(0,getarraysize(.MReward))];
+					} while (getitemname(@reward) == "null");
+					
+					if (.MwinT[2] == 1) {
+						for (set @i,0; @i < getarraysize(@mreward); set @i,@i+1) {
+							if (@mreward[@i] == @reward) {
+								set @ii,1;
+								break;
+							}
+						}
+						set @ii,0;
+					}else { set @ii,1; }
+				}while (@ii == 1);
+					setarray @mreward[getarraysize(@mreward)],@reward;
+			} while (getarraysize(@mreward) != .MWinT[3]);
+		
+			for (set @i,0; @i < getarraysize(.MReward); set @i,@i+3) {
+				if (@mreward[@iiii] == .MReward[@i]) {
+					if (.MReward[@i+2] < 1) { 
+						set @a,1; 
+						getitem .MReward[@i],.MReward[@i+1];
+						set @iiii,@iiii+1;
+						set @i,0;
+							if (@iiii == .MwinT[3]) break;
+					}else { 
+						set @a,2; 
+						getitem2 .MReward[@i],.MReward[@i+1],1,.MReward[@i+2],0,0,0,0,0; break;
+						set @iiii,@iiii+1;
+						set @i,0;
+							if (@iiii == .MwinT[3]) break;
+					}
+				}
+			}
+		}else if (.MwinT[1] == 0) {
+			do {
+				set @reward,.MReward[rand(0,getarraysize(.MReward))];
+			} while (getitemname(@reward) == "null");
+		
+			do {
+				for (set @i,0; @i < getarraysize(.MReward); set @i,@i+3) {
+					if (@reward == .MReward[@i]) {
+						if (.MReward[@i+2] < 1) { 
+							set @a,1; 
+							getitem .MReward[@i],.MReward[@i+1];
+							set @iiii,@iiii+1;
+								if (@iiii == .MwinT[3]) break;
+						}else { 
+							set @a,2; 
+							getitem2 .MReward[@i],.MReward[@i+1],1,.MReward[@i+2],0,0,0,0,0; 
+							set @iiii,@iiii+1;
+								if (@iiii == .MwinT[3]) break;
+						}
+					}
+				}
+			} while (@iiii == .MwinT[3]);
+		}
+	}
+}
+mes .npc$;
+mes "Congratulations!, You WON!";
+close;
+
+r_failed:
+mes "Sorry, but you don't have all the requirements needed";
+if (.ZenyR > 0) mes "Zeny: " + Zeny + "/" + .ZenyR;
+for (set @i,0; @i < getarraysize(.ItemR); set @i,@i+2) {
+	mes getitemname(.ItemR[@i]) + " : " + countitem(.ItemR[@i]) + "/" + .ItemR[@i+1] + "x";
+}
+close;
+
+opzes:
+mes .npc$;
+mes "Each time you play you have a chance of wining 2 of these.";
+mes "1x Gold Coin,";
+mes "10x Silver Coin,";
+mes "1x Bloody Branch,";
+mes "1x Gold,";
+mes "5x Old Purple Box, ";
+mes "1x Old Card Album,";
+mes "30x Bravery Badge,";
+mes "30x Valor Badge,";
+mes "30x Wat Badge,";
+mes "10x Yggdrasil Berry,";
+mes "1x Enriched Elunium,";
+mes "1x Enriched Oridecon,";
+mes "1x Citrin,";
+mes "1x Agate,";
+mes "1x Muscovite,";
+mes "20x Old Blue Box,";
+mes "50x Dead Branch,";
+mes "40x Old Card Album,";
+mes "1x Battle Manual,";
+mes "1x Jellopy";
+close;
+
+npc_exit:
+mes .npc$;
+mes "You can come back again anytime.";
+close;
+
+OnInit:
+set .npc$,"[Lotti]"; // NPC Name
+set .MaxNum,10; // Total number to win
+setarray .SWinNum[0],1; // Number need to win Single Reward
+setarray .MWinNum[0],2,3,4,5,6; // Number need to win Multi Reward
+// Setup the .MWinT if you use Give random
+set	.MWinall,0; // 1 = Give all Multi Reward, 0 = Give random
+
+// Note: .MWinall must be 0 inorder to use this)
+// Note: If Not-Repeat make sure Amount of reward >= .MReward item)
+// 0 = Off (Default: 1 random item only), 1 = On; 0 = Consecutive , 1 = Random; 0 = Not, 1 = Repeat Reward;
+// Format: <On/Off>,<Consecutive/Random>,<Not-Repeat/Repeat>,<Amount of reward can win> 
+setarray .MWinT[0],1,1,1,2;
+
+// 1 = On , 0 = off;
+set .announce,2; // announce
+set .announcec$,"ffc0cb"; // announce color
+
+// Format: <item ID>,<amount>{,...};
+setarray .ItemR[0],12221,1,732,1,983,1,668,1,6325,1; // Item ID,Item Amount
+setarray .ZenyR,1000000; // Item Requirements
+
+// Format: <item ID>,<amount>,<Refine>{,...};
+setarray .SReward[0],671,1,0,671,5,0,5461,1,0,5448,1,0,5449,1,0,5409,1,0,7776,1,0,616,10,0,969,5,0,617,20,0; // Single Reward
+
+// Format: <item ID>,<amount>,<Refine>{,....};
+setarray .MReward[0],671,1,0,675,10,0,12103,1,0,969,1,0,617,5,0,616,1,0,7828,30,0,7829,30,0,7773,30,0,607,10,0,7619,1,0,7620,1,0,7295,1,0,7291,1,0,7292,1,0,603,20,0,604,50,0,616,40,0,12208,1,0,909,1,0; //Multiple Reward
+}

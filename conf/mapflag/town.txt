@@ -1,0 +1,49 @@
+//===== eAthena Script =======================================
+//= Allows Mailbox access
+//===== By: ==================================================
+//= Epoque
+//===== Current Version: =====================================
+//= 1.0a [Epoque]
+//===== Compatible With: =====================================
+//=
+//===== Description: =========================================
+//=
+//============================================================
+
+alberta	mapflag	town
+aldebaran	mapflag	town
+amatsu	mapflag	town
+ayothaya	mapflag	town
+brasilis	mapflag	town
+comodo	mapflag	town
+dicastes01	mapflag	town
+einbroch	mapflag	town
+einbech	mapflag	town
+geffen	mapflag	town
+gonryun	mapflag	town
+jawaii	mapflag	town
+hugel	mapflag	town
+izlude	mapflag	town
+lighthalzen	mapflag	town
+louyang	mapflag	town
+manuk	mapflag	town
+mid_camp	mapflag	town
+moc_ruins	mapflag	town
+morocc	mapflag	town
+moscovia	mapflag	town
+niflheim	mapflag	town
+prontera	mapflag	town
+payon	mapflag	town
+pay_arche	mapflag	town
+rachel	mapflag	town
+splendide	mapflag	town
+umbala	mapflag	town
+veins	mapflag	town
+xmas	mapflag	town
+yuno	mapflag	town
+wvend	mapflag	town
+dewata	mapflag	town
+malangdo	mapflag	town
+mora	mapflag	town
+mosk_fild01	mapflag	town
+pay_arche	mapflag	town

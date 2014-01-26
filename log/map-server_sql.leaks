@@ -1,0 +1,37 @@
+
+Memory manager: Memory leaks found at 2012/06/27 18h04m39s (Revision exported).
+0001 : region.c line 188 size 80 address 0x0xb76d7484
+0002 : region.c line 188 size 80 address 0x0xb76d74e4
+0003 : region.c line 188 size 80 address 0x0xb76d7544
+0004 : region.c line 188 size 80 address 0x0xb76d75a4
+0005 : region.c line 188 size 80 address 0x0xb76d7604
+0006 : region.c line 188 size 80 address 0x0xb76d7664
+0007 : region.c line 188 size 80 address 0x0xb76d76c4
+0008 : region.c line 188 size 80 address 0x0xb76d7724
+0009 : region.c line 188 size 80 address 0x0xb76d7784
+0010 : region.c line 188 size 80 address 0x0xb76d77e4
+0011 : region.c line 188 size 80 address 0x0xb76d7844
+0012 : region.c line 188 size 80 address 0x0xb76d78a4
+0013 : region.c line 188 size 80 address 0x0xb76d7904
+0014 : region.c line 188 size 80 address 0x0xb76d7964
+0015 : region.c line 188 size 80 address 0x0xb76d79c4
+0016 : region.c line 188 size 80 address 0x0xb76d7a24
+0017 : region.c line 188 size 80 address 0x0xb76d7a84
+0018 : region.c line 188 size 80 address 0x0xb76d7ae4
+0019 : region.c line 188 size 80 address 0x0xb76d7b44
+0020 : region.c line 188 size 80 address 0x0xb76d7ba4
+0021 : region.c line 188 size 80 address 0x0xb76d7c04
+0022 : region.c line 188 size 80 address 0x0xb76d7c64
+0023 : region.c line 188 size 80 address 0x0xb76d7cc4
+0024 : faction.c line 147 size 1156 address 0x0xaf0be47c
+0025 : faction.c line 147 size 1156 address 0x0xaf0be91c
+0026 : faction.c line 147 size 1156 address 0x0xaf0bedbc
+0027 : faction.c line 147 size 1156 address 0x0xaf0bf25c
+0028 : faction.c line 147 size 1156 address 0x0xaf0bf6fc
+0029 : faction.c line 147 size 1156 address 0x0xaf0bfb9c
+0030 : faction.c line 147 size 1156 address 0x0xaf0c003c
+0031 : faction.c line 147 size 1156 address 0x0xaf0c04dc
+0032 : faction.c line 147 size 1156 address 0x0xaf0c097c
+0033 : faction.c line 147 size 1156 address 0x0xaf0c0e1c
+0034 : faction.c line 147 size 1156 address 0x0xaf0c12bc
+0035 : faction.c line 147 size 1156 address 0x0xaf0c175c

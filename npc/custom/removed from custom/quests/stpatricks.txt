@@ -1,0 +1,56 @@
+prontera,162,185,3	script	St.Patricks Day	954,{
+ 
+mes "[St.Patricks Day]";
+mes "Hicup...";
+mes "Do you like St. Patricks day?";
+mes "I Like it so much... I made a hat for it.";
+mes "Its a beer hat, want it?";
+next;
+	menu "Yes",-,"Nope",H_exit;
+	mes "[St.Patricks Day]";
+	mes "Click on the... hat, you may get a bonus prize.";
+	next;
+		menu "Beer Hat",I_beer,"Cancel",H_cancel;
+
+I_beer:
+mes "[St.Patricks Day]";
+mes "50x Green Herbs";
+mes "20x Clovers";
+mes "10x Four Leaf Clovers";
+mes "1,000,000 zeny";
+next;
+	mes "[St.Patricks Day]";
+	mes "I am not drunk. So, do you have the items?";
+	next;
+		menu "Here are the items!",M_beer,"I need more time to gather them",H_exit;
+
+M_beer:
+if(countitem(511)<50 || countitem(705)<20 || countitem(706)<10 || zeny<1000000) goto M_insufficient; 
+delitem 511,50;
+delitem 705,20;
+delitem 706,10;
+set zeny,zeny-1000000;
+next;
+	mes "[St.Patricks Day]";
+	mes "Here you go!";
+	getitem 5416,1;
+	getitem 12135,1;
+	close;
+	
+M_insufficient:
+mes "[Hat Maker]";
+mes "Sorry but you don't have the required items.";
+mes "Maybe you could go take a look again.";
+mes "Please come back when you are less drunk...";
+close;
+
+H_exit:
+mes "[Hat Maker]";
+mes "Come back later...";
+close;
+
+H_cancel:
+mes "[Hat Maker]";
+mes "Nevermind...";
+close;
+}

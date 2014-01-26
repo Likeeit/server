@@ -1,0 +1,100 @@
+//This NPC trades GC for TGC and vice versa [Melli]
+job3_rune02,31,42,5	script	Coin Exchanger	724,{
+cutin "job_dancer_eir01",2;
+
+
+mes "[Game Trader]";
+mes "Hello, I can trade your Gold Coins for Silver Coins and vice versa.";
+mes "Which service do you want to use?";
+next;
+switch(select("Trade in Gold coins for Silver Coins","Obtain Gold coins for Silver Coins.","Cancel")) {
+
+	case 1:
+	mes "[Game Trader]";
+	mes "Please select, how many Gold coins you want to trade in.";
+	mes "The exchange rate is 1 Gold coin for 8 Silver coins.";
+	next;
+	input $GCTCG;
+	mes "[Game Trader]";
+	mes "So you want to trade in "+$GCTCG+" Gold coins for "+$GCTCG*8+" Silver coins?";
+	next;
+	switch(select("Yes","No")) {
+
+		case 1:
+		cutin "job_dancer_eir02",2;
+		if (Weight+$GCTCG*32-$GCTCG*4 >= MaxWeight) goto OverWeight;
+		if (countitem(671) < $GCTCG) goto Failure;
+		mes "[Game Trader]";
+		mes "Here's your Silver coins. Was nice doing business with you.";
+		delitem 671,$GCTCG;
+		getitem 675,$GCTCG*8;
+		close2;
+		cutin "",255;
+		end;
+
+		case 2:
+		cutin "job_dancer_eir03",2;
+		mes "[Game Trader]";
+		mes "Aw, that's too bad .You know where to find me.";
+		close2;
+		cutin "",255;
+		end;
+		}
+
+	Case 2:
+	mes "[Game Trader]";
+	mes "Please select, how many Gold coins you want to obtain.";
+	mes "The exchange rate is 1 Gold coin for 10 Silver coins.";
+	next;
+	input $GCTCG;
+	mes "[Game Trader]";
+	mes "So you want to obtain "+$GCTCG+" Gold coins for "+$GCTCG*10+" Silver coins?";
+	next;
+	switch(select("Yes","No")) {
+
+		case 1:
+		cutin "job_dancer_eir02",2;
+		if (Weight+$GCTCG*4-$GCTCG*40 >= MaxWeight) goto OverWeight;
+		if (countitem(675) < $GCTCG*10) goto Failure;
+		mes "[Game Trader]";
+		mes "Here's your Gold coins. Was nice doing business with you.";
+		delitem 675,$GCTCG*10;
+		getitem 671,$GCTCG;
+		close2;
+		cutin "",255;
+		end;
+
+		case 2:
+		cutin "job_dancer_eir03",2;
+		mes "[Game Trader]";
+		mes "Aw, that's too bad. You know where to find me.";
+		close2;
+		cutin "",255;
+		end;
+		}
+
+	Case 3:
+	cutin "job_dancer_eir03",2;
+	close2;
+	cutin "",255;
+	end;
+	}
+
+OverWeight:
+
+	mes "[Game Trader]";
+	cutin "job_dancer_eir03",2;
+	mes "Sorry, but you will have to lose some weight to carry out that option, fatty!";
+	close2;
+	cutin "",255;
+	end;
+
+Failure:
+
+	mes "[Game Trader]";
+	cutin "job_dancer_eir03",2;
+	mes "You don't have the required items. Please come back later.";
+	close2;
+	cutin "",255;
+	end;
+}

@@ -1,0 +1,745 @@
+job3_rune02,33,48,5	script	Aura Merchant	795,{
+	A_Start:
+	
+	mes "[Aura Merchant]";
+	mes "Use skulls from pvp to buy your auras. Each Aura costs 5 skulls you get from fighting in the PvP arena.";
+	next;
+
+	switch(select("1-20","21-40","41-64","No thanks","Remove Aura")) {
+		case 1:
+			mes "[Aura Merchant]";
+			mes "But keep in mind this aura will appear even when you are hiding.";
+			next;
+			switch(select("Aura 1","Aura 2","Aura 3","Aura 4","Aura 5","Aura 6","Aura 7","Aura 8","Aura 9","Aura 10","Aura 11","Aura 12","Aura 13","Aura 14","Aura 15","Aura 16","Aura 17","Aura 18","Aura 19","Aura 20")) {
+				
+				case 1:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 1";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 2:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 2";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 3:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 3";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 4:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 4";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 5:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 5";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 6:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 6";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 7:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 7";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 8:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 8";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 9:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 9";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 10:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 10";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 11:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 11";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 12:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 12";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 13:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 13";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 14:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 14";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 15:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 15";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 16:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 16";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 17:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 17";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 18:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 18";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 19:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 19";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 20:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 20";
+	mes "Thank you great warrior.";
+	close;
+	}
+	
+	close;
+					}
+			case 2:
+			mes "[Aura Merchant]";
+			mes "But keep in mind this aura will appear even when you are hiding.";
+			next;
+			switch(select("Aura 21","Aura 22","Aura 23","Aura 24","Aura 25","Aura 26","Aura 27","Aura 28","Aura 29","Aura 30","Aura 31","Aura 32","Aura 33","Aura 34","Aura 35","Aura 36","Aura 37","Aura 38","Aura 39","Aura 40")) {
+				
+				case 1:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 21";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 2:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 22";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 3:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 23";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 4:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 24";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 5:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 25";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 6:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 26";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 7:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 27";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 8:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 28";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 9:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 29";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 10:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 30";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 11:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 31";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 12:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 32";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 13:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 33";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 14:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 34";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 15:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 35";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 16:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 36";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 17:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 37";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 18:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 38";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 19:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 39";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 20:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 40";
+	mes "Thank you great warrior.";
+	close;
+	}
+	
+	close;
+					}
+	case 3:
+			mes "[Aura Merchant]";
+			mes "But keep in mind this aura will appear even when you are hiding.";
+			next;
+			switch(select("Aura 41","Aura 42","Aura 43","Aura 44","Aura 45","Aura 46","Aura 47","Aura 48","Aura 49","Aura 50","Aura 51","Aura 52","Aura 53","Aura 54","Aura 55","Aura 56","Aura 57","Aura 58","Aura 59","Aura 60","Aura 61","Aura 62","Aura 63","Aura 64")) {
+				
+				case 1:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 41";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 2:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 42";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 3:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 43";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 4:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 44";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 5:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 45";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 6:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 46";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 7:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 47";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 8:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 48";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 9:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 49";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 10:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 50";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 11:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 51";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 12:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 52";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 13:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 53";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 14:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 54";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 15:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 55";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 16:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 56";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 17:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 57";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 18:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 58";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 19:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 59";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 20:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 60";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 21:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 61";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 22:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 62";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 23:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 63";
+	mes "Thank you great warrior.";
+	close;
+	}
+				case 24:
+	if (countitem(7420) < 5) {
+	mes "You do not have enough to pay for this, unfortunately.";
+	close;
+	}
+	if (countitem(7420) >= 5) {
+	delitem 7420,5;
+	atcommand "@aura 64";
+	mes "Thank you great warrior.";
+	close;
+	}
+	close;
+					}
+	case 4:
+	mes "Well fine then.";
+		close;
+	case 5:
+	atcommand "@aura 0";
+		close;
+					}}

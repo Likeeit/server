@@ -1,0 +1,42 @@
+que_temsky,38,139,5	script	Event Warper	864,{
+
+	if (BaseLevel > 1) goto L_NO;
+	if (class > 0) goto L_NO;	
+	if ((class == 0) && (BaseLevel == 1)) goto L_YES;
+
+L_NO:
+	mes "[Event Warper]";
+	mes "You're not qualified to join the event";
+	close;
+
+L_YES:
+	mes "[Event Warper]";
+	mes "Before entering the event you must make sure your storage is not full!";
+	mes "Do you wish to enter the event?";
+	if (select("Yes:No") == 2)
+		close;
+	atcommand "@storeall";
+	atcommand "@itemreset";
+	sc_start SC_STRIPWEAPON,600000,5;
+	sc_start SC_STRIPSHIELD,600000,5;
+	sc_start SC_STRIPARMOR,600000,5;
+	sc_start SC_STRIPHELM,600000,5;
+	sc_end SC_ALL;
+	percentheal 100,100;
+	warp "pvp_n_3-4",55,79;
+	end;
+
+}
+
+pvp_n_3-4	mapflag	pvp
+pvp_n_3-4	mapflag	nogo
+pvp_n_3-4	mapflag	noteleport
+pvp_n_3-4	mapflag	pvp_noguild
+pvp_n_3-4	mapflag	restricted	3
+pvp_n_3-4	mapflag	nocommand	50
+pvp_n_3-4	mapflag	noreturn
+pvp_n_3-4	mapflag	noskill
+que_temsky	mapflag	noskill
+pvp_n_3-4	mapflag	nomemo
+que_temsky	mapflag	nomemo
+que_temsky	mapflag	noreturn

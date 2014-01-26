@@ -1,0 +1,46 @@
+prt_in,32,102,6	script	Head Gear Quests	935,{
+	mes "[Usakoring Quest]";
+	mes "Hello, this quest is for Dark Fairy Wings.";
+	mes "If you are intrested, i will need you to bring me some items.";
+	mes "Please pick one of the following items you would like to make";
+	set .i,select(.Menu$);
+	next;
+	goto Quest_Setup;
+OnInit:
+	set .BuildQuest,1;
+	set .Menu$,"";
+	set .i,1;
+	goto Quest_Setup;
+Quest_Display:
+	if(.BuildQuest) {
+		if(compare(getarg(0),"Stop Quest Loading")) {
+			set .BuildQuest,0;
+			end;
+		}
+		set .Menu$,.Menu$+getarg(0)+":";
+		set .i,.i+1;
+		goto Quest_Setup;
+	}
+	mes "[" + getarg(0) + "]";
+	mes "I require the following:";
+	for(set @i,1; getarg(@i)!=0; set @i,@i+2) mes "^FF0000"+((countitem(getarg(@i))>=getarg(@i+1))? "^00FF00":"") + "" + getarg(@i+1) + " " + getitemname(getarg(@i)) + " [" + countitem(getarg(@i)) + "/" + getarg(@i+1) + "]";
+	mes "^000000In exchange, I will give you:^0000FF";
+	for(set @i,@i+1; getarg(@i)!=0; set @i,@i+2) mes getarg(@i+1) + " " + getitemname(getarg(@i));
+	if(select("Exchange:No thanks")==2) close;
+	for(set @i,1; getarg(@i)!=0; set @i,@i+2) if(countitem(getarg(@i)) < getarg(@i+1)) {
+		next;
+		mes "You have " + countitem(getarg(@i)) + " " + getitemname(getarg(@i)) + ", while I require " + getarg(@i+1) + ".";
+		mes "Please obtain ^FF0000" + (getarg(@i+1)-countitem(getarg(@i))) + " more " + getitemname(getarg(@i)) + "^000000.";
+		close;
+	}
+	for(set @i,1; getarg(@i)!=0; set @i,@i+2) delitem getarg(@i),getarg(@i+1);
+	for(set @i,@i+1; getarg(@i)!=0; set @i,@i+2) getitem getarg(@i),getarg(@i+1);
+	close;
+Quest_Setup:
+	switch(.i) {
+
+		case 1: callsub Quest_Display,"Jellopy",909,1,0,909,1,0;
+
+		default: callsub Quest_Display,"Stop Quest Loading";
+	}
+}

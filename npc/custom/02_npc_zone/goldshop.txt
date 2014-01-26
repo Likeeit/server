@@ -1,0 +1,368 @@
+job3_rune02,30,46,5	script	Gold Coin shop	403,{
+function Add; function Chk; function Slot; function A_An;
+
+	if(.Shops$ != "") set .@i,1;
+	else {
+		set .@menu$,"";
+		for(set .@i,1; .@i<=getarraysize(.Shops$); set .@i,.@i+1)
+			set .@menu$, .@menu$+.Shops$[.@i]+":";
+		set .@i, select(.@menu$); }
+	dispbottom "Select one item at a time.";
+	callshop "qshop"+.@i,1;
+	npcshopattach "qshop"+.@i;
+	end;
+
+function Add {
+	for(set .@n,5; 1; set .@n,.@n+2)
+		if (!getarg(.@n,0)) break;
+	for(set .@i,2; .@i<.@n; set .@i,.@i+1)
+		set getd(".q_"+getarg(1)+"["+(.@i-2)+"]"), getarg(.@i);
+	npcshopadditem "qshop"+getarg(0),getarg(1),((.ShowZeny)?getarg(3):0);
+	return; }
+function Chk {
+	if (getarg(0)<getarg(1)) { set @qf,1; return "^FF0000"; }
+	else return "^00FF00"; }
+function Slot {
+	set .@s$,getitemname(getarg(0));
+	switch(.ShowSlot){
+		case 1: if (!getitemslots(getarg(0))) return .@s$;
+		case 2: if (getiteminfo(getarg(0),11)>0) return .@s$+" ["+getitemslots(getarg(0))+"]";
+		default: return .@s$; } }
+function A_An {
+	setarray .@A$[0],"a","e","i","o","u";
+	set .@B$, "_"+getarg(0);
+	for(set .@i,0; .@i<5; set .@i,.@i+1)
+		if (compare(.@B$,"_"+.@A$[.@i])) return "an "+getarg(0);
+	return "a "+getarg(0); }
+
+OnBuyItem:
+	set .@q[0],@bought_nameid;
+	
+	if(@bought_nameid == 7620 ||
+	   @bought_nameid == 7619 ||
+	   @bought_nameid == 13749||
+	   @bought_nameid == 13755||
+	   @bought_nameid == 12103||
+	   @bought_nameid == 7776 ||
+	   @bought_nameid == 14533){
+	   
+	   	if(@bought_nameid == 7620)	set @cost, 5;
+		if(@bought_nameid == 7619)	set @cost, 5;
+		if(@bought_nameid == 13749) set @cost, 5;
+		if(@bought_nameid == 13755) set @cost, 5;
+		if(@bought_nameid == 12103) set @cost, 5;
+		if(@bought_nameid == 7776)	set @cost, 15;
+		if(@bought_nameid == 14533) set @cost, 6;
+		
+		mes "[Gold Coin Shop]";
+		mes "The item you want to buy, " + getitemname(@bought_nameid) + ", costs " + @cost + " Gold Coins each.";
+		mes "How many of " + getitemname(@bought_nameid) + " would you like to buy?";
+		input @amount;
+		if(@amount == 0){
+			next;
+			mes "Sorry, please put in a number higher than 0.";
+			close;
+		}
+		if(countitem(671) > (@amount * @cost - 1)){
+			delitem 671,(@amount * @cost);
+			
+			getitem @bought_nameid,@amount;
+			close;
+		}
+		else{
+			next;
+			mes "[Gold Coin Shop]";
+			mes "Sorry, you do not have enough coins to finish this transaction.";
+			mes "Please input a lower amount or try again when you have enough coins.";
+			close;
+		}
+	}
+	   
+	copyarray .@q[1],getd(".q_"+@bought_nameid+"[0]"),getarraysize(getd(".q_"+@bought_nameid+"[0]"));
+	if (!.@q[1]) { message strcharinfo(0),"An error has occurred."; end; }
+	mes "[Gold Coin shop]";
+	mes "Reward: ^0055FF"+((.@q[1]>1)?.@q[1]+"x ":"")+Slot(.@q[0])+"^000000";
+	mes "Requirements:";
+	
+	if (.@q[3]) mes " > "+Chk(getd(.Points$[0]),.@q[3])+.@q[3]+" "+.Points$[1]+" ("+getd(.Points$[0])+"/"+.@q[3]+")^000000";
+	if (.@q[4]) for(set .@i,4; .@i<getarraysize(.@q); set .@i,.@i+2)
+		mes " > "+Chk(countitem(.@q[.@i]),.@q[.@i+1])+((.DisplayID)?"{"+.@q[.@i]+"} ":"")+Slot(.@q[.@i])+" ("+countitem(.@q[.@i])+"/"+.@q[.@i+1]+")^000000";
+	if (@qf) { set @qf,0; close; }
+	next;
+	if (!checkweight(.@q[0],.@q[1])) {
+		mes "[Gold Coin shop]";
+		mes "^FF0000You need "+(((.@q[1]*getiteminfo(.@q[0],6))+Weight-MaxWeight)/10)+" additional weight capacity to complete this trade.^000000";
+		close; }
+	set @qe1, getiteminfo(.@q[0],5); set @qe2, getiteminfo(.@q[0],11);
+	while(1){
+		switch(select(" ~ Purchase ^0055FF"+getitemname(.@q[0])+"^000000:")) {
+			case 1:
+				
+				if (.@q[3]) setd .Points$[0], getd(.Points$[0])-.@q[3];
+				if (.@q[4]) for(set .@i,4; .@i<getarraysize(.@q); set .@i,.@i+2)
+					delitem .@q[.@i],.@q[.@i+1];
+				getitem .@q[0],.@q[1];
+				if (.Announce) announce strcharinfo(0)+" has created "+A_An(getitemname(.@q[0]))+"!",0;
+				specialeffect2 699;
+				close; }}
+
+OnInit:
+// --------------------- Config ---------------------
+// Custom points, if needed: "<variable>","<name to display>"
+	setarray .Points$[0],"#CASHPOINTS","Cash Points";
+
+	set .Announce,0;	// Announce quest completion? (1: yes / 0: no)
+	set .ShowSlot,1;	// Show item slots? (2: all equipment / 1: if slots > 0 / 0: never)
+	set .DisplayID,1;	// Show item IDs? (1: yes / 0: no)
+	set .ShowZeny,1;	// Show Zeny cost, if any? (1: yes / 0: no)
+
+// Shop categories, if needed: "<Shop 1>","<Shop 2>"{,...};
+// Duplicate dummy data for any additional shops (bottom of script).
+// If no categories, use the second line instead (remove //).
+
+	setarray .Shops$[31],"Headgears","Consumables + Etc";
+	//set .Shops$[31],"Gold Coin Shop";
+
+// Add(<shop number>,<reward ID>,<reward amount>,<Zeny cost>,<point cost>,
+// <required item ID>,<required item amount>{,...});
+// Shop number corresponds with order above (default is 1).
+// Note: Do NOT use a reward item more than once!
+
+//Alice Doll [1]   [Upper Head]   Item ID# 5137
+//120 gc
+Add(31,5137,1,0,0,671,120);
+
+//Angel Spirit [0]   [Middle Head]   Item ID# 5389
+//Angel Of Ghost
+//90 gc
+Add(31,5389,1,0,0,671,90);
+
+//Tam [1]   [Upper Head]   Item ID# 5379 (Balloon_Hat)
+//Balloon Hat
+//55 gc
+Add(31,5379,1,0,0,671,55);
+
+//Blush of Groom [0]   [Middle Head]   Item ID# 5800
+//90 gc
+Add(31,5800,1,0,0,671,90);
+
+//Boyfriend Hat [0]   [Upper Head]   Item ID# 5338 (Bf_Recruiter_Hat)
+//10 gc
+Add(31,5338,1,0,0,671,10);
+
+//Brazil Twin Ribbon [0]   [Upper Head]   Item ID# 5600 (Br_Twin_Ribbon)
+//200 gc
+Add(31,5600,1,0,0,671,200);
+
+//Crown of Deceit [1]   [Upper & Middle Head]   Item ID# 5564 (Crown_of_Deceit)
+//Crown Of Deceit
+//90 gc
+Add(31,5564,1,0,0,671,90);
+
+//Dark Randgris Helm [1]   [Upper & Middle Head]   Item ID# 5373
+//75 gc
+Add(31,5373,1,0,0,671,75);
+
+//Ears Of Ifrit [0]   [Middle Head]   Item ID# 5421
+//55 gc
+Add(31,5421,1,0,0,671,55);
+
+//Evolved Orc Hero Helm [0]   [Upper & Middle Head]   Item ID# 5224 (Orc_Hero_Helm_TW)
+//Evolved Helmet of Orc Hero
+//70 gc
+Add(31,5224,1,0,0,671,70);
+
+//Fantastic Pumpkin-Head [0]   [Upper Head]   Item ID# 5202 (Pumpkin_Hat_)
+//Fantastic Pumpkin Hat
+//90 gc
+Add(31,5202,1,0,0,671,90);
+
+//Father's White Moustache [0]   [Lower Head]   Item ID# 5155
+//75 gc
+Add(31,5155,1,0,0,671,75);
+
+//Flying Evil Wing [1]   [Upper Head]   Item ID# 5376
+//150 gc
+Add(31,5376,1,0,0,671,150);
+
+//Friend Hat [0]   [Upper Head]   Item ID# 5339 (Friend_Recruiter_Hat)
+//10 gc
+Add(31,5339,1,0,0,671,10);
+
+//Gangster Scarf [0]   [Lower Head]   Item ID# 5361
+//50 gc - added to quest shop
+//Add(31,5361,1,0,0,671,50);
+
+//Gentleman's Pipe [0]   [Lower Head]   Item ID# 5377
+//90 gc
+Add(31,5377,1,0,0,671,90);
+
+//Girlfriend Hat [0]   [Upper Head]   Item ID# 5346 (Gf_Recruiter_Hat)
+//10 gc
+Add(31,5346,1,0,0,671,10);
+
+//Guild Member Hat [0]   [Upper Head]   Item ID# 5336 (Guildsman_Recruiter)
+//10 gc
+Add(31,5336,1,0,0,671,10);
+
+//Helm of Darkness [1]   [Upper & Middle Head]   Item ID# 5181
+//60 gc
+Add(31,5181,1,0,0,671,60);
+
+//Hockey Mask [0]   [Middle & Lower Head]   Item ID# 5314
+//70 gc
+Add(31,5314,1,0,0,671,70);
+
+//Parade Hat [1]   [Upper Head]   Item ID# 5225 (Marcher_Hat)
+//Holy Marcher Hat
+//120 gc
+//Add(31,5225,1,0,0,671,120);
+
+//I Love China [0]   [Upper Head]   Item ID# 5423 (Lovecap_China)
+//I LOVE CHINA
+//180 gc
+Add(31,5423,1,0,0,671,180);
+
+//Jasper Crest [1]   [Upper Head]   Item ID# 5396
+//70 gc
+Add(31,5396,1,0,0,671,70);
+
+//Gigantic Majestic Goat [0]   [Upper Head]   Item ID# 5518 (L_Magestic_Goat2)
+//Large Baphomet Horns
+//200 gc
+Add(31,5518,1,0,0,671,200);
+
+//Magic Eyes [0]   [Upper Head]   Item ID# 5138
+//55 gc
+Add(31,5138,1,0,0,671,55);
+
+//Dress Hat [1]   [Upper Head]   Item ID# 5211 (Dress_Hat)
+//Maiden Hat
+//100 gc
+Add(31,5211,1,0,0,671,100);
+
+//Mask Of Ifrit [0]   [Upper, Middle & Lower Head]   Item ID# 5420
+//70 gc
+Add(31,5420,1,0,0,671,70);
+
+//Ninja Scroll [0]   [Lower Head]   Item ID# 5362 (Ninja_Scroll)
+//Ninja's Scroll - added to activity Shop
+//70 gc
+//Add(31,5362,1,0,0,671,70);
+
+//AFK Hat [0]   [Upper Head]   Item ID# 5474 (Notice_Board)
+//Notice Board
+//10 gc
+Add(31,5474,1,0,0,671,10);
+
+//Party Member Hat [0]   [Upper Head]   Item ID# 5337 (Party_Recruiter_Hat)
+//10 gc
+Add(31,5337,1,0,0,671,10);
+
+//Pecopeco Hairband [0]   [Upper Head]   Item ID# 5286 (Pecopeco_Hairband)
+//Peco Peco Hairband
+//75 gc
+Add(31,5286,1,0,0,671,75);
+
+//Poring Cake Hat [0]   [Upper Head]   Item ID# 5415
+//90 gc
+Add(31,5415,1,0,0,671,90);
+
+//Purple Cowboy Hat [1]   [Upper Head]   Item ID# 5409
+//70 gc
+//Add(31,5409,1,0,0,671,70);
+
+//Rabbit Earplugs [1]   [Upper & Middle Head]   Item ID# 5520
+//70 gc
+Add(31,5520,1,0,0,671,70);
+
+//Rainbow Scarf [0]   [Lower Head]   Item ID# 5463
+//80 gc
+Add(31,5463,1,0,0,671,80);
+
+//Ramen Hat [0]   [Upper Head]   Item ID# 5293
+//70 gc
+Add(31,5293,1,0,0,671,70);
+
+//Red Tailed Ribbon [0]   [Upper Head]   Item ID# 5801
+//120 gc
+Add(31,5801,1,0,0,671,120);
+
+//Robo Eye [0]   [Middle Head]   Item ID# 5325
+//90 gc
+Add(31,5325,1,0,0,671,90);
+
+//Satanic Bone Helm [1]   [Upper Head]   Item ID# 5529 
+//90 gc
+Add(31,5529,1,0,0,671,90);
+
+//Spiked Scarf [0]   [Lower Head]   Item ID# 5462 (Spiked_Scarf)
+//60 gc
+Add(31,5462,1,0,0,671,60);
+
+//Tucan Hat [1]   [Upper & Middle Head]   Item ID# 5538 (Tucan_Hat)
+//Tucano Hat
+//70 gc
+Add(31,5538,1,0,0,671,70);
+
+//Well-Chewed Pencil [0]   [Lower Head]   Item ID# 5574 (Pencil_in_Mouth)
+//90 gc
+Add(31,5574,1,0,0,671,90);
+
+//Wings Of Victory [0]   [Upper & Middle Head]   Item ID# 5357 (Wings_Of_Victory)
+//65 gc
+Add(31,5357,1,0,0,671,65);
+
+//Yellow Bandana [0]   [Upper Head]   Item ID# 5277
+//60 gc
+Add(31,5277,1,0,0,671,60);
+
+//Yellow Ribbon [0]   [Upper Head]   Item ID# 5278 (Yellow_Ribbon)
+//60 gc
+Add(31,5278,1,0,0,671,60);
+
+//Enriched Oridecon    Item ID# 7620 (Enriched_Oridecon)
+//5 gc
+Add(32,7620,1,0,0,671,5);
+
+//Enriched Elunium    Item ID# 7619 (Enriched_Elunium)
+//5 gc
+Add(32,7619,1,0,0,671,5);
+
+//Big Defense Potion 10 Box    Item ID# 13749 (B_Def_Potion_Box10)
+//Large Physical Defense Potion Box(10)
+//5 gc
+Add(32,13749,1,0,0,671,5);
+
+//Big Magic Defense Potion 10 Box    Item ID# 13755 (B_Mdef_Potion_Box10)
+//Large Magical Defense Potion Box(10)
+//5 gc
+Add(32,13755,1,0,0,671,5);
+
+//Bloody Branch    Item ID# 12103 (Bloody_Dead_Branch)
+//5 gc
+Add(32,12103,1,0,0,671,5);
+
+//Gym Pass    Item ID# 7776 (Max_Weight_Up_Scroll)
+//Gym Membership Card
+//15 gc
+Add(32,7776,1,0,0,671,15);
+
+//Field Manual 100%    Item ID# 14533 (Battle_Manual100)
+//30 gc
+Add(32,14533,1,0,0,671,30);
+
+//WoonRO Gift Box
+//25 GC
+Add(32,5000,1,0,0,671,25);
+
+// --------------------------------------------------
+	for(set .@i,1; .@i<=getarraysize(.Shops$); set .@i,.@i+1)
+		
+		npcshopdelitem "qshop"+.@i,909;
+	end;
+}
+
+// -------- Dummy data (duplicate as needed) --------
+-	shop	qshop31	-1,909:-1
+-	shop	qshop32	-1,909:-1

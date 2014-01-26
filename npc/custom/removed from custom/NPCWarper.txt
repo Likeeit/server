@@ -1,0 +1,69 @@
+// Created by Kronos
+// August 19, 2012
+// WoonRO NPC Warper
+// ================== ++ =====================
+
+prt_in,34,95,4	script	NPC Warper	90,{
+
+mes "[^FF8000NPC Warper^000000]";
+mes "Hello there, If you are having trouble locating NPC's";
+mes "I can take you to directly to any one you want.";
+next;
+mes "[^FF8000NPC Warper^000000]";
+mes " Choose a category!";
+menu "Event and Quest",L_EQ,"NPC Zone",L_NZ,"WoonRO Features",L_Wfeat,"RO Features",L_Rfeat;
+
+L_EQ:
+	warp "quiz_02.gat",133,348;
+	close;
+
+L_NZ:
+	warp "job3_rune02.gat",39,40;
+	close;
+
+
+L_Wfeat:
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please choose an option!";
+	menu "Identifier",L_ID;
+	
+		L_ID:
+			warp "prontera.gat",151,193;
+			close;
+
+L_Rfeat:
+	mes "[^FF8000NPC Warper^000000]";
+	mes "Please selecet an option!";
+	menu "Refiner",L_ref,"Stylist",L_Sty,"Weapon Dealers",L_WD;
+
+		L_WD:
+			mes "[^FF8000NPC Warper^000000]";
+			mes "Please selecet an option!";
+			menu "Daggers",L_Dag;
+			
+				L_Dag:
+					mes "[^FF8000NPC Warper^000000]";
+					mes "Please selecet a town!";
+					menu "Alberta",L_Alb,"Aldebaren",L_Alde,"Brasilis",L_Bra;
+					
+						L_Alb:
+							warp "alberta_in.gat",188,22;
+							close;
+							
+						L_Alde:
+							warp "aldeba_in.gat",27,55;
+							close;
+							
+						L_Bra:
+							warp "brasilis.gat",243,243;
+							close;
+		
+		L_ref:
+			warp "prt_in.gat",59,60;
+			close;
+
+		L_Sty:
+			warp "prontera.gat",144,198;
+			close;
+
+}

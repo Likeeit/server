@@ -1,0 +1,9 @@
+prontera,1,1,0	script	MaxOnlineAnnouncer	-1,{
+	end;
+	
+OnPCLoginEvent:
+	if ( getusers(1) > $peakonline ) {
+		set $peakonline, getusers(1);
+		end;
+	}
+}

@@ -1,0 +1,151 @@
+new_5-2,109,99,3	script	Hat Maker S-U	832,{
+function Add; function Chk; function Slot; function A_An;
+
+	if(.Shops$ != "") set .@i,1;
+	else {
+		set .@menu$,"";
+		for(set .@i,1; .@i<=getarraysize(.Shops$); set .@i,.@i+1)
+			set .@menu$, .@menu$+.Shops$[.@i]+":";
+		set .@i, select(.@menu$); }
+	dispbottom "Select one item at a time.";
+	callshop "qshop"+.@i,1;
+	npcshopattach "qshop"+.@i;
+	end;
+
+function Add {
+	for(set .@n,5; 1; set .@n,.@n+2)
+		if (!getarg(.@n,0)) break;
+	for(set .@i,2; .@i<.@n; set .@i,.@i+1)
+		set getd(".q_"+getarg(1)+"["+(.@i-2)+"]"), getarg(.@i);
+	npcshopadditem "qshop"+getarg(0),getarg(1),((.ShowZeny)?getarg(3):0);
+	return; }
+function Chk {
+	if (getarg(0)<getarg(1)) { set @qf,1; return "^FF0000"; }
+	else return "^00FF00"; }
+function Slot {
+	set .@s$,getitemname(getarg(0));
+	switch(.ShowSlot){
+		case 1: if (!getitemslots(getarg(0))) return .@s$;
+		case 2: if (getiteminfo(getarg(0),11)>0) return .@s$+" ["+getitemslots(getarg(0))+"]";
+		default: return .@s$; } }
+function A_An {
+	setarray .@A$[0],"a","e","i","o","u";
+	set .@B$, "_"+getarg(0);
+	for(set .@i,0; .@i<5; set .@i,.@i+1)
+		if (compare(.@B$,"_"+.@A$[.@i])) return "an "+getarg(0);
+	return "a "+getarg(0); }
+
+OnBuyItem:
+	set .@q[0],@bought_nameid;
+	copyarray .@q[1],getd(".q_"+@bought_nameid+"[0]"),getarraysize(getd(".q_"+@bought_nameid+"[0]"));
+	if (!.@q[1]) { message strcharinfo(0),"An error has occurred."; end; }
+	mes "[Hat Maker [S-U]]";
+	mes "Reward: ^0055FF"+((.@q[1]>1)?.@q[1]+"x ":"")+Slot(.@q[0])+"^000000";
+	mes "Requirements:";
+	if (.@q[2]) mes " > "+Chk(Zeny,.@q[2])+.@q[2]+" Zeny^000000";
+	if (.@q[3]) mes " > "+Chk(getd(.Points$[0]),.@q[3])+.@q[3]+" "+.Points$[1]+" ("+getd(.Points$[0])+"/"+.@q[3]+")^000000";
+	if (.@q[4]) for(set .@i,4; .@i<getarraysize(.@q); set .@i,.@i+2)
+		mes " > "+Chk(countitem(.@q[.@i]),.@q[.@i+1])+((.DisplayID)?"{"+.@q[.@i]+"} ":"")+Slot(.@q[.@i])+" ("+countitem(.@q[.@i])+"/"+.@q[.@i+1]+")^000000";
+	if (@qf) { set @qf,0; close; }
+	next;
+	if (!checkweight(.@q[0],.@q[1])) {
+		mes "[Hat Maker [S-U]]";
+		mes "^FF0000You need "+(((.@q[1]*getiteminfo(.@q[0],6))+Weight-MaxWeight)/10)+" additional weight capacity to complete this trade.^000000";
+		close; }
+	set @qe1, getiteminfo(.@q[0],5); set @qe2, getiteminfo(.@q[0],11);
+	while(1){
+		switch(select(" ~ Purchase ^0055FF"+getitemname(.@q[0])+"^000000:")) {
+			case 1:
+				if (.@q[2]) set Zeny, Zeny-.@q[2];
+				if (.@q[3]) setd .Points$[0], getd(.Points$[0])-.@q[3];
+				if (.@q[4]) for(set .@i,4; .@i<getarraysize(.@q); set .@i,.@i+2)
+					delitem .@q[.@i],.@q[.@i+1];
+				getitem .@q[0],.@q[1];
+				if (.Announce) announce strcharinfo(0)+" has created "+A_An(getitemname(.@q[0]))+"!",0;
+				specialeffect2 699;
+				close; }}
+
+OnInit:
+// --------------------- Config ---------------------
+// Custom points, if needed: "<variable>","<name to display>"
+	setarray .Points$[0],"#CASHPOINTS","Cash Points";
+
+	set .Announce,0;	// Announce quest completion? (1: yes / 0: no)
+	set .ShowSlot,1;	// Show item slots? (2: all equipment / 1: if slots > 0 / 0: never)
+	set .DisplayID,1;	// Show item IDs? (1: yes / 0: no)
+	set .ShowZeny,0;	// Show Zeny cost, if any? (1: yes / 0: no)
+
+// Shop categories, if needed: "<Shop 1>","<Shop 2>"{,...};
+// Duplicate dummy data for any additional shops (bottom of script).
+// If no categories, use the second line instead (remove //).
+
+	//setarray .Shops$[1],"Headgears[O-Z]";
+	set .Shops$[5],"Headgears[S-U]";
+
+// Add(<shop number>,<reward ID>,<reward amount>,<Zeny cost>,<point cost>,
+// <required item ID>,<required item amount>{,...});
+// Shop number corresponds with order above (default is 1).
+// Note: Do NOT use a reward item more than once!
+
+// ---------------- S Hats ------------- //	
+		//	Sheila Hairnet
+	Add(5,5213,1,4000000,0,949,100,7063,10,2210,1,1059,70);
+		//	Shining Electric Bulb
+	Add(5,5310,1,2000000,0,5034,1,7327,5,640,20,954,100);
+		//	Shiny Wig
+	Add(5,5274,1,2000000,0,1021,100,980,2,982,1,10005,1,969,5);
+		//	Shower Cap
+	Add(5,5510,1,2000000,0,2227,1,975,2,982,2,7200,100);
+		//	Side Cap
+	Add(5,5535,1,2000000,0,5122,1,919,100,6022,2,983,2,981,2,747,50);
+		//	Silver Tiara
+	Add(5,5149,1,2000000,0,7754,1,2233,1,675,5,2294,1);
+		//	Sloth Hat
+	Add(5,5761,1,5000000,0,754,1,2213,1,919,200);
+		//	Small_Horn_Of_Devil
+	Add(5,18503,1,1000000,0,4045,1,4019,1,4027,1,4006,1,4030,1,4196,2,969,5);
+		//	Snake Head Hat
+	Add(5,5388,1,2000000,0,10006,1,926,100,936,20,979,1,4117,1);
+		//	Sniper Goggles
+	Add(5,5748,1,2000000,0,2274,1,2296,1,2225,1,993,100,980,5);
+		//	Solar Hat
+	Add(5,5450,1,5000000,0,724,10,7938,25);
+		//	Soul Ring
+	Add(5,5257,1,5000000,0,2254,1,2282,1,7064,100,969,5);
+		//	Spare_Card
+	Add(5,5536,1,1000000,0,4247,2,4009,2,4041,2,4015,2,4040,2,969,5);
+		//	Sting Hat
+	Add(5,5509,1,5000000,0,7004,200,997,50,7020,2,687,20,2615,1);
+		// Sunflower Hairpin
+	Add(5,5103,1,3000000,0,2253,1,5061,1,976,1,4091,1);
+
+	// ---------------- T Hats ------------- //
+		//	Tanigumi Girl Doll
+	Add(5,5526,1,5000000,0,634,5,2513,1,5061,1,7166,200,980,5,975,5);
+		//	Taurus Crown
+	Add(5,5550,1,5000000,0,2235,1,997,50,7106,100,7448,200,5066,1);
+		//	Taurus Diadem
+	Add(5,5549,1,5000000,0,5124,1,997,50,7106,100,7448,200,5072,1);
+		//	Tiger Mask
+	Add(5,5098,1,3000000,0,1029,10,2297,1,7267,50);
+		// Item ID# 5682 (Triangle_Rune_Cap)
+	Add(5,5682,1,5000000,0,5172,1,975,2,4042,1,7166,100,2226,1);
+		//	Tiraya Bonnet
+	Add(5,5395,1,5000000,0,983,5,978,5,5045,1,981,5);
+		//	Torch Cap
+	Add(5,5430,1,5000000,0,1133,1,2235,1,7122,200,724,20,7135,100,7097,100);
+		//	Twin Pompom by JB
+	Add(5,5384,1,2000000,0,5390,1,975,1);
+
+// ---------------- U Hats ------------- //
+		//	Umbrella Hat
+	Add(5,5316,1,5000000,0,2221,1,2227,1,6075,5,12020,50);
+	
+// --------------------------------------------------
+	for(set .@i,1; .@i<=getarraysize(.Shops$); set .@i,.@i+1)
+		npcshopdelitem "qshop"+.@i,909;
+	end;
+}
+
+// -------- Dummy data (duplicate as needed) --------
+-	shop	qshop5	-1,909:-1

@@ -1,0 +1,555 @@
+// Santa
+xmas,156,132,5	script	Santa	718,{
+	set .@name$, "[Santa]";
+	mes .@name$;
+	mes "Antonio and I have been fighting with each other, over the peace and stability of Christmas in WoonRO for a long time.";
+	mes "The word is out that he recruited many monsters to aid him in this year's Christmas to make sure his attempt to overthrow me will finally be successful!";
+	next;
+	mes .@name$;
+	mes "I decided to build a fort made up of the different materials to defend against Antonio and his army of monsters. But I do not have enough elves to finish it on time.";
+	next;
+	mes .@name$;
+	mes "Would you like to help me save Christmas?";
+	menu "Yes!", L_Accept, "No", L_Decline;
+
+	L_Accept:
+	next;
+	mes .@name$;
+	set .@total, $aco + $merch + $thief + $mage1 + $mage2 + $mage3 + $mage4 + $archer + $swordsman + $extended;
+	if (.@total >= 7000) {
+		mes "It looks like we already have all the materials we need.";
+		close;
+	}
+	mes "These are the materials that we still need to get:";
+	if ($aco < 1000) mes (1000-$aco)+" Used Iron Plate (Acolyte)";
+	if ($merch < 1000) mes (1000-$merch)+" Stone (Merchant)";
+	if ($thief < 1000) mes (1000-$thief)+" Stone Heart (Thief)";
+	if ($mage1 < 250) mes (250-$mage1)+" Barren Trunk (Mage)";
+	if ($mage2 < 250) mes (250-$mage2)+" Solid Trunk (Mage)";
+	if ($mage3 < 250) mes (250-$mage3)+" Fine grained trunk (Mage)";
+	if ($mage4 < 250) mes (250-$mage4)+" Trunk (Mage)";
+	if ($archer < 1000) mes (1000-$archer)+" Steel (Archer)";
+	if ($swordsman < 1000) mes (1000-$swordsman)+" Log (Swordsman)";
+	if ($extended < 1000) mes (1000-$extended)+" Iron (Extended/Novice)";
+	next;
+	mes .@name$;
+	switch(Class) {
+		default:
+			if (Class == 0) {
+				if ($extended < 1000) {
+					mes "Based on your class, we would like you to contribute as much Iron as possible.";
+				}
+				else {
+					mes "It seems the material collection goal for your class has been met.";
+					mes "We appreciate your willingness to help, though!";
+					close;
+				}
+				break;
+			}
+			mes "It seems the material collection goal for your class has been met.";
+			mes "We appreciate your willingness to help, though!";
+			close;
+
+		case 23:
+		case 24:
+		case 25:
+		case 4001:
+		case 4046:
+		case 4047:
+		case 4049:
+			if ($extended < 1000) {
+				mes "Based on your class, we would like you to contribute as much Iron as possible.";
+			}
+			else {
+				mes "It seems the material collection goal for your class has been met.";
+				mes "We appreciate your willingness to help, though!";
+				close;
+			}
+			break;
+		case 1:
+		case 7:
+		case 14:
+		case 4002:
+		case 4008:
+		case 4015:
+			if ($swordsman < 1000) {
+				mes "Based on your class, we would like you to contribute as many Logs as possible.";
+			}
+			else {
+				mes "It seems the material collection goal for your class has been met.";
+				mes "We appreciate your willingness to help, though!";
+				close;
+			}
+			break;
+		case 3:
+		case 11:
+		case 19:
+		case 20:
+		case 4004:
+		case 4012:
+		case 4020:
+		case 4021:
+			if ($archer < 1000) {
+				mes "Based on your class, we would like you to contribute as much Steel as possible.";
+			}
+			else {
+				mes "It seems the material collection goal for your class has been met.";
+				mes "We appreciate your willingness to help, though!";
+				close;
+			}
+			break;
+		case 2:
+		case 9:
+		case 16:
+		case 4003:
+		case 4010:
+		case 4017:
+			if ($mage1 < 250 || $mage2 < 250 || $mage3 < 250 || $mage4 < 250) {
+				mes "Based on your class, we would like you to contribute as much of the following materials as possible:";
+				if ($mage1 < 250) mes "Barren Trunk";
+				if ($mage2 < 250) mes "Solid Trunk";
+				if ($mage3 < 250) mes "Fine grained trunk";
+				if ($mage4 < 250) mes "Trunk";
+			}
+			else {
+				mes "It seems the material collection goal for your class has been met.";
+				mes "We appreciate your willingness to help, though!";
+				close;
+			}
+			break;
+		case 6:
+		case 12:
+		case 17:
+		case 4007:
+		case 4013:
+		case 4018:
+			if ($thief < 1000) {
+				mes "Based on your class, we would like you to contribute as much Stone Heart as possible.";
+			}
+			else {
+				mes "It seems the material collection goal for your class has been met.";
+				mes "We appreciate your willingness to help, though!";
+				close;
+			}
+			break;
+		case 5:
+		case 10:
+		case 18:
+		case 4006:
+		case 4011:
+		case 4019:
+			if ($merch < 1000) {
+				mes "Based on your class, we would like you to contribute as much Stone as possible.";
+			}
+			else {
+				mes "It seems the material collection goal for your class has been met.";
+				mes "We appreciate your willingness to help, though!";
+				close;
+			}
+			break;
+		case 4:
+		case 8:
+		case 15:
+		case 4005:
+		case 4016:
+		case 4009:
+			if ($aco < 1000) {
+				mes "Based on your class, we would like you to contribute as much Used Iron Plate as possible.";
+			}
+			else {
+				mes "It seems the material collection goal for your class has been met.";
+				mes "We appreciate your willingness to help, though!";
+				close;
+			}
+			break;	
+	}
+	next;
+	mes .@name$;
+	mes "You can hand in your contribution to the Elf Builder in Lutie.";
+	mes "Once again, your help is much appreciated!";
+	close;
+	
+	L_Decline:
+	next;
+	mes .@name$;
+	mes "I understand! Come back if you wish to help.";
+	close;
+}
+
+xmas,167,106,4	script	Elf Builder	75,{
+	set .@name$, "[Elf Builder]";
+	mes .@name$;
+	set .@total, $aco + $merch + $thief + $mage1 + $mage2 + $mage3 + $mage4 + $archer + $swordsman + $extended;
+	if (.@total >= 7000) {
+		mes "We're so grateful to the people of Woon.";
+		mes "Without them, we wouldn't be as prepared as we are today!";
+		close;
+	}
+	mes "Hello there! You must be the adventurer Mr. Claus asked me to see. Have you gotten the materials Mr. Claus asked for?";
+	if (select("Yes:No") == 2) {
+		next;
+		mes .@name$;
+		mes "That's a shame!";
+		mes "We need all the help we can get to save our beloved Lutie!";
+		close;
+	}
+	next;
+	mes .@name$;
+	mes "Great!";
+	mes "These are the materials that we still need to get:";
+	if ($aco < 1000) mes (1000-$aco)+" Used Iron Plate (Acolyte)";
+	if ($merch < 1000) mes (1000-$merch)+" Stone (Merchant)";
+	if ($thief < 1000) mes (1000-$thief)+" Stone Heart (Thief)";
+	if ($mage1 < 250) mes (250-$mage1)+" Barren Trunk (Mage)";
+	if ($mage2 < 250) mes (250-$mage2)+" Solid Trunk (Mage)";
+	if ($mage3 < 250) mes (250-$mage3)+" Fine grained trunk (Mage)";
+	if ($mage4 < 250) mes (250-$mage4)+" Trunk (Mage)";
+	if ($archer < 1000) mes (1000-$archer)+" Steel (Archer)";
+	if ($swordsman < 1000) mes (1000-$swordsman)+" Log (Swordsman)";
+	if ($extended < 1000) mes (1000-$extended)+" Iron (Extended/Novice)";
+	next;
+	mes .@name$;
+	switch(Class) {
+		default:
+			if (Class == 0) {
+				if ($extended < 1000) {
+					mes "For your class however we only ask that you donate some Iron!";
+					mes "Please let me know how much you would like to donate.";
+					input(.@donate,1,1000);
+					next;
+					mes .@name$;
+					if (countitem(998) < .@donate) {
+						mes "Oh, it seems like you don't have enough!";
+						mes "Please come back when you know how much you actually have!";
+						close;
+					}
+					mes "Thank you for your generous contribution.";
+					mes "Together, we will save Lutie!";
+					delitem 998, .@donate;
+					set $extended, $extended + .@donate;
+					if ($extended > 1000) set $extended, 1000;
+				}
+				else {
+					mes "It seems the material collection goal for your class has been met.";
+					mes "We appreciate your willingness to help, though!";
+					close;
+				}
+				break;
+			}
+			mes "It seems the material collection goal for your class has been met.";
+			mes "We appreciate your willingness to help, though!";
+			close;
+
+		case 23:
+		case 24:
+		case 25:
+		case 4001:
+		case 4046:
+		case 4047:
+		case 4049:
+				if ($extended < 1000) {
+					mes "For your class however we only ask that you donate some Iron!";
+					mes "Please let me know how much you would like to donate.";
+					input(.@donate,1,1000);
+					next;
+					mes .@name$;
+					if (countitem(998) < .@donate) {
+						mes "Oh, it seems like you don't have enough!";
+						mes "Please come back when you know how much you actually have!";
+						close;
+					}
+					mes "Thank you for your generous contribution.";
+					mes "Together, we will save Lutie!";
+					delitem 998, .@donate;
+					set $extended, $extended + .@donate;
+					if ($extended > 1000) set $extended, 1000;
+				}
+				else {
+					mes "It seems the material collection goal for your class has been met.";
+					mes "We appreciate your willingness to help, though!";
+					close;
+				}
+				break;
+		case 1:
+		case 7:
+		case 14:
+		case 4002:
+		case 4008:
+		case 4015:
+				if ($swordsman < 1000) {
+					mes "For your class however we only ask that you donate some Logs!";
+					mes "Please let me know how much you would like to donate.";
+					input(.@donate,1,1000);
+					next;
+					mes .@name$;
+					if (countitem(7201) < .@donate) {
+						mes "Oh, it seems like you don't have enough!";
+						mes "Please come back when you know how much you actually have!";
+						close;
+					}
+					mes "Thank you for your generous contribution.";
+					mes "Together, we will save Lutie!";
+					delitem 7201, .@donate;
+					set $swordsman, $swordsman + .@donate;
+					if ($swordsman > 1000) set $swordsman, 1000;
+				}
+				else {
+					mes "It seems the material collection goal for your class has been met.";
+					mes "We appreciate your willingness to help, though!";
+					close;
+				}
+				break;
+		case 3:
+		case 11:
+		case 19:
+		case 20:
+		case 4004:
+		case 4012:
+		case 4020:
+		case 4021:
+				if ($archer < 1000) {
+					mes "For your class however we only ask that you donate some Steel!";
+					mes "Please let me know how much you would like to donate.";
+					input(.@donate,1,1000);
+					next;
+					mes .@name$;
+					if (countitem(999) < .@donate) {
+						mes "Oh, it seems like you don't have enough!";
+						mes "Please come back when you know how much you actually have!";
+						close;
+					}
+					mes "Thank you for your generous contribution.";
+					mes "Together, we will save Lutie!";
+					delitem 999, .@donate;
+					set $archer, $archer + .@donate;
+					if ($archer > 1000) set $archer, 1000;
+				}
+				else {
+					mes "It seems the material collection goal for your class has been met.";
+					mes "We appreciate your willingness to help, though!";
+					close;
+				}
+				break;
+		case 2:
+		case 9:
+		case 16:
+		case 4003:
+		case 4010:
+		case 4017:
+			if ($mage1 < 250 || $mage2 < 250 || $mage3 < 250 || $mage4 < 250) {
+				mes "For your class however we only ask that you donate some:";
+				if ($mage1 < 250) mes "Barren Trunk";
+				if ($mage2 < 250) mes "Solid Trunk";
+				if ($mage3 < 250) mes "Fine grained trunk";
+				if ($mage4 < 250) mes "Trunk";
+				next;
+				mes .@name$;
+				mes "Would you like to donate?";
+				if (select("Yes:No") == 2) {
+					next;
+					mes .@name$;
+					mes "Understandable.";
+					mes "Not everyone is able to help!";
+					mes "I hope we still manage to obtain enough materials...";
+					close;
+				}
+				next;
+				mes .@name$;
+				if (($mage1 < 250 && countitem(1068) > 0) ||  ($mage2 < 250 && countitem(1067) > 0) || ($mage3 < 250 && countitem(1066) > 0) || ($mage4 < 250 && countitem(1019) > 0)) {
+					mes "Thanks a lot for your help!";
+					mes "We're closer to being prepared for the attack.";
+					set $mage1, $mage1 + countitem(1068);
+					if ($mage1 > 250) set $mage1, 250;
+					delitem 1068, countitem(1068);
+					set $mage2, $mage2 + countitem(1067);
+					if ($mage2 > 250) set $mage2, 250;
+					delitem 1067, countitem(1067);
+					set $mage3, $mage3 + countitem(1066);
+					if ($mage3 > 250) set $mage3, 250;
+					delitem 1066, countitem(1066);
+					set $mage4, $mage4 + countitem(1019);
+					if ($mage4 > 250) set $mage4, 250;
+					delitem 1019, countitem(1019);
+				}
+				else {
+					mes "It seems like you don't have any materials to donate.";
+					mes "Please come back after you've double checked!";
+					close;
+				}
+			}
+			else {
+				mes "It seems the material collection goal for your class has been met.";
+				mes "We appreciate your willingness to help, though!";
+				close;
+			}
+			break;
+		case 6:
+		case 12:
+		case 17:
+		case 4007:
+		case 4013:
+		case 4018:
+				if ($thief < 1000) {
+					mes "For your class however we only ask that you donate some Stone Hearts!";
+					mes "Please let me know how much you would like to donate.";
+					input(.@donate,1,1000);
+					next;
+					mes .@name$;
+					if (countitem(953) < .@donate) {
+						mes "Oh, it seems like you don't have enough!";
+						mes "Please come back when you know how much you actually have!";
+						close;
+					}
+					mes "Thank you for your generous contribution.";
+					mes "Together, we will save Lutie!";
+					delitem 953, .@donate;
+					set $thief, $thief + .@donate;
+					if ($thief > 1000) set $thief, 1000;
+				}
+				else {
+					mes "It seems the material collection goal for your class has been met.";
+					mes "We appreciate your willingness to help, though!";
+					close;
+				}
+				break;
+		case 5:
+		case 10:
+		case 18:
+		case 4006:
+		case 4011:
+		case 4019:
+				if ($merch < 1000) {
+					mes "For your class however we only ask that you donate some Stone!";
+					mes "Please let me know how much you would like to donate.";
+					input(.@donate,1,1000);
+					next;
+					mes .@name$;
+					if (countitem(7049) < .@donate) {
+						mes "Oh, it seems like you don't have enough!";
+						mes "Please come back when you know how much you actually have!";
+						close;
+					}
+					mes "Thank you for your generous contribution.";
+					mes "Together, we will save Lutie!";
+					delitem 7049, .@donate;
+					set $merch, $merch + .@donate;
+					if ($merch > 1000) set $merch, 1000;
+				}
+				else {
+					mes "It seems the material collection goal for your class has been met.";
+					mes "We appreciate your willingness to help, though!";
+					close;
+				}
+				break;
+		case 4:
+		case 8:
+		case 15:
+		case 4005:
+		case 4016:
+		case 4009:
+				if ($aco < 1000) {
+					mes "For your class however we only ask that you donate some Used Iron Plate!";
+					mes "Please let me know how much you would like to donate.";
+					input(.@donate,1,1000);
+					next;
+					mes .@name$;
+					if (countitem(7319) < .@donate) {
+						mes "Oh, it seems like you don't have enough!";
+						mes "Please come back when you know how much you actually have!";
+						close;
+					}
+					mes "Thank you for your generous contribution.";
+					mes "Together, we will save Lutie!";
+					delitem 7319, .@donate;
+					set $aco, $aco + .@donate;
+					if ($aco > 1000) set $aco, 1000;
+				}
+				else {
+					mes "It seems the material collection goal for your class has been met.";
+					mes "We appreciate your willingness to help, though!";
+					close;
+				}
+				break;
+			if ($aco < 1000) {
+				mes "Based on your class, we would like you to contribute as much Used Iron Plate as possible.";
+			}
+			else {
+				mes "It seems the material collection goal for your class has been met.";
+				mes "We appreciate your willingness to help, though!";
+				close;
+			}
+			break;	
+	}
+	set .@total, $aco + $merch + $thief + $mage1 + $mage2 + $mage3 + $mage4 + $archer + $swordsman + $extended;
+	if (.@total >= 7000) {
+		donpcevent strnpcinfo(0)+"::OnInvasion";
+		set .allow_reset, 1;
+		close;
+	}
+	close;
+
+	OnInit:
+	set .crystal_id, 6092; // id of the christmas crystals
+	end;
+
+	OnClock0600:
+	if (.allow_reset) {
+		set $aco, 0;
+		set $merch, 0;
+		set $thief, 0;
+		set $mage1, 0;
+		set $mage2, 0;
+		set $mage3, 0;
+		set $mage4, 0;
+		set $archer, 0;
+		set $swordsman, 0;
+		set $extended, 0;
+	}
+	set .allow_reset, 0;
+	end;
+
+	OnWhisperGlobal:
+	OnInvasion:
+	sleep 30000;
+	announce "Residents of Lutie: Here comes Antonio and his army of monsters!", bc_all;
+	sleep 5000;
+	announce "Residents of Lutie: Oh no, the fort is breaking! They're too strong! Help!", bc_all;
+	sleep 5000;
+	announce "Residents of Lutie: Prepare yourselves and come help defend Lutie!", bc_all;
+	sleep 3000;
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1443,0),1443,5,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1741,0),1741,5,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1607,0),1607,5,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1244,0),1244,5,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1588,0),1588,5,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1743,0),1743,5,strnpcinfo(0)+"::OnDeadMob";
+
+	areamonster "xmas",125,150,177,105,getmonsterinfo(2700,0),2700,1,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1515,0),1515,5,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(2221,0),2221,2,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(2222,0),2222,2,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(2223,0),2223,2,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(2224,0),2224,1,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(2225,0),2225,2,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(2226,0),2226,2,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(2227,0),2227,2,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1755,0),1755,3,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1219,0),1219,6,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1992,0),1992,6,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1993,0),1993,5,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1302,0),1302,5,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(2015,0),2015,6,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1720,0),1720,1,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1701,0),1701,2,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1707,0),1707,2,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1700,0),1700,2,strnpcinfo(0)+"::OnDeadMob";
+	areamonster "xmas",125,150,177,105,getmonsterinfo(1702,0),1702,2,strnpcinfo(0)+"::OnDeadMob";
+	end;
+
+	OnDeadMob:
+	if (rand(1,10) == 1)
+		getitem .crystal_id, 1;
+	end;
+}
+
+xmas	mapflag	monster_noteleport

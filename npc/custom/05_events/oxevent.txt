@@ -1,0 +1,538 @@
+quiz_02,250,366,4	script	OX Event	864,{
+
+	if(getgmlevel()<40) {
+		mes "[OX Event]";
+		mes "The rules of this event are quite easy. Just wait for the GM to ask a question.";
+		mes "Then pick if it's true ^ff0000O^000000";
+		mes "or if it's false ^0000ffX^000000.";
+		mes "You have 20 seconds to decide.";
+		close;
+	}
+	mes "[OX Event]";
+	mes "Please read how this event works before you start it.";
+	next;
+	switch(select("Ask Question:Start Event:End Event:How does this work?")) {
+		
+		case 1:
+		
+			if($OXEventOn!=1) {
+				mes "[OX Event]";
+				mes "Please start the event before asking questions.";
+				close;
+			}
+			mes "[OX Event]";
+			mes "Please type in your question. You have up to 4 lines.";
+			input @OX1$;
+			if(@OX1$=="Stop") {
+				mes "You have to enter atleast one line.";
+				close;
+			}
+			input @OX2$;
+			if(@OX2$=="Stop") goto L_TrueOrFalse;
+			input @OX3$;
+			if(@OX3$=="Stop") goto L_TrueOrFalse;
+			input @OX4$;
+			goto L_TrueOrFalse;
+		
+		case 2:
+			
+			mes "[OX Event]";
+			if($OXEventOn!=0) {
+				mes "The event is running already.";
+				close;
+			}
+			mes "Are you sure?";
+			switch(select("No:Yes")) {
+				
+				case 1:
+
+					close;
+				
+				case 2:
+
+					initnpctimer;
+					close;
+			
+			}
+			
+		case 3:
+			
+			mes "[OX Event]";
+			if($OXEventOn!=1) {
+				mes "The Event has not been started yet.";
+				close;
+			}
+			mes "Are you sure?";
+			switch(select("No:Yes")) {
+			
+				case 1:
+				
+					close;
+					
+				case 2:
+				
+					mapannounce "quiz_02","OX Event : Thank you for participating.",0;
+					mes "Please wait 3 seconds...";
+					sleep2 3000;
+					mapannounce "quiz_02","OX Event : You will be warped back to Prontera.",0;
+					mes "Please wait 3 seconds...";
+					sleep2 3000;
+					areawarp "quiz_02.gat",224,334,247,357,"prontera.gat",156,191;
+					areawarp "quiz_02.gat",252,334,275,357,"prontera.gat",156,191;
+					areawarp "quiz_02.gat",222,362,240,391,"prontera.gat",156,191;
+					areawarp "quiz_02.gat",240,367,259,391,"prontera.gat",156,191;
+					areawarp "quiz_02.gat",259,362,277,391,"prontera.gat",156,191;
+					set $OXEventOn,0;
+					close;
+			
+			}
+			
+		case 4:
+		
+			mes "[OX Event]";
+			mes "You will be able to ask your questions in up to 4 lines.";
+			mes "Enter ^FF0000Stop^000000 (Case Sensitive!) when you are done, so it only announces up to that line.";
+			mes "Example: If you enter ^FF0000Stop^000000 in the third line, the NPC will announce the first and second line.";
+			mes "Everybody outside either the GM area or the area of the correct answer will be warped to Prontera.";
+			mes "You have to hand out the rewards yourself.";
+			close;
+			
+	}
+	
+L_TrueOrFalse:
+	mes "Please select, if the statement is true or false.";
+	next;
+	switch(select("True:False:Cancel")) {
+		case 1:
+			mes "[OX Event]";
+			announce "OX Event : " + @OX1$ + "",1;
+			if(@OX2$=="Stop") goto L_AnnounceDoneTrue;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX2$ + "",1;
+			if(@OX3$=="Stop") goto L_AnnounceDoneTrue;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX4$ + "",1;
+			if(@OX4$=="Stop") goto L_AnnounceDoneTrue;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX4$ + "",1;
+			goto L_AnnounceDoneTrue;			
+		
+		case 2:
+			mes "[OX Event]";
+			announce "OX Event : " + @OX1$ + "",1;
+			if(@OX2$=="Stop") goto L_AnnounceDoneFalse;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX2$ + "",1;
+			if(@OX3$=="Stop") goto L_AnnounceDoneFalse;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX3$ + "",1;
+			if(@OX4$=="Stop") goto L_AnnounceDoneFalsee;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX4$ + "",1;
+			goto L_AnnounceDoneFalse;
+		
+		case 3:
+			close;
+	}
+	
+OnInit:
+
+	disablenpc "OEvent";
+	disablenpc "XEvent";
+	disablenpc "OXEvent";
+	setcell "quiz_02.gat",240,364,259,367,cell_walkable,0;
+	setcell "quiz_02.gat",241,264,258,366,cell_walkable,1;
+	end;
+
+OnTimer10:
+
+	announce "OX Event : The true or false event will start soon.",0;
+	end;
+	
+OnTimer10000:
+
+	announce "OX Event : Please make your way to the center of Prontera.",0;
+	end;
+	
+OnTimer20000:
+
+	announce "OX Event : The portal will close after one minute.",0;
+	end;
+	
+OnTimer30000:
+
+	announce "OX Event : Enter the warp portal now if you want to join.",0;
+	enablenpc "OXEvent";
+	end;
+	
+OnTimer60000:
+
+	announce "OX Event : Last 30 seconds.",0;
+	sleep2 5000;
+	announce "OX Event : Hurry to the center of Prontera if you want to join.",0;
+	end;
+	
+OnTimer80000:
+	
+	announce "OX Event : Last 10 seconds.",0;
+	end;
+	
+OnTimer85000:
+	
+	announce "OX Event : 5.",0;
+	end;
+	
+OnTimer86000:
+	
+	announce "OX Event : 4.",0;
+	end;
+	
+OnTimer87000:
+	
+	announce "OX Event : 3.",0;
+	end;
+	
+OnTimer88000:
+	
+	announce "OX Event : 2.",0;
+	end;
+	
+OnTimer89000:
+	
+	announce "OX Event : 1.",0;
+	end;
+	
+OnTimer90000:
+	
+	announce "OX Event : Time's up. Portal Will Open again when a GM activates it.",0;
+	disablenpc "OXEvent";
+	set $OXEventOn,1;
+	end;
+	
+L_AnnounceDoneTrue:
+	
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : True or False? You've got 20 seconds to decide.",1;
+			enablenpc "OEvent";
+			enablenpc "XEvent";
+			mes "Please wait 20 seconds...";
+			sleep2 20000;
+			disablenpc "OEvent";
+			disablenpc "XEvent";
+			announce "OX Event : Let's see if you were right...",1;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : The correct answer was TRUE! If you chose FALSE, you will be warped back to Prontera.",1;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			areawarp "quiz_02.gat",224,334,247,357,"quiz_02.gat",249,375;
+			areawarp "quiz_02.gat",252,334,275,357,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",222,362,240,391,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",240,367,259,391,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",259,362,277,391,"prontera.gat",156,191;
+			close;
+			
+L_AnnounceDoneFalse:
+
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : True or False? You've got 20 seconds to decide.",1;
+			enablenpc "OEvent";
+			enablenpc "XEvent";
+			mes "Please wait 20 seconds...";
+			sleep2 20000;
+			disablenpc "OEvent";
+			disablenpc "XEvent";
+			announce "OX Event : Let's see if you were right...",1;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : The correct answer was FALSE! If you chose TRUE, you will be warped back to Prontera.",1;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			areawarp "quiz_02.gat",224,334,247,357,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",252,334,275,357,"quiz_02.gat",249,375;
+			areawarp "quiz_02.gat",222,362,240,391,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",240,367,259,391,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",259,362,277,391,"prontera.gat",156,191;
+			close;
+}
+
+quiz_02,237,364,0	warp	OEvent	2,2,quiz_02,236,345
+quiz_02,262,364,0	warp	XEvent	2,2,quiz_02,263,345
+prontera,144,188,0	warp	OXEvent	2,2,quiz_02,249,375
+quiz_02,250,366,4	script	OX Event	864,{
+
+	if(getgmlevel()<40) {
+		mes "[OX Event]";
+		mes "The rules of this event are quite easy. Just wait for the GM to ask a question.";
+		mes "Then pick if it's true ^ff0000O^000000";
+		mes "or if it's false ^0000ffX^000000.";
+		mes "You have 20 seconds to decide.";
+		close;
+	}
+	mes "[OX Event]";
+	mes "Please read how this event works before you start it.";
+	next;
+	switch(select("Ask Question:Start Event:End Event:How does this work?")) {
+		
+		case 1:
+		
+			if($OXEventOn!=1) {
+				mes "[OX Event]";
+				mes "Please start the event before asking questions.";
+				close;
+			}
+			mes "[OX Event]";
+			mes "Please type in your question. You have up to 4 lines.";
+			input @OX1$;
+			if(@OX1$=="Stop") {
+				mes "You have to enter atleast one line.";
+				close;
+			}
+			input @OX2$;
+			if(@OX2$=="Stop") goto L_TrueOrFalse;
+			input @OX3$;
+			if(@OX3$=="Stop") goto L_TrueOrFalse;
+			input @OX4$;
+			goto L_TrueOrFalse;
+		
+		case 2:
+			
+			mes "[OX Event]";
+			if($OXEventOn!=0) {
+				mes "The event is running already.";
+				close;
+			}
+			mes "Are you sure?";
+			switch(select("No:Yes")) {
+				
+				case 1:
+
+					close;
+				
+				case 2:
+
+					initnpctimer;
+					close;
+			
+			}
+			
+		case 3:
+			
+			mes "[OX Event]";
+			if($OXEventOn!=1) {
+				mes "The Event has not been started yet.";
+				close;
+			}
+			mes "Are you sure?";
+			switch(select("No:Yes")) {
+			
+				case 1:
+				
+					close;
+					
+				case 2:
+				
+					mapannounce "quiz_02","OX Event : Thank you for participating.",0;
+					mes "Please wait 3 seconds...";
+					sleep2 3000;
+					mapannounce "quiz_02","OX Event : You will be warped back to Prontera.",0;
+					mes "Please wait 3 seconds...";
+					sleep2 3000;
+					areawarp "quiz_02.gat",224,334,247,357,"prontera.gat",156,191;
+					areawarp "quiz_02.gat",252,334,275,357,"prontera.gat",156,191;
+					areawarp "quiz_02.gat",222,362,240,391,"prontera.gat",156,191;
+					areawarp "quiz_02.gat",240,367,259,391,"prontera.gat",156,191;
+					areawarp "quiz_02.gat",259,362,277,391,"prontera.gat",156,191;
+					set $OXEventOn,0;
+					close;
+			
+			}
+			
+		case 4:
+		
+			mes "[OX Event]";
+			mes "You will be able to ask your questions in up to 4 lines.";
+			mes "Enter ^FF0000Stop^000000 (Case Sensitive!) when you are done, so it only announces up to that line.";
+			mes "Example: If you enter ^FF0000Stop^000000 in the third line, the NPC will announce the first and second line.";
+			mes "Everybody outside either the GM area or the area of the correct answer will be warped to Prontera.";
+			mes "You have to hand out the rewards yourself.";
+			close;
+			
+	}
+	
+L_TrueOrFalse:
+	mes "Please select, if the statement is true or false.";
+	next;
+	switch(select("True:False:Cancel")) {
+		case 1:
+			mes "[OX Event]";
+			announce "OX Event : " + @OX1$ + "",1;
+			if(@OX2$=="Stop") goto L_AnnounceDoneTrue;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX2$ + "",1;
+			if(@OX3$=="Stop") goto L_AnnounceDoneTrue;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX4$ + "",1;
+			if(@OX4$=="Stop") goto L_AnnounceDoneTrue;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX4$ + "",1;
+			goto L_AnnounceDoneTrue;			
+		
+		case 2:
+			mes "[OX Event]";
+			announce "OX Event : " + @OX1$ + "",1;
+			if(@OX2$=="Stop") goto L_AnnounceDoneFalse;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX2$ + "",1;
+			if(@OX3$=="Stop") goto L_AnnounceDoneFalse;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX3$ + "",1;
+			if(@OX4$=="Stop") goto L_AnnounceDoneFalsee;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : " + @OX4$ + "",1;
+			goto L_AnnounceDoneFalse;
+		
+		case 3:
+			close;
+	}
+	
+OnInit:
+
+	disablenpc "OEvent";
+	disablenpc "XEvent";
+	disablenpc "OXEvent";
+	setcell "quiz_02.gat",240,364,259,367,cell_walkable,0;
+	setcell "quiz_02.gat",241,264,258,366,cell_walkable,1;
+	end;
+
+OnTimer10:
+
+	announce "OX Event : The true or false event will start soon.",0;
+	end;
+	
+OnTimer10000:
+
+	announce "OX Event : Please make your way to the center of Prontera.",0;
+	end;
+	
+OnTimer20000:
+
+	announce "OX Event : The portal will close after one minute.",0;
+	end;
+	
+OnTimer30000:
+
+	announce "OX Event : Enter the warp portal now if you want to join.",0;
+	enablenpc "OXEvent";
+	end;
+	
+OnTimer60000:
+
+	announce "OX Event : Last 30 seconds.",0;
+	sleep2 5000;
+	announce "OX Event : Hurry to the center of Prontera if you want to join.",0;
+	end;
+	
+OnTimer80000:
+	
+	announce "OX Event : Last 10 seconds.",0;
+	end;
+	
+OnTimer85000:
+	
+	announce "OX Event : 5.",0;
+	end;
+	
+OnTimer86000:
+	
+	announce "OX Event : 4.",0;
+	end;
+	
+OnTimer87000:
+	
+	announce "OX Event : 3.",0;
+	end;
+	
+OnTimer88000:
+	
+	announce "OX Event : 2.",0;
+	end;
+	
+OnTimer89000:
+	
+	announce "OX Event : 1.",0;
+	end;
+	
+OnTimer90000:
+	
+	announce "OX Event : Time's up. Portal Will Open again when a GM activates it.",0;
+	disablenpc "OXEvent";
+	set $OXEventOn,1;
+	end;
+	
+L_AnnounceDoneTrue:
+	
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : True or False? You've got 20 seconds to decide.",1;
+			enablenpc "OEvent";
+			enablenpc "XEvent";
+			mes "Please wait 20 seconds...";
+			sleep2 20000;
+			disablenpc "OEvent";
+			disablenpc "XEvent";
+			announce "OX Event : Let's see if you were right...",1;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : The correct answer was TRUE! If you chose FALSE, you will be warped back to Prontera.",1;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			areawarp "quiz_02.gat",224,334,247,357,"quiz_02.gat",249,375;
+			areawarp "quiz_02.gat",252,334,275,357,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",222,362,240,391,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",240,367,259,391,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",259,362,277,391,"prontera.gat",156,191;
+			close;
+			
+L_AnnounceDoneFalse:
+
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : True or False? You've got 20 seconds to decide.",1;
+			enablenpc "OEvent";
+			enablenpc "XEvent";
+			mes "Please wait 20 seconds...";
+			sleep2 20000;
+			disablenpc "OEvent";
+			disablenpc "XEvent";
+			announce "OX Event : Let's see if you were right...",1;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			announce "OX Event : The correct answer was FALSE! If you chose TRUE, you will be warped back to Prontera.",1;
+			mes "Please wait 3 seconds...";
+			sleep2 3000;
+			areawarp "quiz_02.gat",224,334,247,357,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",252,334,275,357,"quiz_02.gat",249,375;
+			areawarp "quiz_02.gat",222,362,240,391,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",240,367,259,391,"prontera.gat",156,191;
+			areawarp "quiz_02.gat",259,362,277,391,"prontera.gat",156,191;
+			close;
+}
+
+quiz_02,237,364,0	warp	OEvent	2,2,quiz_02,236,345
+quiz_02,262,364,0	warp	XEvent	2,2,quiz_02,263,345
+prontera,144,188,0	warp	OXEvent	2,2,quiz_02,249,375

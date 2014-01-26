@@ -1,0 +1,101 @@
+// Pet Additional Database - Custom Pets
+//
+// Structure of Database:
+// MobID,Name,JName,LureID,EggID,EquipID,FoodID,Fullness,HungryDelay,R_Hungry,R_Full,Intimate,Die,Capture,Speed,S_Performance,talk_convert_class,attack_rate,defence_attack_rate,change_target_rate,pet_script,loyal_script
+//
+// 01. MobID			Monster ID of the pet.
+// 02. Name			Name of the monster as defined in the database.
+// 03. JName			The display name of the monster when hatched.
+// 04. LureID			Pet Tame Item ID.
+// 05. EggID			Pet Egg ID.
+// 06. EquipID			Pet Accessory ID.
+// 07. FoodID			Pet Food ID.
+// 08. Fullness			The amount Hunger is decreased every [HungryDelay] seconds.
+// 09. HungryDelay		The amount of time it takes for hunger to decrease after feeding. (Default: 60 seconds)
+// 10. R_Hungry			Amount of Intimacy that is increased when fed.
+// 11. R_Full			Amount of Intimacy that is decreased when over-fed.
+// 12. Intimate			Amount of Intimacy the pet starts with.
+// 13. Die			Amount of Intimacy that is decreased when the pet owner dies.
+// 14. Capture			Capture succes rate (10000 = 100%)
+// 15. Speed			Pet's walk speed. (Defaul: 150)
+// 16. S_Performance		Special Performance. (Yes = 1, No = 0)
+// 17. talk_convert_class	Disables pet talk (instead of talking they emote  with /!.)
+// 18. attack_rate			Rate of which the pet will attack (requires at least pet_support_min_friendly intimacy).
+// 19. defence_attack_rate	Rate of which the pet will retaliate when master is being attacked (requires at least pet_support_min_friendly intimacy).
+// 20. change_target_rate	Rate of which the pet will change its attack target.
+// 21. pet_script		Script to execute when the pet is hatched.
+// 22. loyal_script		Script to execute when the pet is hatched (requires at least pet_equip_min_friendly intimacy, independent of pet_script).
+//NOTE: The max value (100%) of attack_rate, defense_rate & change_target_rate is 10000.
+
+//In theory you can use any valid script, but it is run only once upon pet
+//loading, so it is recommended you use the specific pet scripts:
+
+//petskillattack skillid, skilllv, rate, bonusrate
+//Skill attack that triggers while the pet is attacking. Rate is the base
+//chance of execution per attack. Bonusrate is an additional success rate when
+//intimacy reaches max.
+
+//petskillattack2 skillid, damage, hits, rate, bonusrate
+//Same as petskillattack, but the damage and number of hits is fixed
+//the damage specified is total, not per hit.
+
+//petskillsupport skillid, skilllv, delay, hp%, sp%
+//Casts a support skill when the health levels are below the specified hp% and
+//sp%. Delay is the minimum time in seconds before the skill can be cast again
+
+//petheal amount, delay, hp%, sp%
+//Similar to petskillsupport, but the skill is fixed to heal (28) and the
+//heal-amount is fixed to the value given.
+
+//petrecovery type, delay: Cures the "type" status effect after "delay" seconds
+
+//petskillbonus type, value, duration, delay
+//Gives bonus stats. Type is the stat to increase (bStr, bLuk), value is the
+//amount by which it is increased, duration signals how long the bonus lasts
+//delay is the time elapsed after the bonus ends and before it starts again.
+
+//A single pet can have petloot, petskillbonus, petskillattack (or
+//petskillattack2) and petskillsupport (or petheal) at the same time,
+//but only one of each.
+
+//Custom Pet's Egg [Kichi]
+1013,WOLF,Wolf,0,9100,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bAtk,10; bonus bDef,-3; }
+1175,TAROU,Tarou,0,9101,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{  bonus bLuk,2; bonus bCritical,1;  }
+1180,NINE_TAILS,Nine Tails,0,9102,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bInt,1; bonus bCastrate,-3; }
+1216,WILD_ROSE,Wild Rose,0,9103,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bInt,1; bonus bCastrate,-3; }
+1242,MARIN,Marin,0,9104,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bLuk,2; bonus bCritical,1; }
+1245,GOBLINE_XMAS,Christmas Goblin,0,9105,0,537,80,60,50,100,250,0,2000,150,0,0,300,300,800,{ petskillattack "MG_SIGHT",5,5,5; },{ bonus bMaxHP,30; bonus2 bSubEle,Ele_Water,1; }
+1249,MYST_CASE,Myst Case,0,9106,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMaxSPRate,5; }
+1250,CHEPET,Chepet,0,9107,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMaxHPRate,3; bonus3 bAutoSpellWhenHit,"AL_HEAL",1,50; }
+1317,SEAL,Seal,0,9108,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bStr,1; bonus bDex,1;  }
+1376,HARPY,Harpy,0,9109,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bStr,1; bonus bDex,1; }
+1391,GALAPAGO,Galapago,0,9110,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMaxHPRate,3; bonus3 bAutoSpellWhenHit,"AL_HEAL",1,50; }
+1390,VIOLY,Violy,0,9111,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMdef,1; bonus2 bSubRace,RC_DemiHuman,1; }
+1408,BLOODY_BUTTERFLY,Bloody Butterfly,0,9112,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMdef,1; bonus2 bSubRace,RC_DemiHuman,1; }
+1415,BABY_LEOPARD,Baby Leopard,0,9113,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bDef,1; bonus2 bSubRace,RC_DemiHuman,1; }
+1493,DRYAD,Dryad,0,9114,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMdef,1; bonus2 bSubRace,RC_DemiHuman,1; }
+1497,PIAMETTE,Piamette,0,9115,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus2 bAddRace,RC_Demihuman,2; bonus2 bMagicAddRace,RC_DemiHuman,2; }
+1510,HYLOZOIST,Hylozoist,0,9116,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bInt,1; bonus bCastrate,-3; }
+1512,HYEGUN,Hyegun,0,9117,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{bonus bDef,1; bonus2 bSubRace,RC_DemiHuman,1; }
+1517,JING_GUAI,Jing Guai,0,9118,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bAtk,10; bonus bDef,-3; }
+1613,METALING,Metaling,0,9119,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMaxHP,150; bonus bMaxSP,-10; }
+1622,TEDDY_BEAR,Teddy Bear,0,9120,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bDef,1; bonus2 bSubRace,RC_DemiHuman,1;  }
+1686,ORC_BABY,Orc Baby,0,9121,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bAtk,10; bonus bDef,-3; }
+1735,ALICEL,Alicel,0,9122,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bLuk,2; bonus bCritical,1; }
+1746,ALIZA,Aliza,0,9123,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{  bonus bMdef,1; bonus2 bSubRace,RC_DemiHuman,1; }
+1784,STAPO,Stapo,0,9124,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMaxHP,150; bonus bMaxSP,-10; }
+1836,MAGMARING,Magmaring,0,9125,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus2 bSubEle,Ele_Fire,3;  }
+1884,MAVKA,Mavka,0,9126,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMdef,1; bonus2 bSubRace,RC_DemiHuman,1; }
+1932,GARDEN_KEEPER,Garden Keeper,0,9127,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMaxHPRate,3; bonus3 bAutoSpellWhenHit,"AL_HEAL",1,50; }
+1989,HILLSLION,Hillslion,0,9128,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMaxHPRate,3; bonus3 bAutoSpellWhenHit,"AL_HEAL",1,50;  }
+2013,DRACO,Draco,0,9129,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bAtk,10; bonus bDef,-3; }
+2021,PHYLLA,Phylla,0,9130,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{bonus bInt,1; bonus bCastrate,-3;  }
+2016,AQUA_ELEMENTAL,Aqua Elemental,0,9131,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMaxHPRate,3; }
+2069,IARA,Iara,0,9132,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bInt,1; bonus bCastrate,-3; }
+2073,TOUCAN,Toucan,0,9133,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bDef,1; bonus2 bSubRace,RC_DemiHuman,1; }
+2020,RYNCHO,Chepet,0,9134,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bMaxHPRate,3; bonus3 bAutoSpellWhenHit,"AL_HEAL",1,50; }
+2204,SEDORA,Sedora,0,9135,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bDef,1; bonus2 bSubRace,RC_DemiHuman,1;  }
+
+1127,SEDORA,Sedora,0,9136,0,537,80,60,50,100,250,10,2000,100,1,0,350,400,800,{ petloot 10; },{ bonus bDef,1; bonus2 bSubRace,RC_DemiHuman,1;  }
+
+

@@ -1,0 +1,218 @@
+// Registration NPC
+// *********************************************************************
+-	script	BG_Register	-1,{
+	if( getvariableofnpc(.Ready,"BG_Queue_Join") == 0 )
+		donpcevent "BG_Queue_Join::OnInit";
+	cutin "ein_soldier",2;
+
+	if (Class < 7 || (Class > 4000 && Class < 4008) || (Class > 4022 && Class < 4030)) {
+		mes "[^FFA500Battle Recruiter^000000]";
+		mes "I'm sorry, your class is not permitted to join the battlegrounds.";
+		cutin "ein_soldier",255;
+		close;
+	}
+	else if( BaseLevel < 98 ){
+		mes "[^FFA500Battle Recruiter^000000]";
+		mes "The minimum required level to join battlegrounds is 98.";
+		cutin "ein_soldier",255;
+		close;
+	}
+
+	mes "[^FFA500Battle Recruiter^000000]";
+	mes "This is the Battleground Information and Registration service.";
+	mes "What do you want to do?";
+	next;
+	switch( select("^FFA500Battleground Arenas^000000:^0000FFFree For All Arena^000000:Warp to Battle Room") )
+	{
+	case 1:
+		mes "[^FFA500Battle Recruiter^000000]";
+		mes "Battlegrounds Arena are different kinds of games where Teams fight for victory.";
+		mes "What do you want to do?";
+		next;
+		switch( select("Register:Leave Queue:Battlegrounds Guide") )
+		{
+		case 1:
+			if (Class < 7 || (Class > 4000 && Class < 4008) || (Class > 4022 && Class < 4030)) {
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "I'm sorry, your class is not permitted to join.";
+				cutin "ein_soldier",255;
+				close;
+			}			
+			if( BaseLevel < 90 )
+			{
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "Min required level to join a battleground is 90.";
+				cutin "ein_soldier",255;
+				close;
+			}
+			//if( checkquest(8506,PLAYTIME) == 2 )
+			//	erasequest 8506;
+			//if( checkquest(8506,PLAYTIME) != -1 )
+			
+		if(knowledgeable == 0){
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "Remember by AFKing or leaving the battlegrounds in any method will result to a ^FF0000temporary^000000 ban in battlegrounds!";
+				next;
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "Also, be responsible enough to use @leader to transfer leadership when necessary/being asked by your teammates.";
+				mes "Type ^FF0000I agree^000000 to continue";
+				input .understood$;
+				if((.understood$ == "i agree") || (.understood$ == "I agree")){
+					next;
+					mes "[^FFA500Battle Recruiter^000000]";
+					mes "Let's proceed with the registration...";
+					mes "You must wait on any City until BG starts.";
+					mes "Close this window to continue...";
+					cutin "ein_soldier",255;
+					set knowledgeable, 1;
+					close2;
+					set #Current_BG , $@Current_Arena;
+					bg_queue_join getvariableofnpc(.BG_Queue,"BG_Queue_Join");
+					end;
+				}
+				else{
+					next;
+					mes "[^FFA500Battle Recruiter^000000]";
+					mes "Sorry, you can't join the battlegrounds.";
+					close;
+					end;
+				}
+		}
+		else{
+					mes "[^FFA500Battle Recruiter^000000]";
+					mes "Let's proceed with the registration...";
+					mes "You must wait on any City until BG starts.";
+					mes "Close this window to continue...";
+					cutin "ein_soldier",255;
+					close2;
+					set #Current_BG , $@Current_Arena;
+					bg_queue_join getvariableofnpc(.BG_Queue,"BG_Queue_Join");
+					end;
+		}
+			break;
+		//case 2:
+		//	if( getcharid(1) == 0 )
+		//	{
+		//		mes "[^FFA500Battle Recruiter^000000]";
+		//		mes "You are not on a Party.";
+		//		close;
+		//	}
+
+		//	mes "[^FFA500Battle Recruiter^000000]";
+		//	mes "Let's proceed with the registration...";
+		//	mes "You must wait on any City until BG starts.";
+		//	mes "Close this window to continue...";
+		//	close2;
+		//	bg_queue_partyjoin getcharid(1),getvariableofnpc(.BG_Queue,"BG_Queue_Join");
+		//	end;
+		case 2:
+			mes "[^FFA500Battle Recruiter^000000]";
+			mes "Close this window to continue...";
+			cutin "ein_soldier",255;
+			close2;
+			bg_queue_leave getvariableofnpc(.BG_Queue,"BG_Queue_Join");
+			end;
+		case 3:
+			mes "[^FFA500Battle Recruiter^000000]";
+			mes "Which among the Battlegrounds option are you in need of guidance?";
+			next;
+			switch( select("Conquest:Rush") )
+			{
+			case 1:
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "If you are Attacking, destroy the enemy defenses and their castle emperium.";
+				next;
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "It is a must to know how to use ^0000FF@leader^000000 to transfer guild leadership and use guild skill ^0000FFEmergency Call^000000 at the right times.";
+				next;
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "If you are Defending, protect your castle emperium by using the flags to warp to defense points.";
+				next;
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "Disrupting the enemy team by guarding the stones or castle walls.";
+				break;
+			case 2:
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "Both teams will fight to capture the Castle by destroying the emperium.";
+				next;
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "If you fail on the first capture, kill the defender and take it for your team.";
+				break;
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "A point is earned every time a capture is done.";
+				break;
+			}
+			next;
+			mes "[^FFA500Battle Recruiter^000000]";
+			mes "Remember by AFKing or leaving the battlegrounds in any method will result to a ^FF0000temporary^000000 10 minute ban!";
+			break;
+		}
+		cutin "ein_soldier",255;
+		close;
+	case 2:
+		mes "[^FFA500Battle Recruiter^000000]";
+		mes "Free For All Arena is a Duel between 10 players with No Teams.";
+		mes "The target is to kill 25 players.";
+		mes "What do you want to do?";
+		next;
+		switch( select("Register:Leave Queue") )
+		{
+		case 1:
+			if( BaseLevel < 80 )
+			{
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "Min required level to join a battleground is 80.";
+				close;
+			}
+			if( checkquest(8506,PLAYTIME) == 2 )
+				erasequest 8506;
+			if( checkquest(8506,PLAYTIME) != -1 )
+			{
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "You are a Deserter. You can't participate until the indicator goes off";
+				cutin "ein_soldier",255;
+				close;
+			}
+
+			mes "[^FFA500Battle Recruiter^000000]";
+			mes "Let's proceed with the registration...";
+			mes "You must wait on any City until BG starts.";
+			mes "Close this window to continue...";
+			cutin "ein_soldier",255;
+			close2;
+			bg_queue_join getvariableofnpc(.VS_Queue,"BG_Queue_Join");
+			end;
+		case 2:
+			mes "[^FFA500Battle Recruiter^000000]";
+			mes "If you are registered, you will be removed.";
+			mes "Are you sure?";
+			next;
+			if( select("Yes, leave queue:No, I will stay") == 2 )
+			{
+				mes "[^FFA500Battle Recruiter^000000]";
+				mes "Ok, nothing to change.";
+				cutin "ein_soldier",255;
+				close;
+			}
+
+			mes "[^FFA500Battle Recruiter^000000]";
+			mes "Close this window to continue...";
+			cutin "ein_soldier",255;
+			close2;
+			bg_queue_leave getvariableofnpc(.VS_Queue,"BG_Queue_Join");
+			end;
+		}
+		break;
+	case 3:
+		mes "[^FFA500Battle Recruiter^000000]";
+		mes "May the War God bless you.";
+		cutin "ein_soldier",255;
+		close2;
+		warp "bat_room",155,150;
+		end;
+	}
+	end;
+}
+
+bat_room,160,150,3	duplicate(BG_Register)	Battle Recruiter#bat	852
+prontera,147,175,6	duplicate(BG_Register)	Battle Recruiter#prt	852

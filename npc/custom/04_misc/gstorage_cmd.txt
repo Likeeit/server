@@ -1,0 +1,25 @@
+-	script	GuildStorageCommand	-1,{
+	OnInit:
+	setarray .map$[0], "alde_gld", "aru_gld", "gef_fild13", "pay_gld", "prt_gld", "sch_gld", "prt_in", "cmd_in02";
+	bindatcmd ("gstorage", strnpcinfo(0)+"::OnOpenGStorage");
+	bindatcmd ("guildstorage", strnpcinfo(0)+"::OnOpenGStorage"); // comment out if you wish to keep the official @guildstorage command the way it is.
+	end;
+	
+	OnOpenGStorage:
+	if (!getcharid(2)) {
+	message strcharinfo(0), "You must be in a guild in order to use this command!";
+	end;
+	}
+	for (set .@i, 0; .@i < getarraysize(.map$); set .@i,.@i+1) {
+	if (getmapflag(strcharinfo(3), mf_town) || strcharinfo(3) == .map$[.@i])
+		break;
+	else if (.@i != getarraysize(.map$)-1)
+		continue;
+	else {
+	message strcharinfo(0), "Command not usable on this map!";
+	end;
+	}
+	}
+	callfunc "F_KafStor",1,0;
+	end;
+}

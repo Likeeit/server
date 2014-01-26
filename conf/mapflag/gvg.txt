@@ -1,0 +1,233 @@
+//===== eAthena Script =======================================
+//= GvG On Map Flags
+//===== By: ==================================================
+//= eAthena Dev Team
+//===== Current Version: =====================================
+//= 1.2
+//===== Description: =========================================
+//= gvg: Turns on GvG mode (same as PvP except Guilds are
+//=      automatically allied)
+//= gvg_castle: Describes castle maps for WoE.
+//===== Additional Comments: =================================
+//= 1.2 Updated with new meanings of gvg and gvg_castle
+//= 1.1 Added Novice Guild Castles
+//============================================================
+
+// GvG Arenas =============
+guild_vs1	mapflag	gvg
+//guild_vs2	mapflag	gvg
+//guild_vs3	mapflag	gvg
+//guild_vs4	mapflag	gvg
+//guild_vs5	mapflag	gvg
+
+// Guild Castles ==========
+aldeg_cas01	mapflag	gvg_castle
+aldeg_cas02	mapflag	gvg_castle
+aldeg_cas03	mapflag	gvg_castle
+aldeg_cas04	mapflag	gvg_castle
+aldeg_cas05	mapflag	gvg_castle
+gefg_cas01	mapflag	gvg_castle
+gefg_cas02	mapflag	gvg_castle
+gefg_cas03	mapflag	gvg_castle
+gefg_cas04	mapflag	gvg_castle
+gefg_cas05	mapflag	gvg_castle
+payg_cas01	mapflag	gvg_castle
+payg_cas02	mapflag	gvg_castle
+payg_cas03	mapflag	gvg_castle
+payg_cas04	mapflag	gvg_castle
+payg_cas05	mapflag	gvg_castle
+prtg_cas01	mapflag	gvg_castle
+prtg_cas02	mapflag	gvg_castle
+prtg_cas03	mapflag	gvg_castle
+prtg_cas04	mapflag	gvg_castle
+prtg_cas05	mapflag	gvg_castle
+schg_cas01	mapflag	gvg_castle
+schg_cas02	mapflag	gvg_castle
+schg_cas03	mapflag	gvg_castle
+schg_cas04	mapflag	gvg_castle
+schg_cas05	mapflag	gvg_castle
+arug_cas01	mapflag	gvg_castle
+arug_cas02	mapflag	gvg_castle
+arug_cas03	mapflag	gvg_castle
+arug_cas04	mapflag	gvg_castle
+arug_cas05	mapflag	gvg_castle
+
+//Uncomment to disable monsters teleporting (prevents them from "escaping" when rude attacked)
+//aldeg_cas01	mapflag	monster_noteleport
+//aldeg_cas02	mapflag	monster_noteleport
+//aldeg_cas03	mapflag	monster_noteleport
+//aldeg_cas04	mapflag	monster_noteleport
+//aldeg_cas05	mapflag	monster_noteleport
+//gefg_cas01	mapflag	monster_noteleport
+//gefg_cas02	mapflag	monster_noteleport
+//gefg_cas03	mapflag	monster_noteleport
+//gefg_cas04	mapflag	monster_noteleport
+//gefg_cas05	mapflag	monster_noteleport
+//payg_cas01	mapflag	monster_noteleport
+//payg_cas02	mapflag	monster_noteleport
+//payg_cas03	mapflag	monster_noteleport
+//payg_cas04	mapflag	monster_noteleport
+//payg_cas05	mapflag	monster_noteleport
+//prtg_cas01	mapflag	monster_noteleport
+//prtg_cas02	mapflag	monster_noteleport
+//prtg_cas03	mapflag	monster_noteleport
+//prtg_cas04	mapflag	monster_noteleport
+//prtg_cas05	mapflag	monster_noteleport
+//schg_cas01	mapflag	monster_noteleport
+//schg_cas02	mapflag	monster_noteleport
+//schg_cas03	mapflag	monster_noteleport
+//schg_cas04	mapflag	monster_noteleport
+//schg_cas05	mapflag	monster_noteleport
+//arug_cas01	mapflag	monster_noteleport
+//arug_cas02	mapflag	monster_noteleport
+//arug_cas03	mapflag	monster_noteleport
+//arug_cas04	mapflag	monster_noteleport
+//arug_cas05	mapflag	monster_noteleport
+
+// Novice Guild Castles ===
+//n_castle	mapflag	gvg_castle
+nguild_alde	mapflag	gvg_castle
+nguild_gef	mapflag	gvg_castle
+nguild_pay	mapflag	gvg_castle
+nguild_prt	mapflag	gvg_castle
+
+//nguild_alde	mapflag	monster_noteleport
+//nguild_gef	mapflag	monster_noteleport
+//nguild_pay	mapflag	monster_noteleport
+//nguild_prt	mapflag	monster_noteleport
+
+// Guild Dungeons =========
+gld_dun01	mapflag	gvg_dungeon
+gld_dun02	mapflag	gvg_dungeon
+gld_dun03	mapflag	gvg_dungeon
+gld_dun04	mapflag	gvg_dungeon
+
+arug_dun01	mapflag	gvg_dungeon
+schg_dun01	mapflag	gvg_dungeon
+
+
+// Storage disabled =======
+
+// GvG Arenas =============
+//guild_vs1	mapflag	nostorage
+//guild_vs2	mapflag	nostorage
+//guild_vs3	mapflag	nostorage
+//guild_vs4	mapflag	nostorage
+//guild_vs5	mapflag	nostorage
+
+// Guild Castles ==========
+aldeg_cas01	mapflag	nostorage
+aldeg_cas02	mapflag	nostorage
+aldeg_cas03	mapflag	nostorage
+aldeg_cas04	mapflag	nostorage
+aldeg_cas05	mapflag	nostorage
+gefg_cas01	mapflag	nostorage
+gefg_cas02	mapflag	nostorage
+gefg_cas03	mapflag	nostorage
+gefg_cas04	mapflag	nostorage
+gefg_cas05	mapflag	nostorage
+payg_cas01	mapflag	nostorage
+payg_cas02	mapflag	nostorage
+payg_cas03	mapflag	nostorage
+payg_cas04	mapflag	nostorage
+payg_cas05	mapflag	nostorage
+prtg_cas01	mapflag	nostorage
+prtg_cas02	mapflag	nostorage
+prtg_cas03	mapflag	nostorage
+prtg_cas04	mapflag	nostorage
+prtg_cas05	mapflag	nostorage
+//schg_cas01	mapflag	nostorage
+//schg_cas02	mapflag	nostorage
+//schg_cas03	mapflag	nostorage
+//schg_cas04	mapflag	nostorage
+//schg_cas05	mapflag	nostorage
+//arug_cas01	mapflag	nostorage
+//arug_cas02	mapflag	nostorage
+//arug_cas03	mapflag	nostorage
+//arug_cas04	mapflag	nostorage
+//arug_cas05	mapflag	nostorage
+
+// Novice Castles =========
+nguild_alde	mapflag	nostorage
+nguild_gef	mapflag	nostorage
+nguild_pay	mapflag	nostorage
+nguild_prt	mapflag	nostorage
+
+// @go disabled =======
+
+// GvG Arenas =============
+guild_vs1	mapflag	nogo
+guild_vs2	mapflag	nogo
+guild_vs3	mapflag	nogo
+guild_vs4	mapflag	nogo
+guild_vs5	mapflag	nogo
+
+// Guild Castles ==========
+aldeg_cas01	mapflag	nogo
+aldeg_cas02	mapflag	nogo
+aldeg_cas03	mapflag	nogo
+aldeg_cas04	mapflag	nogo
+aldeg_cas05	mapflag	nogo
+gefg_cas01	mapflag	nogo
+gefg_cas02	mapflag	nogo
+gefg_cas03	mapflag	nogo
+gefg_cas04	mapflag	nogo
+gefg_cas05	mapflag	nogo
+payg_cas01	mapflag	nogo
+payg_cas02	mapflag	nogo
+payg_cas03	mapflag	nogo
+payg_cas04	mapflag	nogo
+payg_cas05	mapflag	nogo
+prtg_cas01	mapflag	nogo
+prtg_cas02	mapflag	nogo
+prtg_cas03	mapflag	nogo
+prtg_cas04	mapflag	nogo
+prtg_cas05	mapflag	nogo
+schg_cas01	mapflag	nogo
+schg_cas02	mapflag	nogo
+schg_cas03	mapflag	nogo
+schg_cas04	mapflag	nogo
+schg_cas05	mapflag	nogo
+arug_cas01	mapflag	nogo
+arug_cas02	mapflag	nogo
+arug_cas03	mapflag	nogo
+arug_cas04	mapflag	nogo
+arug_cas05	mapflag	nogo
+
+// Novice Castles =========
+nguild_alde	mapflag	nogo
+nguild_gef	mapflag	nogo
+nguild_pay	mapflag	nogo
+nguild_prt	mapflag	nogo
+
+// Blocking Guild alliances ==========
+aldeg_cas01	mapflag	gvg_noalliance
+aldeg_cas02	mapflag	gvg_noalliance
+aldeg_cas03	mapflag	gvg_noalliance
+aldeg_cas04	mapflag	gvg_noalliance
+aldeg_cas05	mapflag	gvg_noalliance
+gefg_cas01	mapflag	gvg_noalliance
+gefg_cas02	mapflag	gvg_noalliance
+gefg_cas03	mapflag	gvg_noalliance
+gefg_cas04	mapflag	gvg_noalliance
+gefg_cas05	mapflag	gvg_noalliance
+payg_cas01	mapflag	gvg_noalliance
+payg_cas02	mapflag	gvg_noalliance
+payg_cas03	mapflag	gvg_noalliance
+payg_cas04	mapflag	gvg_noalliance
+payg_cas05	mapflag	gvg_noalliance
+prtg_cas01	mapflag	gvg_noalliance
+prtg_cas02	mapflag	gvg_noalliance
+prtg_cas03	mapflag	gvg_noalliance
+prtg_cas04	mapflag	gvg_noalliance
+prtg_cas05	mapflag	gvg_noalliance
+schg_cas01	mapflag	gvg_noalliance
+schg_cas02	mapflag	gvg_noalliance
+schg_cas03	mapflag	gvg_noalliance
+schg_cas04	mapflag	gvg_noalliance
+schg_cas05	mapflag	gvg_noalliance
+arug_cas01	mapflag	gvg_noalliance
+arug_cas02	mapflag	gvg_noalliance
+arug_cas03	mapflag	gvg_noalliance
+arug_cas04	mapflag	gvg_noalliance
+arug_cas05	mapflag	gvg_noalliance

@@ -1,0 +1,657 @@
+prontera,153,192,5	script	Healer#h1-1::Healer	971,{
+	if (!healer_off)
+	for(set .@i, 0; .@i < 15; set .@i, .@i + 1) {
+		if (getd("restock_id"+(.@i+1))) {
+		set .@countTotal, countitem(getd("restock_id"+(.@i+1)),getd("restock_type"+(.@i+1)));
+		if (getd("restock_max"+(.@i+1)) >= getd("restock_min"+(.@i+1)) && .@countTotal < getd("restock_min"+(.@i+1)))
+			while (.@countTotal < getd("restock_min"+(.@i+1))) {
+				restock(getd("restock_id"+(.@i+1)), getd("restock_max"+(.@i+1))-.@countTotal, getd("restock_type"+(.@i+1)));
+				set .@countTotal, countitem(getd("restock_id"+(.@i+1)),getd("restock_type"+(.@i+1)));
+				if (.@countTotal == .@countTotalOld)
+					break;
+				set .@countTotalOld, .@countTotal;
+			}
+		}
+	}
+if (healdel > gettimetick(2)){
+close;
+}
+percentheal 100,100;
+emotion e_no1;
+
+set healdel, gettimetick(2)+5;
+
+// Repair
+while (getbrokenid(1)) {
+	repair(1);
+	set .@repair, .@repair +1;
+}
+if (.@repair) dispbottom .@repair + " items repaired.";
+
+// Debuff
+sc_end SC_STONE;
+sc_end SC_FREEZE;
+sc_end SC_STUN;
+sc_end SC_SLEEP;
+sc_end SC_POISON;
+sc_end SC_CURSE;
+sc_end SC_SILENCE;
+sc_end SC_CONFUSION;
+sc_end SC_BLIND;
+sc_end SC_BLEEDING;
+sc_end SC_SLOWCAST;
+sc_end SC_CRITICALWOUND;
+
+// Agi / Blessing
+sc_start SC_BLESSING,0,10;
+sc_start SC_INCREASEAGI,0,10;
+set @GuildBuff1$, "$Buff1"+getcharid(2);
+set @GuildBuff2$, "$Buff2"+getcharid(2);
+set @GuildBuff3$, "$Buff3"+getcharid(2);
+set @GuildBuff4$, "$Buff4"+getcharid(2);
+set @GuildBuff5$, "$Buff5"+getcharid(2);
+set @GuildBuff6$, "$Buff6"+getcharid(2);
+set @GuildBuff7$, "$Buff7"+getcharid(2);
+
+set .@temp, getd(@GuildBuff1$);
+if (.@temp == 1 && !(gbuffs&pow(2,0))) {
+	sc_start SC_ASSUMPTIO,0,5;
+	}
+set .@temp, getd(@GuildBuff2$);
+if (.@temp == 1 && !(gbuffs&pow(2,1))) {
+	sc_start SC_MAGNIFICAT,0,5;
+	}
+set .@temp, getd(@GuildBuff3$);
+if (.@temp == 1 && !(gbuffs&pow(2,2))) {
+	sc_start SC_ANGELUS,0,10;
+	}
+set .@temp, getd(@GuildBuff4$);
+if (.@temp == 1 && !(gbuffs&pow(2,3))) {
+	sc_start SC_GLORIA,0,5;
+	}
+set .@temp, getd(@GuildBuff5$);
+if (.@temp == 1 && !(gbuffs&pow(2,4))) {
+	sc_start SC_IMPOSITIO,0,5;
+	}
+set .@temp, getd(@GuildBuff6$);
+if (.@temp == 1 && !(gbuffs&pow(2,5))) {
+	switch( Class ) {
+				case Job_Star_Gladiator:
+				case Job_Star_Gladiator2:
+					set .@skill_id, 448; break;
+				case Job_SuperNovice:
+					set .@skill_id, 451; break;
+				case Job_Soul_Linker:
+					set .@skill_id, 461; break;
+				case Job_Novice_High:
+				case Job_Swordman_High:
+				case Job_Mage_High:
+				case Job_Archer_High:
+				case Job_Acolyte_High:
+				case Job_Merchant_High:
+				case Job_Thief_High:
+					set .@skill_id, 494; break;
+			default:
+				switch( BaseJob ) {
+				case Job_Alchemist:	set .@skill_id, 445; break;
+				case Job_Monk:		set .@skill_id, 447; break;
+				case Job_Sage:		set .@skill_id, 449; break;
+				case Job_Crusader:	set .@skill_id, 450; break;
+				case Job_Knight:	set .@skill_id, 452; break;
+				case Job_Wizard:	set .@skill_id, 453; break;
+				case Job_Priest:	set .@skill_id, 454; break;
+				case Job_Bard:
+				case Job_Dancer:	set .@skill_id, 455; break;
+				case Job_Rogue:		set .@skill_id, 456; break;
+				case Job_Assassin:	set .@skill_id, 457; break;
+				case Job_Blacksmith:	set .@skill_id, 458; break;
+				case Job_Hunter:	set .@skill_id, 460; break;
+			}
+		break;
+		}
+		if (.@skill_id) {
+			sc_start4 SC_SPIRIT,350000,5,.@skill_id,0,0;		
+			specialeffect2 503;
+		}
+	}
+set .@temp, getd(@GuildBuff7$);
+if (.@temp == 1 && !(gbuffs&pow(2,6)) && countitem(7139) > 0) {
+	sc_start SC_CP_WEAPON,600000,0;
+	sc_start SC_CP_SHIELD,600000,0;
+	sc_start SC_CP_ARMOR,600000,0;
+	sc_start SC_CP_HELM,600000,0;
+	delitem 7139, 1;
+	}
+percentheal 100,100;
+end;
+}
+
+morocc,158,97,3	duplicate(Healer)	Healer#h1-2	971
+ayothaya,148,121,6	duplicate(Healer)	Healer#h1-3	971
+geffen,122,59,1	duplicate(Healer)	Healer#h1-4	971
+umbala,87,160,5	duplicate(Healer)	Healer#h1-5	971
+payon,167,233,5	duplicate(Healer)	Healer#h1-6	971
+alberta,185,144,5	duplicate(Healer)	Healer#h1-7	971
+alberta,122,59,4	duplicate(Healer)	Healer#h2-7	971
+aldebaran,133,115,5	duplicate(Healer)	Healer#h1-8	971
+izlude,125,118,5	duplicate(Healer)	Healer#h1-9	971
+xmas,148,137,5	duplicate(Healer)	Healer#h1-10	971
+comodo,209,146,4	duplicate(Healer)	Healer#h1-11	971
+amatsu,105,156,5	duplicate(Healer)	Healer#h1-12	971
+gonryun,163,122,4	duplicate(Healer)	Healer#h1-13	971
+yuno,152,173,6	duplicate(Healer)	Healer#h1-14	971
+niflheim,188,180,5	duplicate(Healer)	Healer#h1-15	971
+louyang,221,106,4	duplicate(Healer)	Healer#h1-16	971
+rachel,130,116,4	duplicate(Healer)	Healer#h1-17	971
+veins,215,126,4	duplicate(Healer)	Healer#h1-18	971
+moscovia,216,185,6	duplicate(Healer)	Healer#h1-19	971
+lighthalzen,165,94,4	duplicate(Healer)	Healer#h1-20	971
+hugel,98,149,3	duplicate(Healer)	Healer#h1-21	971
+mid_camp,223,241,4	duplicate(Healer)	Healer#h1-22	971
+splendide,196,88,4	duplicate(Healer)	Healer#h1-23	971
+manuk,279,224,4	duplicate(Healer)	Healer#h1-24	971
+brasilis,193,220,4	duplicate(Healer)	Healer#h1-25	971
+bat_room,150,150,4	duplicate(Healer)	Healer#battle	971
+dicastes01,189,191,6	duplicate(Healer)	Healer#dicaste	971
+einbech,71,119,6	duplicate(Healer)	Healer#einbech	971
+einbroch,59,199,6	duplicate(Healer)	Healer#einbroch	971
+jawaii,209,297,4	duplicate(Healer)	Healer#jawaii	971
+moc_ruins,66,156,4	duplicate(Healer)	Healer#mocruin	971
+//quiz_02,131,340,6	duplicate(Healer)	Healer#quest	971
+new_5-2,103,111,3	duplicate(Healer)	Healer#quest	971
+dewata,206,230,3	duplicate(Healer)	Healer#dewata	971
+malangdo,172,207,3	duplicate(Healer)	Healer#malangdo	971
+mora,108,118,3	duplicate(Healer)	Healer#mora	971
+mosk_fild01,106,109,3	duplicate(Healer)	Healer#moskfld	971
+pay_arche,45,139,3	duplicate(Healer)	Healer#payarche	971
+
+//===== Guild Buffs ==========================================
+job3_rune02,46,35,4	script	Guild Buffs	936,{
+
+mes "[Guild Buffs]";
+if(getcharid(2)==0){
+	mes "I'm sorry, I can only help you, if you're in a guild.";
+close;
+}
+mes "How can I help you?";
+menu "Purchase Guild Buffs",-,"Configure Guild Buffs", L_Configure;
+next;
+mes "[Guild Buffs]";
+mes "Hello, I offer buffs for guilds.";
+mes "Please select the buff you want to buy for your guild.";
+mes "The buffs you bought will be permanently available for your guild.";
+next;
+	mes "[Guild Buffs]";
+//	mes "Guild Leaders can remove buffs by selecting 'remove buffs' at the bottom of the menu.";
+//	next;
+//	mes "[Guild Buffs]";
+	mes "Which buff do you want to buy?";
+//	mes "NOTE - If you have purchased Guild Buffs from the old NPC, please choose Transfer Old Buffs from the bottom of this menu.";
+//	switch(select("Assumptio:Magnificat:Angelus:Gloria:Impositio Manus:Spirits:Transfer Old Buffs:Remove Buff")){
+	switch(select("Assumptio:Magnificat:Angelus:Gloria:Impositio Manus:Spirits:Full Chemical Protection")){
+	
+		case 1:
+			set buff$, "Assumptio Level 5";
+			set price, 120000000;
+			set @GuildBuff1$, "$Buff1"+getcharid(2);
+			if (getd(@GuildBuff1$)) {
+				next;
+				mes "[Guild Buffs]";
+				mes "You already have this buff purchased!";
+				close;
+			}
+	mes "[Guild Buffs]";
+	mes "So, you want to buy " + buff$ + " for " + price + " Zeny?";
+	next;
+	switch(select("Yes, please:No, thank you")){
+		
+		case 1:
+			if(zeny<price){
+				mes "[Guild Buffs]";
+				mes "I'm sorry, you don't have enough money.";
+				close;
+			}
+			set zeny, zeny-price;
+			setd @GuildBuff1$, 1;
+			mes "Thank you, the buff has been bought!";
+			close;
+		case 2:
+			mes "Please come again!";
+			close;
+		}
+		case 2:
+			set buff$, "Magnificat Level 5";
+			set price, 100000000;
+			set @GuildBuff2$, "$Buff2"+getcharid(2);
+			if (getd(@GuildBuff2$)) {
+				next;
+				mes "[Guild Buffs]";
+				mes "You already have this buff purchased!";
+				close;
+			}
+	mes "[Guild Buffs]";
+	mes "So, you want to buy " + buff$ + " for " + price + " Zeny?";
+	next;
+	switch(select("Yes, please:No, thank you")){
+		
+		case 1:
+			if(zeny<price){
+				mes "[Guild Buffs]";
+				mes "I'm sorry, you don't have enough money.";
+				close;
+			}
+			set zeny, zeny-price;
+			setd @GuildBuff2$, 1;
+			mes "Thank you, the buff has been bought!";
+			close;
+		case 2:
+			mes "Please come again!";
+			close;
+		}
+		case 3:
+			set buff$, "Angelus Level 10";
+			set price, 100000000;
+			set @GuildBuff3$, "$Buff3"+getcharid(2);
+			if (getd(@GuildBuff3$)) {
+				next;
+				mes "[Guild Buffs]";
+				mes "You already have this buff purchased!";
+				close;
+			}
+	mes "[Guild Buffs]";
+	mes "So, you want to buy " + buff$ + " for " + price + " Zeny?";
+	next;
+	switch(select("Yes, please:No, thank you")){
+		
+		case 1:
+			if(zeny<price){
+				mes "[Guild Buffs]";
+				mes "I'm sorry, you don't have enough money.";
+				close;
+			}
+			set zeny, zeny-price;
+			setd @GuildBuff3$, 1;
+			mes "Thank you, the buff has been bought!";
+			close;
+		case 2:
+			mes "Please come again!";
+			close;
+		}
+		case 4:
+			set buff$, "Gloria Level 5";
+			set price, 100000000;
+			set @GuildBuff4$, "$Buff4"+getcharid(2);
+			if (getd(@GuildBuff4$)) {
+				next;
+				mes "[Guild Buffs]";
+				mes "You already have this buff purchased!";
+				close;
+			}
+	mes "[Guild Buffs]";
+	mes "So, you want to buy " + buff$ + " for " + price + " Zeny?";
+	next;
+	switch(select("Yes, please:No, thank you")){
+		
+		case 1:
+			if(zeny<price){
+				mes "[Guild Buffs]";
+				mes "I'm sorry, you don't have enough money.";
+				close;
+			}
+			set zeny, zeny-price;
+			setd @GuildBuff4$, 1;
+			mes "Thank you, the buff has been bought!";
+			close;
+		case 2:
+			mes "Please come again!";
+			close;
+		}
+		case 5:
+			set buff$, "Impositio Manus Level 5";
+			set price, 100000000;
+			set @GuildBuff5$, "$Buff5"+getcharid(2);
+			if (getd(@GuildBuff5$)) {
+				next;
+				mes "[Guild Buffs]";
+				mes "You already have this buff purchased!";
+				close;
+			}
+	mes "[Guild Buffs]";
+	mes "So, you want to buy " + buff$ + " for " + price + " Zeny?";
+	next;
+	switch(select("Yes, please:No, thank you")){
+		
+		case 1:
+			if(zeny<price){
+				mes "[Guild Buffs]";
+				mes "I'm sorry, you don't have enough money.";
+				close;
+			}
+			set zeny, zeny-price;
+			setd @GuildBuff5$, 1;
+			mes "Thank you, the buff has been bought!";
+			close;
+		case 2:
+			mes "Please come again!";
+			close;
+		}
+		case 6:
+			set buff$, "Spirits Level 4 (excluding Rebirth Spirit and Soul Linker Spirit)";
+			set price, 150000000;
+			set @GuildBuff6$, "$Buff6"+getcharid(2);
+			if (getd(@GuildBuff6$)) {
+				next;
+				mes "[Guild Buffs]";
+				mes "You already have this buff purchased!";
+				close;
+			}
+	mes "[Guild Buffs]";
+	mes "So, you want to buy " + buff$ + " for " + price + " Zeny?";
+	next;
+	switch(select("Yes, please:No, thank you")){
+		
+		case 1:
+			if(zeny<price){
+				mes "[Guild Buffs]";
+				mes "I'm sorry, you don't have enough money.";
+				close;
+			}
+			set zeny, zeny-price;
+			setd @GuildBuff6$, 1;
+			mes "Thank you, the buff has been bought!";
+			close;
+		case 2:
+			mes "Please come again!";
+			close;
+		}
+		case 7:
+			set buff$, "Full Chemical Protection (Consumes Glistening Coat)";
+			set price, 150000000;
+			set @GuildBuff7$, "$Buff7"+getcharid(2);
+			if (getd(@GuildBuff7$)) {
+				next;
+				mes "[Guild Buffs]";
+				mes "You already have this buff purchased!";
+				close;
+			}
+	mes "[Guild Buffs]";
+	mes "So, you want to buy " + buff$ + " for " + price + " Zeny?";
+	next;
+	switch(select("Yes, please:No, thank you")){
+		
+		case 1:
+			if(zeny<price){
+				mes "[Guild Buffs]";
+				mes "I'm sorry, you don't have enough money.";
+				close;
+			}
+			set zeny, zeny-price;
+			setd @GuildBuff7$, 1;
+			mes "Thank you, the buff has been bought!";
+			close;
+		case 2:
+			mes "Please come again!";
+			close;
+		}
+		case 8:
+		set .@x, 0;
+		while (.@x < 128) {
+		if ($guildgloria[.@x] == getcharid(2)) {
+			set $guildgloria[.@x], 0;
+			set @GuildBuff4$, "$Buff4"+getcharid(2);
+			setd @GuildBuff4$, 1;
+		}
+		if ($guildgloria2[.@x] == getcharid(2)) {
+			set $guildgloria2[.@x], 0;
+			set @GuildBuff4$, "$Buff4"+getcharid(2);
+			setd @GuildBuff4$, 1;
+		}
+		if ($guildgloria3[.@x] == getcharid(2)) {
+			set $guildgloria3[.@x], 0;
+			set @GuildBuff4$, "$Buff4"+getcharid(2);
+			setd @GuildBuff4$, 1;
+		}
+		if ($guildmagnificat[.@x] == getcharid(2)) {
+			set $guildmagnificat[.@x], 0;
+			set @GuildBuff2$, "$Buff2"+getcharid(2);
+			setd @GuildBuff2$, 1;
+		}
+		if ($guildmagnificat2[.@x] == getcharid(2)) {
+			set $guildmagnificat2[.@x], 0;
+			set @GuildBuff2$, "$Buff2"+getcharid(2);
+			setd @GuildBuff2$, 1;
+		}
+		if ($guildmagnificat3[.@x] == getcharid(2)) {
+			set $guildmagnificat3[.@x], 0;
+			set @GuildBuff2$, "$Buff2"+getcharid(2);
+			setd @GuildBuff2$, 1;
+		}
+		if ($guildangelus[.@x] == getcharid(2)) {
+			set $guildangelus[.@x], 0;
+			set @GuildBuff3$, "$Buff3"+getcharid(2);
+			setd @GuildBuff3$, 1;
+		}
+		if ($guildangelus2[.@x] == getcharid(2)) {
+			set $guildangelus2[.@x], 0;
+			set @GuildBuff3$, "$Buff3"+getcharid(2);
+			setd @GuildBuff3$, 1;
+		}
+		if ($guildangelus3[.@x] == getcharid(2)) {
+			set $guildangelus3[.@x], 0;
+			set @GuildBuff3$, "$Buff3"+getcharid(2);
+			setd @GuildBuff3$, 1;
+		}
+		set .@x, .@x+1;
+		}
+		mes "Done, aaaand...";
+		next;
+		set .@y, 0;
+		while (.@y < 128) {
+		if ($guildimpositio[.@y] == getcharid(2)) {
+			set $guildimpositio[.@y], 0;
+			set @GuildBuff5$, "$Buff5"+getcharid(2);
+			setd @GuildBuff5$, 1;
+		}
+		if ($guildimpositio2[.@y] == getcharid(2)) {
+			set $guildimpositio2[.@y], 0;
+			set @GuildBuff5$, "$Buff5"+getcharid(2);
+			setd @GuildBuff5$, 1;
+		}
+		if ($guildimpositio3[.@y] == getcharid(2)) {
+			set $guildimpositio3[.@y], 0;
+			set @GuildBuff5$, "$Buff5"+getcharid(2);
+			setd @GuildBuff5$, 1;
+		}
+		if ($guildassumptio[.@y] == getcharid(2)) {
+			set $guildassumptio[.@y], 0;
+			set @GuildBuff1$, "$Buff1"+getcharid(2);
+			setd @GuildBuff1$, 1;
+		}
+		if ($guildassumptio2[.@y] == getcharid(2)) {
+			set $guildassumptio2[.@y], 0;
+			set @GuildBuff1$, "$Buff1"+getcharid(2);
+			setd @GuildBuff1$, 1;
+		}
+		if ($guildassumptio3[.@y] == getcharid(2)) {
+			set $guildassumptio3[.@y], 0;
+			set @GuildBuff1$, "$Buff1"+getcharid(2);
+			setd @GuildBuff1$, 1;
+		}
+		if ($guildspirit[.@y] == getcharid(2)) {
+			set $guildspirit[.@y], 0;
+			set @GuildBuff6$, "$Buff6"+getcharid(2);
+			setd @GuildBuff6$, 1;
+		}
+		if ($guildspirit2[.@y] == getcharid(2)) {
+			set $guildspirit2[.@y], 0;
+			set @GuildBuff6$, "$Buff6"+getcharid(2);
+			setd @GuildBuff6$, 1;
+		}
+		if ($guildspirit3[.@y] == getcharid(2)) {
+			set $guildspirit3[.@y], 0;
+			set @GuildBuff6$, "$Buff6"+getcharid(2);
+			setd @GuildBuff6$, 1;
+		}
+		set .@y, .@y+1;
+		}
+		mes "Done!";
+		mes "All buffs have been transferred!";
+		close;
+		
+		case 9:
+		mes "Which buff would you like to remove?";
+		switch(select("Assumptio:Magnificat:Angelus:Gloria:Impositio Manus:Spirits")) {
+			case 1:
+			set @GuildBuff1$, "$Buff1"+getcharid(2);
+			setd @GuildBuff1$, 0;
+			mes "Buff removed.";
+			close;
+			case 2:
+			set @GuildBuff2$, "$Buff2"+getcharid(2);
+			setd @GuildBuff2$, 0;
+			mes "Buff removed.";
+			close;
+			case 3:
+			set @GuildBuff3$, "$Buff3"+getcharid(2);
+			setd @GuildBuff3$, 0;
+			mes "Buff removed.";
+			close;
+			case 4:
+			set @GuildBuff4$, "$Buff4"+getcharid(2);
+			setd @GuildBuff4$, 0;
+			mes "Buff removed.";
+			close;
+			case 5:
+			set @GuildBuff5$, "$Buff5"+getcharid(2);
+			setd @GuildBuff5$, 0;
+			mes "Buff removed.";
+			close;
+			case 6:
+			set @GuildBuff6$, "$Buff6"+getcharid(2);
+			setd @GuildBuff6$, 0;
+			mes "Buff removed.";
+			close;
+		}
+	}
+	close;
+
+	L_Configure:
+	next;
+	mes "[Guild Buffs]";
+	set .@GuildBuff1$, "$Buff1"+getcharid(2);
+	set .@GuildBuff2$, "$Buff2"+getcharid(2);
+	set .@GuildBuff3$, "$Buff3"+getcharid(2);
+	set .@GuildBuff4$, "$Buff4"+getcharid(2);
+	set .@GuildBuff5$, "$Buff5"+getcharid(2);
+	set .@GuildBuff6$, "$Buff6"+getcharid(2);
+	set .@GuildBuff7$, "$Buff7"+getcharid(2);
+	mes "[Guild Buffs]";
+	mes "Black = Not purchased";
+	mes "^00FF00Green^000000 = ON";
+	mes "^FF0000Red^000000 = OFF";
+	set .@menu$, "";
+	for (set .@i, 0; .@i < 7; set .@i, .@i + 1) {
+		switch(.@i) {
+			case 1:
+				if (getd(.@GuildBuff2$) != 1) {
+					set .@menu$, .@menu$ + "Magnifact:";
+					break;
+				}
+				if (!(gbuffs&pow(2,.@i))) {
+					set .@menu$, .@menu$ + "^00FF00Magnifact^000000:";
+				}
+				else {
+					set .@menu$, .@menu$ + "^FF0000Magnifact^000000:";
+				}
+				break;
+
+			case 2:
+				if (getd(.@GuildBuff3$) != 1) {
+					set .@menu$, .@menu$ + "Angelus:";
+					break;
+				}
+				if (!(gbuffs&pow(2,.@i))) {
+					set .@menu$, .@menu$ + "^00FF00Angelus^000000:";
+				}
+				else {
+					set .@menu$, .@menu$ + "^FF0000Angelus^000000:";
+				}
+				break;
+
+			case 3:
+				if (getd(.@GuildBuff4$) != 1) {
+					set .@menu$, .@menu$ + "Gloria:";
+					break;
+				}
+				if (!(gbuffs&pow(2,.@i))) {
+					set .@menu$, .@menu$ + "^00FF00Gloria^000000:";
+				}
+				else {
+					set .@menu$, .@menu$ + "^FF0000Gloria^000000:";
+				}
+				break;
+
+			case 4:
+				if (getd(.@GuildBuff5$) != 1) {
+					set .@menu$, .@menu$ + "Impositio Manus:";
+					break;
+				}
+				if (!(gbuffs&pow(2,.@i))) {
+					set .@menu$, .@menu$ + "^00FF00Impositio Manus^000000:";
+				}
+				else {
+					set .@menu$, .@menu$ + "^FF0000Impositio Manus^000000:";
+				}
+				break;
+
+			case 5:
+				if (getd(.@GuildBuff6$) != 1) {
+					set .@menu$, .@menu$ + "Spirits:";
+					break;
+				}
+				if (!(gbuffs&pow(2,.@i))) {
+					set .@menu$, .@menu$ + "^00FF00Spirits^000000:";
+				}
+				else {
+					set .@menu$, .@menu$ + "^FF0000Spirits^000000:";
+				}
+				break;
+
+			case 6:
+				if (getd(.@GuildBuff7$) != 1) {
+					set .@menu$, .@menu$ + "Full Chemical Protection:";
+					break;
+				}
+				if (!(gbuffs&pow(2,.@i))) {
+					set .@menu$, .@menu$ + "^00FF00Full Chemical Protection^000000:";
+				}
+				else {
+					set .@menu$, .@menu$ + "^FF0000Full Chemical Protection^000000:";
+				}
+				break;
+
+
+			default:
+				if (getd(.@GuildBuff1$) != 1) {
+					set .@menu$, .@menu$ + "Assumptio:";
+					break;
+				}
+				if (!(gbuffs&pow(2,.@i))) {
+					set .@menu$, .@menu$ + "^00FF00Assumptio^000000:";
+				}
+				else {
+					set .@menu$, .@menu$ + "^FF0000Assumptio^000000:";
+				}
+				break;
+		}
+	}
+	set .@chosen, select(.@menu$);
+	if (getd(getd(".@GuildBuff"+.@chosen+"$"))) {
+		if (!(gbuffs&pow(2,.@chosen-1)))
+			set gbuffs, gbuffs + pow(2,.@chosen-1);
+		else
+			set gbuffs, gbuffs - pow(2,.@chosen-1);
+	}
+	goto L_Configure;
+	close;
+}

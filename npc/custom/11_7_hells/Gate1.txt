@@ -1,0 +1,971 @@
+//=========================================//
+// WoonRO's Gate of hell quest
+// Gate 1
+// Started by [GM] Sovane
+// Finished by [GM] Vermin
+// Scripted by Luke
+//=========================================//
+//mapannounce "force_4-1",
+
+-	script	gateAnnounce	-1,{
+OnHour00:
+OnHour06:
+OnHour12:
+OnHour18:	
+	enablenpc "Gate Master";
+	announce "The first gate has been activated!! 10  Minutes until it closes!!",0;
+	sleep 300000;
+	announce "The first gate will close in 5 minutes!!",0;
+	sleep 180000;
+	announce "The first gate will close in 2 minutes!!",0;
+	sleep 60000;
+	announce "The first gate will close in 1 minutes!!", 0;
+	sleep 60000;
+	announce "The first gate is now closed!!", bc_all;
+	disablenpc "Gate Master";
+	
+	//PUT RULES HERE
+	if(getmapusers($map$) > 0)
+	{
+		killmonsterall "force_4-1";
+		donpcevent "Summoner::OnEnable";
+		
+	}
+	else{
+	 announce "Hell's Gate : There's not enough players. Cancelling this round.",0;
+	}
+	
+	end;
+	
+Oninit:
+set $@RoundCount,1;
+set $@Round,1;
+set $map$, "force_4-1";
+disablenpc "Gate Master";
+disablenpc "Twist of Fate";
+disablenpc "First Hell's Warper";
+disablenpc "Second Hell's Warper";
+disablenpc "Third Hell's Warper";
+disablenpc "Fourth Hell's Warper";
+disablenpc "Last Hell's Warper";
+disablenpc "Claim and Exit";
+disablenpc "Collect and Exit";
+	
+}
+
+new_5-2,82,114,5	script	Gate Master	100,{
+	warp $map$,26,174;
+	percentheal 100,100;
+	close;
+	end;
+	
+
+}
+
+
+-	script	Summoner	-1,{	
+OnEnable:
+
+
+//======= ROUND 1 ==========//
+if($@RoundCount==1){
+	mapannounce $map$,"[ HELL'S GATE ROUND 1 ]", 0,0xFBC723;
+	sleep 5000;
+	mapannounce $map$,"The round will start in any minute", 0,0xFBC723;
+	sleep 5000;
+	
+	set $@mobOne, 101;
+	areamonster $map$,9,188,39,161,"#f4gj^%$",2157,20,"Summoner::OnMobKilledOne";
+	sleep  5000;
+	areamonster $map$,9,188,39,161,"#f4gj^%$",1598,20,"Summoner::OnMobKilledOne";
+	sleep  10000;
+	areamonster $map$,9,188,39,161,"#f4gj^%$",1444,20,"Summoner::OnMobKilledOne";
+	sleep  15000;
+	areamonster $map$,9,188,39,161,"#f4gj^%$",1456,20,"Summoner::OnMobKilledOne";
+	sleep  25000;
+	areamonster $map$,9,188,39,161,"#f4gj^%$",1758,20,"Summoner::OnMobKilledOne";
+	sleep  35000;
+	areamonster $map$,9,188,39,161,"#f4gj^%$",1832,1,"Summoner::OnMobKilledOne";
+	
+	end;
+	
+OnMobKilledOne:
+	set $@mobOne, $@mobOne - 1;
+	if ( $@mobOne > 0 ){
+		mapannounce "force_4-1", "Hell's Gate: "+ $@mobOne +" more mobs to enter the next round", 0,0xFBC723;
+		end;
+	}
+	else if ( $@mobOne == 0 ) {
+		set $@Round, $@Round + 1;
+		set $@RoundCount, $@RoundCount + 1;
+		mapannounce "force_4-1", "Prepare to enter round " + $@Round, 0,0xFBC723;
+		enablenpc "First Hell's Warper";
+		sleep 2000;
+		mapannounce "force_4-1", "You have 20 seconds to enter the portal at the center.",0,0xFBC723;
+		sleep 20000;
+		mapannounce "force_4-1", "Time's up.",0,0xFBC723;
+		sleep 1000;
+		mapwarp "force_4-1","prontera",150,150;
+		enablenpc "Twist of Fate";
+		mapannounce "force_5-1", "You have 20 seconds to talk to Twist of FATE", 0,0xFBC723;
+		sleep 20000;
+		mapannounce "force_5-1", "Time's up.",0,0xFBC723;
+		sleep 1000;
+		mapwarp "force_5-1","prontera",150,150;
+		disablenpc "Twist of Fate";
+		sleep 1000;
+		disablenpc "First Hell's Warper";
+		sleep 3000;
+		donpcevent "Summoner::OnEnable";
+		end;
+		
+	}
+	end;
+}	
+//======= END ROUND 1 ==========//
+
+//======= ROUND 2 ==========//
+if($@RoundCount==2){
+	mapannounce $map$,"[ HELL'S GATE ROUND 2 ]", 0,0xFBC723;
+	sleep 5000;
+	mapannounce $map$,"The round will start in any minute", 0,0xFBC723;
+	sleep 5000;
+
+	set $@mobTwo, 82;
+	areamonster $map$,9,42,42,9,"#f4gj^%$",1436,20,"Summoner::OnMobKilledTwo";
+	sleep  15000;
+	areamonster $map$,9,42,42,9,"#f4gj^%$",1835,20,"Summoner::OnMobKilledTwo";
+	sleep  20000;
+	areamonster $map$,9,42,42,9,"#f4gj^%$",1549,20,"Summoner::OnMobKilledTwo";
+	sleep  25000;
+	areamonster $map$,9,42,42,9,"#f4gj^%$",1834,20,"Summoner::OnMobKilledTwo";
+	sleep  30000;
+	areamonster $map$,9,42,42,9,"#f4gj^%$",1799,1,"Summoner::OnMobKilledTwo";
+	sleep  30000;
+	areamonster $map$,9,42,42,9,"#f4gj^%$",1658,1,"Summoner::OnMobKilledTwo";
+	
+	end;
+	
+OnMobKilledTwo:
+	set $@mobTwo, $@mobTwo - 1;
+	if ( $@mobTwo > 0 ){
+		mapannounce "force_4-1", "Hell's Gate: "+ $@mobTwo +" more mobs to enter the next round", 0,0xFBC723;
+		end;
+	}
+	else if ( $@mobTwo == 0 ) {
+		set $@Round, $@Round + 1;
+		set $@RoundCount, $@RoundCount + 1;
+		mapannounce "force_4-1", "Prepare to enter round " + $@Round + " in the middle warp", 0,0xFBC723;
+		enablenpc "Second Hell's Warper";
+		sleep 2000;
+		mapannounce "force_4-1", "You have 20 seconds to enter the portal at the center.",0,0xFBC723;
+		sleep 20000;
+		mapannounce "force_4-1", "Time's up.",0,0xFBC723;
+		sleep 1000;
+		mapwarp "force_4-1","prontera",150,150;
+		enablenpc "Twist of Fate";
+		mapannounce "force_5-1", "You have 20 seconds to talk to Twist of FATE", 0,0xFBC723;
+		sleep 20000;
+		mapannounce "force_5-1", "Time's up.",0,0xFBC723;
+		sleep 1000;
+		mapwarp "force_5-1","prontera",150,150;
+		disablenpc "Twist of Fate";
+
+		sleep 1000;
+		disablenpc "Second Hell's Warper";
+		sleep 3000;
+		donpcevent "Summoner::OnEnable";
+		end;
+		
+	}
+	end;
+}	
+//======= END ROUND 2 ==========//
+
+
+//======= ROUND 3 ==========//
+if($@RoundCount==3){
+	mapannounce $map$,"[ HELL'S GATE ROUND 3 ]", 0,0xFBC723;
+	sleep 5000;
+	mapannounce $map$,"The round will start in any minute", 0,0xFBC723;
+	sleep 5000;
+
+	set $@mobThree, 102;
+	areamonster $map$,158,190,190,157,"#f4gj^%$",2154,20,"Summoner::OnMobKilledThree";
+	sleep  5000;
+	areamonster $map$,158,190,190,157,"#f4gj^%$",1367,20,"Summoner::OnMobKilledThree";
+	sleep  10000;
+	areamonster $map$,158,190,190,157,"#f4gj^%$",1250,20,"Summoner::OnMobKilledThree";
+	sleep  15000;
+	areamonster $map$,158,190,190,157,"#f4gj^%$",1283,20,"Summoner::OnMobKilledThree";
+	sleep  20000;
+	areamonster $map$,158,190,190,157,"#f4gj^%$",1714,20,"Summoner::OnMobKilledThree";
+	sleep  25000;
+	areamonster $map$,158,190,190,157,"#f4gj^%$",1832,1,"Summoner::OnMobKilledThree";
+	sleep  30000;
+	areamonster $map$,158,190,190,157,"#f4gj^%$",1086,1,"Summoner::OnMobKilledThree";
+	
+	end;
+	
+OnMobKilledThree:
+	set $@mobThree, $@mobThree - 1;
+	if ( $@mobThree > 0 ){
+		mapannounce "force_4-1", "Hell's Gate: "+ $@mobThree +" more mobs to enter the next round", 0,0xFBC723;
+		end;
+	}
+	else if ( $@mobThree == 0 ) {
+		set $@Round, $@Round + 1;
+		set $@RoundCount, $@RoundCount + 1;
+		mapannounce "force_4-1", "Prepare to enter round " + $@Round + " in the middle warp", 0,0xFBC723;
+		enablenpc "Third Hell's Warper";
+		sleep 2000;
+		mapannounce "force_4-1", "You have 20 seconds to enter the portal at the center.",0,0xFBC723;
+		sleep 20000;
+		mapannounce "force_4-1", "Time's up.",0,0xFBC723;
+		sleep 1000;
+		mapwarp "force_4-1","prontera",150,150;
+		enablenpc "Twist of Fate";
+		mapannounce "force_5-1", "You have 20 seconds to talk to Twist of FATE", 0,0xFBC723;
+		sleep 20000;
+		mapannounce "force_5-1", "Time's up.",0,0xFBC723;
+		sleep 1000;
+		mapwarp "force_5-1","prontera",150,150;
+		disablenpc "Twist of Fate";
+		sleep 1000;
+		disablenpc "Third Hell's Warper";
+		sleep 3000;
+		donpcevent "Summoner::OnEnable";
+		end;
+		
+	}
+	end;
+}	
+//======= END ROUND 3 ==========//
+
+
+
+//======= ROUND 4 ==========//
+if($@RoundCount==4){
+	mapannounce $map$,"[ HELL'S GATE ROUND 4 ]", 0,0xFBC723;
+	sleep 5000;
+	mapannounce $map$,"The round will start in any minute", 0,0xFBC723;
+	sleep 5000;
+	
+	set $@mobFour, 35;
+	areamonster $map$,157,42,190,9,"#f4gj^%$",1028,5,"Summoner::OnMobKilledFour";
+	sleep  5000;
+	areamonster $map$,157,42,190,9,"#f4gj^%$",1028,5,"Summoner::OnMobKilledFour";
+	sleep  10000;
+	areamonster $map$,157,42,190,9,"#f4gj^%$",1028,5,"Summoner::OnMobKilledFour";
+	sleep  15000;
+	areamonster $map$,157,42,190,9,"#f4gj^%$",1028,5,"Summoner::OnMobKilledFour";
+	sleep  20000;
+	areamonster $map$,157,42,190,9,"#f4gj^%$",1028,5,"Summoner::OnMobKilledFour";
+	sleep  25000;
+	areamonster $map$,157,42,190,9,"#f4gj^%$",1028,5,"Summoner::OnMobKilledFour";
+	sleep  30000;
+	areamonster $map$,157,42,190,9,"#f4gj^%$",1028,5,"Summoner::OnMobKilledFour";
+		
+	end;
+	
+OnMobKilledFour:
+	set $@mobFour, $@mobFour - 1;
+	if ( $@mobFour > 0 ){
+		mapannounce "force_4-1", "Hell's Gate: "+ $@mobFour +" more mobs to enter the next round", 0,0xFBC723;
+		end;
+	}
+	else if ( $@mobFour == 0 ) {
+		set $@Round, $@Round + 1;
+		set $@RoundCount, $@RoundCount + 1;
+		mapannounce "force_4-1", "Prepare to enter round " + $@Round + " in the middle warp", 0,0xFBC723;
+		enablenpc "Fourth Hell's Warper";
+		sleep 2000;
+		mapannounce "force_4-1", "You have 20 seconds to enter the portal at the center.",0,0xFBC723;
+		sleep 20000;
+		mapannounce "force_4-1", "Time's up.",0,0xFBC723;
+		sleep 1000;
+		mapwarp "force_4-1","prontera",150,150;
+		enablenpc "Twist of Fate";
+		mapannounce "force_5-1", "You have 20 seconds to talk to Twist of FATE", 0,0xFBC723;
+		sleep 20000;
+		mapannounce "force_5-1", "Time's up.",0,0xFBC723;
+		sleep 1000;
+		mapwarp "force_5-1","prontera",150,150;
+		disablenpc "Twist of Fate";
+
+		sleep 1000;
+		disablenpc "Fourth Hell's Warper";
+		sleep 3000;
+		donpcevent "Summoner::OnEnable";
+		end;
+		
+	}
+	end;
+}	
+//======= END ROUND 4 ==========//
+
+
+//======= ROUND 5 ==========//
+if($@RoundCount==5){
+	mapannounce $map$,"[ HELL'S GATE ROUND 5 ]", 0,0xFBC723;
+	sleep 5000;
+	mapannounce $map$,"The round will start in any minute", 0,0xFBC723;
+	sleep 5000;
+	//==TEST MONSTER==//
+	//areamonster $map$,86,113,113,86,"#f4gj^%$",1028,5,"Summoner::OnMobKilledFive";
+	//slap 1000;
+	//set $@mobFive,mobcount($map$,"Summoner::OnMobKilledFive");
+	//===REAL MONSTER==//
+	set $@mobFive, 1;
+	areamonster $map$,86,113,113,86,"#f4gj^%$",1646,1,"Summoner::OnMobKilledFive";
+	
+	end;
+	
+OnMobKilledFive:
+	set $@mobFive, $@mobFive - 1;
+	if ( $@mobFive > 0 ){
+		mapannounce "force_4-1", "Hell's Gate: "+ $@mobFive +" more mobs to enter the next round", 0,0xFBC723;
+		end;
+	}
+	else if ( $@mobFive == 0 ) {
+		set $@Round, $@Round + 1;
+		set $@RoundCount, $@RoundCount + 1;
+		mapannounce "force_4-1", "You just finished all the rounds!", 0,0xFBC723;
+		enablenpc "Last Hell's Warper";
+		enablenpc "Claim and Exit";
+		enablenpc "Collect and Exit";
+		mapannounce "force_4-1", "Talking to Twist of Fate is OVER!",0,0xFBC723;
+		end;
+		
+	}
+	end;
+}	
+//======= END ROUND 5 ==========//
+}
+
+
+//=============== WARP TO TWIST OF FATE ==============//
+force_4-1,25,174,5	script	First Hell's Warper	723,{
+	warp "force_5-1",99,98;
+	end;
+}
+
+force_4-1,25,26,5	script	Second Hell's Warper	723,{
+	warp "force_5-1",99,98;
+	end;
+}
+
+
+force_4-1,174,174,5	script	Third Hell's Warper	723,{
+	warp "force_5-1",99,98;
+	end;
+}
+
+
+force_4-1,174,26,5	script	Fourth Hell's Warper	723,{
+	warp "force_5-1",99,98;
+	end;
+}
+
+
+force_4-1,99,103,5	script	Last Hell's Warper	723,{
+	warp "force_5-1",99,98;
+	end;
+}
+
+
+
+//=============== TWIST OF FATE ================//
+
+force_5-1,99,102,5	script	Twist of Fate	795,{
+set .@npcname$, "[^FF0000 Twist of Fate ^000000]";
+mes .@npcname$;
+mes "So you finished this stage huh?";
+next;
+mes .@npcname$;
+mes "Well not quite, it's time to test your luck.";
+next;
+mes .@npcname$;
+mes "*Click*";
+next;
+mes .@npcname$;
+mes "*Click* *Click*";
+next;
+
+mes .@npcname$;
+			mes "You lucked out punk, I'll see you next round.";
+			next;
+			if($@RoundCount==2){
+			warp $map$,25,26;
+			end;
+			}else if($@RoundCount==3){
+			warp $map$,174,174;
+			end;
+			}else if($@RoundCount==4){
+			warp $map$,174,26;
+			end;
+			}else if($@RoundCount==5){
+			warp $map$,99,103;
+			end;
+			}
+			/*
+set .@fate, rand(1,5);
+switch (.@fate) {
+		case 1:
+			mes .@npcname$;
+			mes "You lucked out punk, I'll see you next round.";
+			next;
+			if($@RoundCount==2){
+			warp $map$,25,26;
+			end;
+			}else if($@RoundCount==3){
+			warp $map$,174,174;
+			end;
+			}else if($@RoundCount==4){
+			warp $map$,174,26;
+			end;
+			}else if($@RoundCount==5){
+			warp $map$,99,103;
+			end;
+			}
+		
+		case 2:
+			mes .@npcname$;
+			mes "You lucked out punk, I'll see you next round.";
+			next;
+			if($@RoundCount==2){
+			warp $map$,25,26;
+			end;
+			}else if($@RoundCount==3){
+			warp $map$,174,174;
+			end;
+			}else if($@RoundCount==4){
+			warp $map$,174,26;
+			end;
+			}else if($@RoundCount==5){
+			warp $map$,99,103;
+			end;
+			}
+			
+		
+			
+		case 3:
+			mes .@npcname$;
+			mes "The demon lord will feed off your life force. BE GONE!";
+			next;
+			warp "SavePoint",0,0;
+			end;
+		case 4:
+			mes .@npcname$;
+			mes "You lucked out punk, I'll see you next round.";
+			next;
+			if($@RoundCount==2){
+			warp $map$,25,26;
+			end;
+			}else if($@RoundCount==3){
+			warp $map$,174,174;
+			end;
+			}else if($@RoundCount==4){
+			warp $map$,174,26;
+			end;
+			}else if($@RoundCount==5){
+			warp $map$,99,103;
+			end;
+			}
+			
+		
+			
+		case 5:
+			mes .@npcname$;
+			mes "You lucked out punk, I'll see you next round.";
+			next;
+			if($@RoundCount==2){
+			warp $map$,25,26;
+			end;
+			}else if($@RoundCount==3){
+			warp $map$,174,174;
+			end;
+			}else if($@RoundCount==4){
+			warp $map$,174,26;
+			end;
+			}else if($@RoundCount==5){
+			warp $map$,99,103;
+			end;
+			}
+			
+
+}
+*/
+
+}
+
+//========= PRIZE NPC =============//
+force_5-1,96,102,5	script	Collect and Exit	856,{
+set .@npcname$, "[^FF0000 Olivia ^000000]";
+mes .@npcname$;
+mes "Well, Congratulations!";
+next;
+mes .@npcname$;
+mes "^1C86EEFirst Option : Collect and Exit^000000";
+mes "You will get a RANDOM ^003EFFBlue Card^000000 by any chances";
+next;
+mes .@npcname$;
+mes "^1C86EE[First Option : Claim and Exit]^000000";
+mes "These are the chances of the BLUE CARDS";
+mes "^1C86EEBlue Q Card^000000 - 1% chance";
+mes "^1C86EEBlue R(2) Card^000000 - 1% chance";
+mes "^1C86EEBlue T Card^000000 - 5% chance";
+mes "^1C86EEBlue U Card^000000 - 5% chance";
+mes "^1C86EEBlue V Card^000000 - 10% chance";
+mes "^1C86EEBlue Y Card^000000 - 10% chance";
+mes "^1C86EEBlue Z Card^000000 - 50% chance";
+mes "^1C86EEBlue Card 6^000000 - 50% chance";
+mes "^1C86EEBlue Card 7^000000 - 100% chance";
+next;
+mes .@npcname$;
+mes "Do you still want to continue?";
+if(select("Get Prize : No Thanks")==1){
+goto L_getprize;	
+}else{
+goto L_exit;
+}
+
+L_exit:
+	close;
+
+L_getprize:
+      set .@r1, rand(100);
+	 set .@r2, rand(100);
+	 set .@r3, rand(100);
+	 set .@r4, rand(100);
+	 set .@r5, rand(100);
+	 set .@r6, rand(100);
+	 set .@r7, rand(100);
+	 set .@r8, rand(100);
+	 set .@r9, rand(100);
+	
+	 if( .@r1 == 1 ){
+ 	 	getitem 6016, 1;
+ 	 }
+	 if( .@r2 == 1){
+		getitem 7714, 1;
+	 }
+	 if( .@r3 <= 5){
+		getitem 6017, 1;
+	 }
+	 if( .@r4 <= 5 ){
+ 	 	getitem 7469, 1;
+ 	 }
+	 if( .@r5 <= 10){
+		getitem 6018, 1;
+	 }
+	 if( .@r6 <= 10){
+		getitem 7471, 1;
+	 }
+	 if( .@r7 <= 50 ){
+ 	 	getitem 6019, 1;
+ 	 }
+	 if( .@r8 <= 50){
+		getitem 6054, 1;
+	 }
+	 if( .@r9 >= 0 ){
+		getitem 6236, 1;
+	 }
+	
+	
+	dispbottom "Congratulations!";
+
+	deletearray .@PItems,128;
+	goto L_Endit;
+L_Endit:
+	warp "SavePoint",0,0;
+
+close;
+}
+
+
+force_5-1,102,102,4	script	Claim and Exit	856,{
+set .@npcname$, "[^FF0000 Olivia ^000000]";
+mes .@npcname$;
+mes "Well, Congratulations!";
+mes "^FF0000You will not be able to enter storage, you can only trade in cards from your inventory,are you sure you want to continue^000000";
+next;
+mes .@npcname$;
+mes "^1C86EE[Second Option : Claim and Exit]^000000";
+mes "You can trade your ^003EFFBlue Card^000000 into random Items";
+next;
+mes .@npcname$;
+mes "^1C86EESecond Option : Claim and Exit^000000";
+mes "These are the Items that you can trade to your ^003EFFBLUE CARDS^000000";
+mes "^1C86EEBlue Q Card^000000-(Valkyrie_Armor) or (Diabolus_Armor)";
+mes "^1C86EEBlue R(2) Card^000000 - (Valkyrie_Manteau) or (Diabolus_Manteau)";
+mes "^1C86EEBlue T Card^000000 - (Orleans_Glove) or (Elemental_Sword)";
+mes "^1C86EEBlue U Card^000000 - (Bloody Branch 5 + Gold Coin 10 + OCA 10) or 50 OPB, 50 OBB, OCA 20";
+mes "^1C86EEBlue V Card^000000 - (100 silver coins + 10 gold coins) or (20 megaphones + 20 old card albums)";
+mes "^1Cq86EEBlue Y Card^000000 - (20 gold coins) or (20 OCA)";
+mes "^1C86EEBlue Z Card^000000 - (15 gold coins)or (15 OCA)";
+mes "^1C86EEBlue Card 6^000000 - (10 gold coins) or (10 OCA)";
+mes "^1C86EEBlue Card 7^000000 - (5 gold coins) or (5 old card album)";
+next;
+mes .@npcname$;
+mes "Do you still want to continue?";
+mes "^FF0000*If you continue, There's no turning back now*^000000";
+if(select(" Trade One Card at a Time : Trade All Cards : No Thanks")==1){
+goto L_trade;
+}else if(2) {
+next;
+mes .@npcname$;
+mes "^FF0000*If you wish to do this, you should have enough space on your inventory or else maybe some items will not be claimed if you are overweighted.*^000000";
+mes "Do you still want to continue?";
+	if(select("Trade All : No Thanks")==1){
+	goto L_tradeall;	
+	}else{
+	goto L_exit;
+	}
+}else{
+goto L_exit;
+}
+
+L_tradeall:
+	next;
+	mes .@npcname$;
+	mes "^1C86EESecond Option : Claim and Exit^000000";
+	mes "Trading...";
+	//===FLAGS===//
+	set .@f1, 0;
+	set .@f2, 0;
+	set .@f3, 0;
+	set .@f4, 0;
+	set .@f5, 0;
+	set .@f6, 0;
+	set .@f7, 0;
+	set .@f8, 0;
+	set .@f9, 0;
+	//=====//
+	while(.@f1==0 && .@f2==0 && .@f3==0 && .@f4==0 && .@f5==0 && .@f6==0 && .@f7==0 && .@f8==0 && .@f9==0)
+	{
+	if(countitem(6016) > 0){
+		delitem 6016,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 2357,1; } else { getitem 2375,1; }
+	}else { set .@f1, .@f1+1; } 
+	
+	if(countitem(7714) > 0){
+		delitem 7714,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 2524,1; } else { getitem 2537,1; }
+		}else { set .@f2, .@f2+1; } 
+			
+	if(countitem(6017) > 0){
+		delitem 6017,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 2701,1; } else { getitem 13414,1; }
+		}else { set .@f3, .@f3+1; } 
+			
+	if(countitem(7469) > 0){
+		delitem 7469,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 12103,5; getitem 671,10; getitem 616,10;  } else { getitem 617,50; getitem 603,50; getitem 616,20; }
+		}else { set .@f4, .@f4+1; } 
+			
+	if(countitem(6018) > 0){
+		delitem 6018,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 675,100; getitem 671,10; } else { getitem 12221,20; getitem 616,20; }
+		}else { set .@f5, .@f5+1; } 
+			
+	if(countitem(7471) > 0){
+		delitem 7471,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 671,20; } else { getitem 616,20; }
+		}else { set .@f6, .@f6+1; } 
+			
+	if(countitem(6019) > 0){
+		delitem 6019,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 671,15; } else { getitem 616,15; }
+		}else { set .@f7, .@f7+1; } 
+			
+	if(countitem(6054) > 0){
+		delitem 6054,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 671,10; } else { getitem 616,10; }
+		}else { set .@f8, .@f8+1; } 
+			
+	if(countitem(6236) > 0){
+		delitem 6236,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 671,5; } else { getitem 616,5; }
+		}else { set .@f9, .@f9+1; } 
+		
+	}
+	next;	
+	mes .@npcname$;
+	mes "Congratulations and Bye!";
+	goto L_EndIt;
+	close;
+	
+
+
+L_trade:
+	next;
+	mes .@npcname$;
+	mes "^1C86EESecond Option : Claim and Exit^000000";
+	mes "These are the chances of the BLUE CARDS";
+	mes "1. ^1C86EEBlue Q Card^000000-(Valkyrie_Armor) or (Diabolus_Armor)";
+	mes "2. ^1C86EEBlue R(2) Card^000000 - (Valkyrie_Manteau) or (Diabolus_Manteau)";
+	mes "3. ^1C86EEBlue T Card^000000 - (Orleans_Glove) or (Elemental_Sword)";
+	mes "4. ^1C86EEBlue U Card^000000 - (Bloody Branch 5 + Gold Coin 10 + OCA 10) or (50 OPB, 50 OBB, OCA 20)";
+	mes "5. ^1C86EEBlue V Card^000000 - (100 silver coins + 10 gold coins) or (20 megaphones + 20 old card albums)";
+	mes "6. ^1C86EEBlue Y Card^000000 - (20 gold coins) or (20 OCA)";
+	mes "7. ^1C86EEBlue Z Card^000000 - (15 gold coins)or (15 OCA)";
+	mes "8. ^1C86EEBlue Card 6^000000 - (10 gold coins) or (10 OCA)";
+	mes "9. ^1C86EEBlue Card 7^000000 - (5 gold coins) or (5 old card album)";
+	switch(select("Choice 1 :Choice 2 :Choice 3 :Choice 4 :Choice 5 :Choice 6 :Choice 7 :Choice 8 :Choice 9 :Warp & Exit")){
+	//====//
+	case 1:
+	   next;
+	   mes .@npcname$;
+	   mes "Are you sure you want to trade this?";
+	   mes "^1C86EEBlue Q Card^000000-(Valkyrie_Armor) or (Diabolus_Armor)";
+	   if(select("Yes : No")==1){
+		if(countitem(6016) < 1){ mes "You don't have the item! Cheater!"; goto L_trade; }  else{
+		delitem 6016,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 2357,1; } else { getitem 2375,1; }
+		}
+	   }
+		next;
+	    mes .@npcname$;
+	    mes "Do you want to trade again?";
+	    mes "If YES : I will reopen the shop for you";
+	    mes "if NO : Warp back to savepoint";
+	    if(select("Yes : No")==1){
+		next;
+		goto L_trade;
+	    }else { goto L_EndIt; }
+	 break;
+	
+	case 2:
+	   next;
+	   mes .@npcname$;
+	   mes "Are you sure you want to trade this?";
+	   mes "^1C86EEBlue R(2) Card^000000 - (Valkyrie_Manteau) or (Diabolus_Manteau)";
+	   if(select("Yes : No")==1){
+		if(countitem(7714) < 1){ mes "You don't have the item! Cheater!"; goto L_trade; }  else{
+		delitem 7714,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 2524,1; } else { getitem 2537,1; }
+		}
+	   }
+		next;
+	    mes .@npcname$;
+	    mes "Do you want to trade again?";
+	    mes "If YES : I will reopen the shop for you";
+	    mes "if NO : Warp back to savepoint";
+	    if(select("Yes : No")==1){
+	    next;
+	    goto L_trade;
+	    }else { goto L_EndIt; }
+	break;
+	
+	case 3:
+	   next;
+	   mes .@npcname$;
+	   mes "Are you sure you want to trade this?";
+	   mes "^1C86EEBlue T Card^000000 - (Orleans_Glove) or (Elemental_Sword)";
+	   if(select("Yes : No")==1){
+		if(countitem(6017) < 1){ mes "You don't have the item! Cheater!"; goto L_trade; }  else{
+		delitem 6017,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 2701,1; } else { getitem 13414,1; }
+		}
+		next;
+	    mes .@npcname$;
+	    mes "Do you want to trade again?";
+	    mes "If YES : I will reopen the shop for you";
+	    mes "if NO : Warp back to savepoint";
+	    if(select("Yes : No")==1){
+		next;
+		goto L_trade;
+	    }else { goto L_EndIt; }
+	   }
+	break;
+	
+	case 4:
+	   next;
+	   mes .@npcname$;
+	   mes "Are you sure you want to trade this?";
+	   mes "^1C86EEBlue U Card^000000 - (Bloody Branch 5 + Gold Coin 10 + OCA 10) or (50 OPB, 50 OBB, OCA 20)";
+	   if(select("Yes : No")==1){
+		if(countitem(7469) < 1){ mes "You don't have the item! Cheater!"; goto L_trade; }  else{
+		delitem 7469,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 12103,5; getitem 671,10; getitem 616,10;  } else { getitem 617,50; getitem 603,50; getitem 616,20; }
+		}
+	   }
+		next;
+	    mes .@npcname$;
+	    mes "Do you want to trade again?";
+	    mes "If YES : I will reopen the shop for you";
+	    mes "if NO : Warp back to savepoint";
+	    if(select("Yes : No")==1){
+		next;
+		goto L_trade;
+	    }else { goto L_EndIt; }
+	break;
+	
+	case 5:
+	   next;
+	   mes .@npcname$;
+	   mes "Are you sure you want to trade this?";
+	   mes "^1C86EEBlue V Card^000000 - (100 silver coins + 10 gold coins) or (20 megaphones + 20 old card albums)";
+	   if(select("Yes : No")==1){
+		if(countitem(6018) < 1){ mes "You don't have the item! Cheater!"; goto L_trade; }  else{
+		delitem 6018,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 675,100; getitem 671,10; } else { getitem 12221,20; getitem 616,20; }
+		}
+	   }
+		next;
+	    mes .@npcname$;
+	    mes "Do you want to trade again?";
+	    mes "If YES : I will reopen the shop for you";
+	    mes "if NO : Warp back to savepoint";
+	    if(select("Yes : No")==1){
+		next;
+		goto L_trade;
+	    }else { goto L_EndIt; }
+	break;
+	
+	case 6:
+	   next;
+	   mes .@npcname$;
+	   mes "Are you sure you want to trade this?";
+	   mes "^1C86EEBlue Y Card^000000 - (20 gold coins) or (20 OCA)";
+	   if(select("Yes : No")==1){
+		if(countitem(7471) < 1){ mes "You don't have the item! Cheater!"; goto L_trade; }  else{
+		delitem 7471,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 671,20; } else { getitem 616,20; }
+		}
+	   }
+		next;
+	    mes .@npcname$;
+	    mes "Do you want to trade again?";
+	    mes "If YES : I will reopen the shop for you";
+	    mes "if NO : Warp back to savepoint";
+	    if(select("Yes : No")==1){
+		next;
+		goto L_trade;
+	    }else { goto L_EndIt; }
+	break;
+	
+	case 7:
+	   next;
+	   mes .@npcname$;
+	   mes "Are you sure you want to trade this?";
+	   mes "^1C86EEBlue Z Card^000000 - (15 gold coins)or (15 OCA)";
+	   if(select("Yes : No")==1){
+		if(countitem(6019) < 1){ mes "You don't have the item! Cheater!"; goto L_trade; }  else{
+		delitem 6019,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 671,15; } else { getitem 616,15; }
+		}
+	   }
+		next;
+	    mes .@npcname$;
+	    mes "Do you want to trade again?";
+	    mes "If YES : I will reopen the shop for you";
+	    mes "if NO : Warp back to savepoint";
+	    if(select("Yes : No")==1){
+		next;
+		goto L_trade;
+	    }else { goto L_EndIt; }
+	break;
+	
+	case 8:
+	   next;
+	   mes .@npcname$;
+	   mes "Are you sure you want to trade this?";
+	   mes "^1C86EEBlue Card 6^000000 - (10 gold coins) or (10 OCA)";
+	   if(select("Yes : No")==1){
+		if(countitem(6054) < 1){ mes "You don't have the item! Cheater!"; goto L_trade; }  else{
+		delitem 6054,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 671,10; } else { getitem 616,10; }
+		}
+	   }
+		next;
+	    mes .@npcname$;
+	    mes "Do you want to trade again?";
+	    mes "If YES : I will reopen the shop for you";
+	    mes "if NO : Warp back to savepoint";
+	    if(select("Yes : No")==1){
+		next;
+		goto L_trade;
+	    }else { goto L_EndIt; }
+	break;
+	
+	case 9:
+	   next;
+	   mes .@npcname$;
+	   mes "Are you sure you want to trade this?";
+	   mes "^1C86EEBlue Card 7^000000 - (5 gold coins) or (5 old card album)";
+	   if(select("Yes : No")==1){
+		if(countitem(6236) < 1){ mes "You don't have the item! Cheater!"; goto L_trade; }  else{
+		delitem 6236,1;
+		set .@ritem, rand(1,2);
+		if(.@ritem==1){ getitem 671,5; } else { getitem 616,5; }
+		}
+	   }
+		next;
+	    mes .@npcname$;
+	    mes "Do you want to trade again?";
+	    mes "If YES : I will reopen the shop for you";
+	    mes "if NO : Warp back to savepoint";
+	    if(select("Yes : No")==1){
+		next;
+		goto L_trade;
+	    }else { goto L_EndIt; }
+	break;
+	
+	case 10:
+		next;
+		goto L_Endit;
+	
+	
+	//===//
+	}
+
+L_exit:
+	close;
+		
+L_EndIt:
+	dispbottom "Congratulations!";
+	warp "SavePoint",0,0;
+
+	
+}
+
+
+
+
+force_5-1	mapflag	nobranch
+//force_5-1	mapflag	nocommand
+force_5-1	mapflag	nomemo
+force_5-1	mapflag	nopenalty
+force_5-1	mapflag	nosave	SavePoint
+force_5-1	mapflag	noteleport
+force_5-1	mapflag	nowarpto
+force_5-1	mapflag	restricted	3
+
+
+force_4-1	mapflag	nobranch
+//force_4-1	mapflag	nocommand
+force_4-1	mapflag	nomemo
+force_4-1	mapflag	nopenalty
+force_4-1	mapflag	nosave	SavePoint
+force_4-1	mapflag	noteleport
+force_4-1	mapflag	nowarpto
+force_4-1	mapflag	restricted	3

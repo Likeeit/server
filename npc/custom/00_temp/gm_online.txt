@@ -1,0 +1,50 @@
+-	script	gm_online	-1,{
+// Start Config
+OnInit:
+set .reset_day, 1; // On which day will online statistics reset (0-6, Sunday=0, Monday=1, Tuesday=2, etc.)
+set .gm_lvl, 40; // GMs with GM level greater or equal to this value will have their online time logged.
+
+// SQL TABLE CONSTRUCTION
+query_sql "CREATE TABLE IF NOT EXISTS `gm_online` (`character` varchar(30) NOT NULL,`online_time` time NOT NULL default '00:00:00',	PRIMARY KEY (`character`)) ENGINE=InnoDB DEFAULT CHARSET=latin1";
+end;
+// End Config
+
+OnPCLoginEvent:
+if(getgmlevel() < .gm_lvl)
+	end;
+set @logintime, gettimetick(2);
+end;
+
+OnPCLogoutEvent:
+if(getgmlevel() < .gm_lvl || !@logintime)
+	end;
+set @logouttime, gettimetick(2);
+set .@playtime, @logouttime - @logintime;
+set @logintime, 0;
+set @logouttime, 0;
+set .@play_h, .@playtime/3600;
+set .@play_m, (.@playtime/60)-(.@play_h*60);
+set .@play_s, .@playtime-(.@play_h*3600)-(.@play_m*60);
+query_sql "SELECT `character` FROM `gm_online` WHERE `character` = '"+strcharinfo(0)+"'", .@charname$;
+if (.@charname$ == strcharinfo(0))
+	query_sql "UPDATE `gm_online` SET `online_time` = ADDTIME(`online_time`, '"+.@play_h+":"+.@play_m+":"+.@play_s+"') WHERE `character` = '"+strcharinfo(0)+"'";
+else
+	query_sql "INSERT INTO `gm_online` VALUES ('"+strcharinfo(0)+"', '"+.@play_h+":"+.@play_m+":"+.@play_s+"')";
+end;
+
+OnHour00:
+if (gettime(4) == .reset_day) {
+	query_sql "UPDATE `gm_online` SET `online_time` = '00:00:00'";
+	set $gm_reset$, gettimestr("%d/%m %H:%M",21);
+}
+end;
+
+OnWhisperGlobal:
+query_sql "SELECT * FROM `gm_online` ORDER BY `online_time` DESC", .@name$, .@time$;
+mes "[GM Online Time]";
+mes "Start date: "+"^FF0000"+$gm_reset$+"^000000";
+for (set .@i, 0; .@i < getarraysize(.@name$); set .@i, .@i + 1) {
+	mes (.@i+1)+". "+.@name$[.@i]+" - "+.@time$[.@i];
+}
+close;
+}

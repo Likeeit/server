@@ -1,0 +1,322 @@
+-	script	KoE	-1,{
+OnInit:
+	disablenpc "The King#KoE";
+	disablenpc "Exit#KoE";
+	disablenpc "The King#1";
+	disablenpc "The King#1";
+	disablenpc "The King#2";
+	disablenpc "The King#3";
+	disablenpc "The King#4";
+	disablenpc "The King#5";
+	disablenpc "The King#6";
+	disablenpc "The King#7";
+	disablenpc "The King#8";
+	disablenpc "The King#9";
+	disablenpc "The King#10";
+	disablenpc "The King#11";
+	disablenpc "The King#12";
+	disablenpc "The King#13";
+	disablenpc "The King#14";
+	disablenpc "The King#15";
+	disablenpc "The King#16";
+	disablenpc "The King#17";
+	disablenpc "The King#18";
+	disablenpc "The King#19";
+	disablenpc "The King#20";
+	disablenpc "The King#21";
+	disablenpc "The King#22";
+	disablenpc "The King#23";
+	disablenpc "The King#24";
+	disablenpc "The King#25";
+	disablenpc "The King#26";
+	disablenpc "The King#27";
+	disablenpc "The King#28";
+	disablenpc "The King#29";
+	disablenpc "The King#30";
+	disablenpc "The King#31";
+	disablenpc "The King#32";
+	disablenpc "The King#33";
+	end;
+
+OnWhisperGlobal:
+	if ( getgmlevel() < 99 ) end;
+	else if ( compare ( @whispervar0$, "on" ) ) goto L_start;
+	else if ( compare ( @whispervar0$, "off" ) ) goto L_end;
+	else end;
+		
+L_end:
+OnClock0140:
+OnClock0740:
+OnClock1340:
+OnClock1840:
+	announce "The King of Emperium Hill is over!", 0;
+	maprespawnguildid "guild_vs1", $koegid, 2;
+	set .koe_start, 0;
+	enablenpc "Exit#KoE";
+	disablenpc "The King#KoE";
+	disablenpc "The King#1";
+	disablenpc "The King#2";
+	disablenpc "The King#3";
+	disablenpc "The King#4";
+	disablenpc "The King#5";
+	disablenpc "The King#6";
+	disablenpc "The King#7";
+	disablenpc "The King#8";
+	disablenpc "The King#9";
+	disablenpc "The King#10";
+	disablenpc "The King#11";
+	disablenpc "The King#12";
+	disablenpc "The King#13";
+	disablenpc "The King#14";
+	disablenpc "The King#15";
+	disablenpc "The King#16";
+	disablenpc "The King#17";
+	disablenpc "The King#18";
+	disablenpc "The King#19";
+	disablenpc "The King#20";
+	disablenpc "The King#21";
+	disablenpc "The King#22";
+	disablenpc "The King#23";
+	disablenpc "The King#24";
+	disablenpc "The King#25";
+	disablenpc "The King#26";
+	disablenpc "The King#27";
+	disablenpc "The King#28";
+	disablenpc "The King#29";
+	disablenpc "The King#30";
+	disablenpc "The King#31";
+	disablenpc "The King#32";
+	disablenpc "The King#33";
+	killmonsterall "guild_vs1";
+	set $koegid, getcharid(2);
+	announce "The current King of Emperium Hill is the [" + strcharinfo(2) + "] guild.", 0;
+	end;
+
+L_start:
+OnClock0130:
+OnClock0730:
+OnClock1330:
+OnClock1830:
+	announce "The King of Emperium Hill has begun! Use @go KoE to go to the entrance.", 0;
+	set .koe_start, 1;
+	enablenpc "The King#KoE";
+	enablenpc "The King#1";
+	enablenpc "The King#2";
+	enablenpc "The King#3";
+	enablenpc "The King#4";
+	enablenpc "The King#5";
+	enablenpc "The King#6";
+	enablenpc "The King#7";
+	enablenpc "The King#8";
+	enablenpc "The King#9";
+	enablenpc "The King#10";
+	enablenpc "The King#11";
+	enablenpc "The King#12";
+	enablenpc "The King#13";
+	enablenpc "The King#14";
+	enablenpc "The King#15";
+	enablenpc "The King#16";
+	enablenpc "The King#17";
+	enablenpc "The King#18";
+	enablenpc "The King#19";
+	enablenpc "The King#20";
+	enablenpc "The King#21";
+	enablenpc "The King#22";
+	enablenpc "The King#23";
+	enablenpc "The King#24";
+	enablenpc "The King#25";
+	enablenpc "The King#26";
+	enablenpc "The King#27";
+	enablenpc "The King#28";
+	enablenpc "The King#29";
+	enablenpc "The King#30";
+	enablenpc "The King#31";
+	enablenpc "The King#32";
+	enablenpc "The King#33";
+	disablenpc "Exit#KoE";
+	set $koegid, 0;
+	donpcevent "::OnRevKoE";
+	maprespawnguildid "guild_vs1", $koegid, 2;
+	monster "guild_vs1",49,49,"EMPERIUM",1288,1,"KoE::OnEmpDead",200;
+	end;
+
+OnEmpDead:
+	set $koegid, getcharid(2);
+	announce "The current King of Emperium Hill is the [" + strcharinfo(2) + "] guild.", 0;
+	donpcevent "::OnRevKoE";
+	maprespawnguildid "guild_vs1", $koegid, 2;
+	sleep 500;
+	if ( .koe_start )
+		monster "guild_vs1",49,49,"EMPERIUM",1288,1,"KoE::OnEmpDead",200;
+	end;
+}
+
+// KoE Entrance
+prontera,155,169,4	script	The King#KoE	730,{
+    mes "[The King]";
+	if ( getcharid(2) == 0 ) {
+		mes "You must have a guild to participate in the ^FF0000King of Emperium Hill Tournament^000000.";
+		close;
+	}
+    mes "Hello.";
+    mes "Would you like to participate in the ^FF0000King of Emperium Hill Tournament^000000?";
+	if ( select ( "Yes", "No" ) == 2 ) close;
+    switch( rand(1,4) ){
+        case 1:	warp "guild_vs1", 50, 88; end;
+        case 2:	warp "guild_vs1", 88, 50; end;
+        case 3:	warp "guild_vs1", 50, 11; end;
+        case 4:	warp "guild_vs1", 11, 50; end;
+	}
+}
+
+// KoE Exit
+guild_vs1,49,56,5	script	Exit#KoE	51,{
+	mes "[Exit]";
+	mes "See ya.";
+	if ( getcharid(2) == $koegid )
+		getitem 671, 1; // configure prize here
+	next;
+	warp "Save",0,0;
+	close;
+}
+
+// Flags
+prontera,155,161,4	script	King of Emperium Hill#1::koe_flag	722,{
+	set .@gid, $koegid;
+	if ( .@gid == 0 ) end;
+	mes "[King of Emperium Hill]";
+	mes "The Current King of Emperium Hill is the ["+ getguildname(.@gid) +"] guild.";
+	close;
+OnRevKoE:
+	flagemblem $koegid;
+	end;
+}
+
+//KoE Timer by [Kichi]
+prontera,167,178,5	script	KoE Timer#Rio	909,{
+	if (!getvariableofnpc(.koe_start, "KoE"))
+	mes "Next KoE will begin in";
+	else
+	mes "KoE will end in";
+	mes ""+.hleft+"h:"+.mleft+"m ";
+	close;
+end;
+OnLoop:
+	set .i,1;
+L_Loop:
+	while(.i){
+	if (getvariableofnpc(.koe_start, "KoE"))
+	donpcevent strnpcinfo(0)+"::OnEnd";
+	else
+	donpcevent strnpcinfo(0)+"::OnStart";
+	sleep 6000;
+	goto L_Loop;
+	}
+end;
+OnStart:
+	set .@cm,gettime(2);
+	set .@ch,gettime(3);
+	set .@size,getarraysize(.starttime$);
+	for(set .@i,0;.@i<=.@size-1;set .@i,.@i+1){
+		set .hours,atoi(substr(.starttime$[.@i], 0, 1)); 
+		set .minutes,atoi(substr(.starttime$[.@i], 2, 3)); 
+		if (.@ch<.hours){
+			break;
+		}else if(.@i == .@size-1){
+			set .hours,atoi(substr(.starttime$[0], 0, 1)); 
+			set .minutes,atoi(substr(.starttime$[0], 2, 3)); 
+		}
+	}
+	if(.@ch>.hours) set .hleft,(24-.@ch)+.hours;
+	else set .hleft,.hours-gettime(3);
+	if(.@cm>.minutes) set .mleft,(60-.@cm)+.minutes;
+	else  set .mleft,.minutes-.@cm; 
+
+	delwaitingroom strnpcinfo(0);
+	waitingroom "KoE Starts in "+.hleft+"h:"+.mleft+"m ",0;
+	end;
+
+OnEnd:
+	set .@cm,gettime(2);
+	set .@ch,gettime(3);
+	set .@size,getarraysize(.endtime$);
+	for(set .@i,0;.@i<=.@size-1;set .@i,.@i+1){
+		set .hours,atoi(substr(.endtime$[.@i], 0, 1)); 
+		set .minutes,atoi(substr(.endtime$[.@i], 2, 3)); 
+		if (.@ch<.hours){
+			break;
+		}else if(.@i == .@size-1){
+			set .hours,atoi(substr(.endtime$[0], 0, 1)); 
+			set .minutes,atoi(substr(.endtime$[0], 2, 3)); 
+		}
+	}
+	if(.@ch>.hours) set .hleft,(24-.@ch)+.hours;
+	else set .hleft,.hours-gettime(3);
+	if(.@cm>.minutes) set .mleft,(60-.@cm)+.minutes;
+	else  set .mleft,.minutes-.@cm; 
+
+	delwaitingroom strnpcinfo(0);
+	waitingroom "KoE Ends in "+.hleft+"h:"+.mleft+"m ",0;
+	end;
+
+end;
+OnInit:
+	setarray .starttime$,"0130","0730","1330","1830";
+	setarray .endtime$,"0140","0740","1340","1840";
+	donpcevent strnpcinfo(0)+"::OnLoop";
+	end;
+}
+guild_vs1,61,49,6	duplicate(koe_flag)	King of Emperium Hill#2	722
+guild_vs1,38,49,2	duplicate(koe_flag)	King of Emperium Hill#3	722
+guild_vs1,49,61,0	duplicate(koe_flag)	King of Emperium Hill#4	722
+
+guild_vs1	mapflag	gvg
+guild_vs1	mapflag	nobranch
+guild_vs1	mapflag	nomemo
+guild_vs1	mapflag	nopenalty
+guild_vs1	mapflag	noreturn
+guild_vs1	mapflag	nosave	SavePoint
+guild_vs1	mapflag	noteleport
+guild_vs1	mapflag	nowarp
+guild_vs1	mapflag	nowarpto
+guild_vs1	mapflag	allow_bg_items
+
+
+
+
+
+
+
+morocc,156,89,3	duplicate(The King#KoE)	The King#1	730
+geffen,112,63,1	duplicate(The King#KoE)	The King#2	730
+alberta,196,146,1	duplicate(The King#KoE)	The King#3	730
+payon,158,233,3	duplicate(The King#KoE)	The King#4	730
+izlude,128,109,3	duplicate(The King#KoE)	The King#5	730
+aldebaran,138,119,3	duplicate(The King#KoE)	The King#6	730
+xmas,143,133,2	duplicate(The King#KoE)	The King#7	730
+comodo,200,141,3	duplicate(The King#KoE)	The King#8	730
+yuno,158,171,3	duplicate(The King#KoE)	The King#9	730
+amatsu,109,164,3	duplicate(The King#KoE)	The King#10	730
+gonryun,160,116,3	duplicate(The King#KoE)	The King#11	730
+umbala,95,154,3	duplicate(The King#KoE)	The King#12	730
+louyang,217,96,3	duplicate(The King#KoE)	The King#13	730
+jawaii,204,286,3	duplicate(The King#KoE)	The King#14	730
+ayothaya,149,115,3	duplicate(The King#KoE)	The King#15	730
+einbroch,64,200,3	duplicate(The King#KoE)	The King#16	730
+lighthalzen,158,95,3	duplicate(The King#KoE)	The King#17	730
+einbech,75,114,3	duplicate(The King#KoE)	The King#18	730
+hugel,96,140,3	duplicate(The King#KoE)	The King#19	730
+rachel,135,110,3	duplicate(The King#KoE)	The King#20	730
+veins,211,121,3	duplicate(The King#KoE)	The King#21	730
+moscovia,227,182,3	duplicate(The King#KoE)	The King#22	730
+mid_camp,212,241,3	duplicate(The King#KoE)	The King#23	730
+splendide,196,80,3	duplicate(The King#KoE)	The King#24	730
+manuk,275,218,3	duplicate(The King#KoE)	The King#25	730
+dicastes01,194,182,3	duplicate(The King#KoE)	The King#26	730
+brasilis,195,212,3	duplicate(The King#KoE)	The King#27	730
+moc_ruins,67,153,3	duplicate(The King#KoE)	The King#28	730
+dewata,191,227,3	duplicate(The King#KoE)	The King#29	730
+malangdo,180,213,3	duplicate(The King#KoE)	The King#30	730
+mora,106,112,3	duplicate(The King#KoE)	The King#31	730
+mosk_fild01,107,103,3	duplicate(The King#KoE)	The King#32	730
+pay_arche,50,141,3	duplicate(The King#KoE)	The King#33	730

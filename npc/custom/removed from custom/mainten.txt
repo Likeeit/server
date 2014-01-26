@@ -1,0 +1,6 @@
+-	script	Maintenance	-1,{
+OnMinute28:
+announce "Server Maintenance On Sunday 18:00 Server Time.",0;
+announce "Also that day is double donation day.",0;
+end;
+}

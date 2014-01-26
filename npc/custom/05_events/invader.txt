@@ -1,0 +1,171 @@
+// Location: Prontera,148,183,5	ID 966
+// Donate 50m in all to spawn mobs in Izlude
+
+-	script	invader	-1,{
+OnWhisperGlobal:
+	if (getgmlevel() >= 30) {
+		mes "What would you like to do?";
+		switch(select("Start game:Nothing"))
+		{
+			case 1:
+				mes "Start the game?";
+				if(select("No:Yes")==1) close; 
+				close2;
+				break;
+			case 2:
+				mes "Okay.";
+				close;
+				break;
+		}
+
+				mes "[Invader]";
+				mes "Let's start the show! The event is activated now! ^FF0000DO NOT ACTIVATE ME AGAIN UNTIL IT'S FINISHED^000000";
+				announce2 "Izlude is being invaded by the evil forces of doooom!",13;
+				set $MainMVP,rand(1,4);
+				set $FirstMVP,rand(1,20);
+				set $SecondMVP,rand(1,20);
+				set $ThirdMVP,rand(1,20);
+				if($MainMVP == 1)
+				monster "izlude.gat",128,114,"--ja--",1917,1,"Invader::OnInvasion";
+				if($MainMVP == 2)				
+				monster "izlude.gat",128,114,"--ja--",1751,1,"Invader::OnInvasion";
+				if($MainMVP == 3)
+				monster "izlude.gat",128,114,"--ja--",1832,1,"Invader::OnInvasion";
+				if($MainMVP == 4)
+				monster "izlude.gat",128,114,"--ja--",1874,1,"Invader::OnInvasion";
+				if($FirstMVP == 1)
+				monster "izlude.gat",197,180,"--ja--",1086,1,"Invader::OnInvasion";
+				if($FirstMVP == 2)
+				monster "izlude.gat",197,180,"--ja--",1583,1,"Invader::OnInvasion";
+				if($FirstMVP == 3)
+				monster "izlude.gat",197,180,"--ja--",1623,1,"Invader::OnInvasion";
+				if($FirstMVP == 4)
+				monster "izlude.gat",197,180,"--ja--",1373,1,"Invader::OnInvasion";
+				if($FirstMVP == 5)
+				monster "izlude.gat",197,180,"--ja--",1272,1,"Invader::OnInvasion";
+				if($FirstMVP == 6)
+				monster "izlude.gat",197,180,"--ja--",1046,1,"Invader::OnInvasion";
+				if($FirstMVP == 7)
+				monster "izlude.gat",197,180,"--ja--",1719,1,"Invader::OnInvasion";
+				if($FirstMVP == 8)
+				monster "izlude.gat",197,180,"--ja--",1150,1,"Invader::OnInvasion";
+				if($FirstMVP == 9)
+				monster "izlude.gat",197,180,"--ja--",1059,1,"Invader::OnInvasion";
+				if($FirstMVP == 10)
+				monster "izlude.gat",197,180,"--ja--",1492,1,"Invader::OnInvasion";
+				if($FirstMVP == 11)
+				monster "izlude.gat",197,180,"--ja--",1658,1,"Invader::OnInvasion";
+				if($FirstMVP == 12)
+				monster "izlude.gat",197,180,"--ja--",1087,1,"Invader::OnInvasion";
+				if($FirstMVP == 13)
+				monster "izlude.gat",197,180,"--ja--",1190,1,"Invader::OnInvasion";
+				if($FirstMVP == 14)
+				monster "izlude.gat",197,180,"--ja--",1785,1,"Invader::OnInvasion";
+				if($FirstMVP == 15)
+				monster "izlude.gat",197,180,"--ja--",1630,1,"Invader::OnInvasion";
+				if($FirstMVP == 16)
+				monster "izlude.gat",197,180,"--ja--",1039,1,"Invader::OnInvasion";
+				if($FirstMVP == 17)
+				monster "izlude.gat",197,180,"--ja--",1389,1,"Invader::OnInvasion";
+				if($FirstMVP == 18)
+				monster "izlude.gat",197,180,"--ja--",1112,1,"Invader::OnInvasion";
+				if($FirstMVP == 19)
+				monster "izlude.gat",197,180,"--ja--",1115,1,"Invader::OnInvasion";
+				if($FirstMVP == 20)
+				monster "izlude.gat",197,180,"--ja--",1418,1,"Invader::OnInvasion";
+				if($SecondMVP == 1)
+				monster "izlude.gat",52,133,"--ja--",1086,1,"Invader::OnInvasion";
+				if($SecondMVP == 2)
+				monster "izlude.gat",52,133,"--ja--",1583,1,"Invader::OnInvasion";
+				if($SecondMVP == 3)
+				monster "izlude.gat",52,133,"--ja--",1623,1,"Invader::OnInvasion";
+				if($SecondMVP == 4)
+				monster "izlude.gat",52,133,"--ja--",1373,1,"Invader::OnInvasion";
+				if($SecondMVP == 5)
+				monster "izlude.gat",52,133,"--ja--",1272,1,"Invader::OnInvasion";
+				if($SecondMVP == 6)
+				monster "izlude.gat",52,133,"--ja--",1046,1,"Invader::OnInvasion";
+				if($SecondMVP == 7)
+				monster "izlude.gat",52,133,"--ja--",1719,1,"Invader::OnInvasion";
+				if($SecondMVP == 8)
+				monster "izlude.gat",52,133,"--ja--",1150,1,"Invader::OnInvasion";
+				if($SecondMVP == 9)
+				monster "izlude.gat",52,133,"--ja--",1059,1,"Invader::OnInvasion";
+				if($SecondMVP == 10)
+				monster "izlude.gat",52,133,"--ja--",1492,1,"Invader::OnInvasion";
+				if($SecondMVP == 11)
+				monster "izlude.gat",52,133,"--ja--",1658,1,"Invader::OnInvasion";
+				if($SecondMVP == 12)
+				monster "izlude.gat",52,133,"--ja--",1087,1,"Invader::OnInvasion";
+				if($SecondMVP == 13)
+				monster "izlude.gat",52,133,"--ja--",1190,1,"Invader::OnInvasion";
+				if($SecondMVP == 14)
+				monster "izlude.gat",52,133,"--ja--",1785,1,"Invader::OnInvasion";
+				if($SecondMVP == 15)
+				monster "izlude.gat",52,133,"--ja--",1630,1,"Invader::OnInvasion";
+				if($SecondMVP == 16)
+				monster "izlude.gat",52,133,"--ja--",1039,1,"Invader::OnInvasion";
+				if($SecondMVP == 17)
+				monster "izlude.gat",52,133,"--ja--",1389,1,"Invader::OnInvasion";
+				if($SecondMVP == 18)
+				monster "izlude.gat",52,133,"--ja--",1112,1,"Invader::OnInvasion";
+				if($SecondMVP == 19)
+				monster "izlude.gat",52,133,"--ja--",1115,1,"Invader::OnInvasion";
+				if($SecondMVP == 20)
+				monster "izlude.gat",52,133,"--ja--",1418,1,"Invader::OnInvasion";
+				if($ThirdMVP == 1)
+				monster "izlude.gat",54,75,"--ja--",1086,1,"Invader::OnInvasion";
+				if($ThirdMVP == 2)
+				monster "izlude.gat",54,75,"--ja--",1583,1,"Invader::OnInvasion";
+				if($ThirdMVP == 3)
+				monster "izlude.gat",54,75,"--ja--",1623,1,"Invader::OnInvasion";
+				if($ThirdMVP == 4)
+				monster "izlude.gat",54,75,"--ja--",1373,1,"Invader::OnInvasion";
+				if($ThirdMVP == 5)
+				monster "izlude.gat",54,75,"--ja--",1272,1,"Invader::OnInvasion";
+				if($ThirdMVP == 6)
+				monster "izlude.gat",54,75,"--ja--",1046,1,"Invader::OnInvasion";
+				if($ThirdMVP == 7)
+				monster "izlude.gat",54,75,"--ja--",1719,1,"Invader::OnInvasion";
+				if($ThirdMVP == 8)
+				monster "izlude.gat",54,75,"--ja--",1150,1,"Invader::OnInvasion";
+				if($ThirdMVP == 9)
+				monster "izlude.gat",54,75,"--ja--",1059,1,"Invader::OnInvasion";
+				if($ThirdMVP == 10)
+				monster "izlude.gat",54,75,"--ja--",1492,1,"Invader::OnInvasion";
+				if($ThirdMVP == 11)
+				monster "izlude.gat",54,75,"--ja--",1658,1,"Invader::OnInvasion";
+				if($ThirdMVP == 12)
+				monster "izlude.gat",54,75,"--ja--",1087,1,"Invader::OnInvasion";
+				if($ThirdMVP == 13)
+				monster "izlude.gat",54,75,"--ja--",1190,1,"Invader::OnInvasion";
+				if($ThirdMVP == 14)
+				monster "izlude.gat",54,75,"--ja--",1785,1,"Invader::OnInvasion";
+				if($ThirdMVP == 15)
+				monster "izlude.gat",54,75,"--ja--",1630,1,"Invader::OnInvasion";
+				if($ThirdMVP == 16)
+				monster "izlude.gat",54,75,"--ja--",1039,1,"Invader::OnInvasion";
+				if($ThirdMVP == 17)
+				monster "izlude.gat",54,75,"--ja--",1389,1,"Invader::OnInvasion";
+				if($ThirdMVP == 18)
+				monster "izlude.gat",54,75,"--ja--",1112,1,"Invader::OnInvasion";
+				if($ThirdMVP == 19)
+				monster "izlude.gat",54,75,"--ja--",1115,1,"Invader::OnInvasion";
+				if($ThirdMVP == 20)
+				monster "izlude.gat",54,75,"--ja--",1418,1,"Invader::OnInvasion";
+				close;
+
+//Resetting $Invasion and $FunInIzlude to 0 works, though, the announce doesn't for some weird reason.
+
+	OnInvasion:
+	set $FunInIzlude,$FunInIzlude+1;
+	if($FunInIzlude == 4)
+		set $FunInIzlude,0;
+		announce2 "One of the evil forces of doooom has been vanquished.",13;
+	
+	OnInit:
+	set $FunInIzlude,0;
+		end;
+		}
+	}
+	que_moon,102,29,5	duplicate(invader)	Invader#npc	966

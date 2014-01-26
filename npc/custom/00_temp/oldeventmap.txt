@@ -1,0 +1,6 @@
+//old event and quest zone exit npc for players stuck there.
+
+quiz_02,132,348,5	script	Exit E and Q	902,{
+	savepoint "prontera.gat" ,155,189;
+	warp "SavePoint",0,0;
+}
